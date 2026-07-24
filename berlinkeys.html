@@ -1,1710 +1,1584 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Berlin Lite — Key Management</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+<!DOCTYPE html><html lang="tr"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Berlin Lite — Key Management</title> <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet"> <style> *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+text
 
-        :root {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #12121a;
-            --bg-card: #16161f;
-            --bg-card-hover: #1a1a25;
-            --bg-input: #1e1e2a;
-            --border-primary: #2a2a3a;
-            --border-hover: #3a3a50;
-            --border-accent: #6c5ce7;
-            --text-primary: #e8e8ef;
-            --text-secondary: #8888a0;
-            --text-muted: #55556a;
-            --accent-primary: #6c5ce7;
-            --accent-secondary: #a29bfe;
-            --accent-glow: rgba(108, 92, 231, 0.15);
-            --success: #00b894;
-            --success-bg: rgba(0, 184, 148, 0.08);
-            --warning: #fdcb6e;
-            --warning-bg: rgba(253, 203, 110, 0.08);
-            --danger: #e17055;
-            --danger-bg: rgba(225, 112, 85, 0.08);
-            --info: #74b9ff;
-            --info-bg: rgba(116, 185, 255, 0.08);
-            --lifetime: #fd79a8;
-            --lifetime-bg: rgba(253, 121, 168, 0.08);
-            --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
-            --radius-sm: 8px;
-            --radius-md: 12px;
-            --radius-lg: 16px;
-        }
+    :root {
+        --bg-primary: #0a0a0f;
+        --bg-secondary: #12121a;
+        --bg-card: #16161f;
+        --bg-card-hover: #1a1a25;
+        --bg-input: #1e1e2a;
+        --border-primary: #2a2a3a;
+        --border-hover: #3a3a50;
+        --border-accent: #6c5ce7;
+        --text-primary: #e8e8ef;
+        --text-secondary: #8888a0;
+        --text-muted: #55556a;
+        --accent-primary: #6c5ce7;
+        --accent-secondary: #a29bfe;
+        --accent-glow: rgba(108, 92, 231, 0.15);
+        --success: #00b894;
+        --success-bg: rgba(0, 184, 148, 0.08);
+        --warning: #fdcb6e;
+        --warning-bg: rgba(253, 203, 110, 0.08);
+        --danger: #e17055;
+        --danger-bg: rgba(225, 112, 85, 0.08);
+        --info: #74b9ff;
+        --info-bg: rgba(116, 185, 255, 0.08);
+        --lifetime: #fd79a8;
+        --lifetime-bg: rgba(253, 121, 168, 0.08);
+        --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
+        --radius-sm: 8px;
+        --radius-md: 12px;
+        --radius-lg: 16px;
+    }
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        min-height: 100vh;
+        overflow-x: hidden;
+        line-height: 1.6;
+    }
 
-        .bg-grid {
-            position: fixed; inset: 0;
-            background-image:
-                linear-gradient(rgba(108, 92, 231, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(108, 92, 231, 0.03) 1px, transparent 1px);
-            background-size: 60px 60px;
-            pointer-events: none; z-index: 0;
-        }
+    .bg-grid {
+        position: fixed; inset: 0;
+        background-image:
+            linear-gradient(rgba(108, 92, 231, 0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(108, 92, 231, 0.03) 1px, transparent 1px);
+        background-size: 60px 60px;
+        pointer-events: none; z-index: 0;
+    }
 
-        .bg-orb {
-            position: fixed; border-radius: 50%; filter: blur(80px);
-            pointer-events: none; z-index: 0;
-        }
-        .bg-orb-1 {
-            width: 500px; height: 500px;
-            background: rgba(108, 92, 231, 0.06);
-            top: -150px; right: -100px;
-            animation: orbFloat1 25s ease-in-out infinite;
-        }
-        .bg-orb-2 {
-            width: 400px; height: 400px;
-            background: rgba(162, 155, 254, 0.04);
-            bottom: -100px; left: -100px;
-            animation: orbFloat2 30s ease-in-out infinite;
-        }
-        .bg-orb-3 {
-            width: 300px; height: 300px;
-            background: rgba(253, 121, 168, 0.03);
-            top: 50%; left: 50%;
-            transform: translate(-50%, -50%);
-            animation: orbFloat3 20s ease-in-out infinite;
-        }
+    .bg-orb {
+        position: fixed; border-radius: 50%; filter: blur(80px);
+        pointer-events: none; z-index: 0;
+    }
+    .bg-orb-1 {
+        width: 500px; height: 500px;
+        background: rgba(108, 92, 231, 0.06);
+        top: -150px; right: -100px;
+        animation: orbFloat1 25s ease-in-out infinite;
+    }
+    .bg-orb-2 {
+        width: 400px; height: 400px;
+        background: rgba(162, 155, 254, 0.04);
+        bottom: -100px; left: -100px;
+        animation: orbFloat2 30s ease-in-out infinite;
+    }
+    .bg-orb-3 {
+        width: 300px; height: 300px;
+        background: rgba(253, 121, 168, 0.03);
+        top: 50%; left: 50%;
+        transform: translate(-50%, -50%);
+        animation: orbFloat3 20s ease-in-out infinite;
+    }
 
-        @keyframes orbFloat1 {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(-40px, 60px) scale(1.1); }
-            66% { transform: translate(30px, -30px) scale(0.95); }
-        }
-        @keyframes orbFloat2 {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(50px, -40px) scale(1.05); }
-            66% { transform: translate(-30px, 50px) scale(0.9); }
-        }
-        @keyframes orbFloat3 {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); }
-            50% { transform: translate(-50%, -50%) scale(1.15); }
-        }
+    @keyframes orbFloat1 {
+        0%, 100% { transform: translate(0, 0) scale(1); }
+        33% { transform: translate(-40px, 60px) scale(1.1); }
+        66% { transform: translate(30px, -30px) scale(0.95); }
+    }
+    @keyframes orbFloat2 {
+        0%, 100% { transform: translate(0, 0) scale(1); }
+        33% { transform: translate(50px, -40px) scale(1.05); }
+        66% { transform: translate(-30px, 50px) scale(0.9); }
+    }
+    @keyframes orbFloat3 {
+        0%, 100% { transform: translate(-50%, -50%) scale(1); }
+        50% { transform: translate(-50%, -50%) scale(1.15); }
+    }
 
-        .app-container {
-            position: relative; z-index: 1;
-            max-width: 1400px; margin: 0 auto; padding: 0 24px;
-        }
+    .app-container {
+        position: relative; z-index: 1;
+        max-width: 1400px; margin: 0 auto; padding: 0 24px;
+    }
 
-        /* NAVBAR */
-        .navbar {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 20px 0; border-bottom: 1px solid var(--border-primary);
-            margin-bottom: 40px; flex-wrap: wrap; gap: 12px;
-        }
-        .nav-brand { display: flex; align-items: center; gap: 14px; }
-        .nav-logo {
-            width: 42px; height: 42px;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            border-radius: var(--radius-sm);
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 800; font-size: 18px; color: white;
-            box-shadow: 0 4px 16px rgba(108, 92, 231, 0.3);
-        }
-        .nav-title { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
-        .nav-title span { color: var(--accent-secondary); }
-        .nav-version {
-            font-size: 11px; color: var(--text-muted);
-            background: var(--bg-input); padding: 3px 10px;
-            border-radius: 20px; border: 1px solid var(--border-primary);
-            font-family: 'JetBrains Mono', monospace;
-        }
-        .nav-links { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-        .nav-link {
-            padding: 8px 18px; font-size: 13px; font-weight: 500;
-            color: var(--text-secondary); text-decoration: none;
-            border-radius: var(--radius-sm); transition: all 0.2s ease; cursor: pointer;
-        }
-        .nav-link:hover { color: var(--text-primary); background: var(--bg-input); }
-        .nav-link.active { color: var(--accent-secondary); background: var(--accent-glow); }
-        .nav-status {
-            display: flex; align-items: center; gap: 8px;
-            padding: 8px 16px; background: var(--success-bg);
-            border: 1px solid rgba(0, 184, 148, 0.15);
-            border-radius: 20px; font-size: 12px; color: var(--success); font-weight: 500;
-        }
-        .status-dot {
-            width: 7px; height: 7px; background: var(--success);
-            border-radius: 50%; animation: pulse 2s ease-in-out infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0, 184, 148, 0.4); }
-            50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(0, 184, 148, 0); }
-        }
+    /* NAVBAR */
+    .navbar {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 20px 0; border-bottom: 1px solid var(--border-primary);
+        margin-bottom: 40px; flex-wrap: wrap; gap: 12px;
+    }
+    .nav-brand { display: flex; align-items: center; gap: 14px; }
+    .nav-logo {
+        width: 42px; height: 42px;
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+        border-radius: var(--radius-sm);
+        display: flex; align-items: center; justify-content: center;
+        font-weight: 800; font-size: 18px; color: white;
+        box-shadow: 0 4px 16px rgba(108, 92, 231, 0.3);
+    }
+    .nav-title { font-size: 22px; font-weight: 700; letter-spacing: -0.5px; }
+    .nav-title span { color: var(--accent-secondary); }
+    .nav-version {
+        font-size: 11px; color: var(--text-muted);
+        background: var(--bg-input); padding: 3px 10px;
+        border-radius: 20px; border: 1px solid var(--border-primary);
+        font-family: 'JetBrains Mono', monospace;
+    }
+    .nav-links { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .nav-link {
+        padding: 8px 18px; font-size: 13px; font-weight: 500;
+        color: var(--text-secondary); text-decoration: none;
+        border-radius: var(--radius-sm); transition: all 0.2s ease; cursor: pointer;
+    }
+    .nav-link:hover { color: var(--text-primary); background: var(--bg-input); }
+    .nav-link.active { color: var(--accent-secondary); background: var(--accent-glow); }
+    .nav-status {
+        display: flex; align-items: center; gap: 8px;
+        padding: 8px 16px; background: var(--success-bg);
+        border: 1px solid rgba(0, 184, 148, 0.15);
+        border-radius: 20px; font-size: 12px; color: var(--success); font-weight: 500;
+    }
+    .status-dot {
+        width: 7px; height: 7px; background: var(--success);
+        border-radius: 50%; animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+        0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0, 184, 148, 0.4); }
+        50% { opacity: 0.7; box-shadow: 0 0 0 6px rgba(0, 184, 148, 0); }
+    }
 
-        /* HEADER */
-        .page-header { text-align: center; margin-bottom: 50px; }
-        .page-header h1 {
-            font-size: 36px; font-weight: 800; letter-spacing: -1px; margin-bottom: 12px;
-            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-secondary) 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-        }
-        .page-header p {
-            font-size: 16px; color: var(--text-secondary);
-            max-width: 550px; margin: 0 auto; line-height: 1.7;
-        }
+    /* HEADER */
+    .page-header { text-align: center; margin-bottom: 50px; }
+    .page-header h1 {
+        font-size: 36px; font-weight: 800; letter-spacing: -1px; margin-bottom: 12px;
+        background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-secondary) 100%);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .page-header p {
+        font-size: 16px; color: var(--text-secondary);
+        max-width: 550px; margin: 0 auto; line-height: 1.7;
+    }
 
-        /* GITHUB TOKEN SETUP */
-        .setup-panel {
-            background: var(--bg-card); border: 1px solid var(--border-primary);
-            border-radius: var(--radius-lg); padding: 28px; margin-bottom: 30px;
-        }
-        .setup-panel.connected { border-color: rgba(0, 184, 148, 0.3); }
-        .setup-title {
-            font-size: 15px; font-weight: 700; margin-bottom: 6px;
-            display: flex; align-items: center; gap: 10px;
-        }
-        .setup-desc { font-size: 13px; color: var(--text-secondary); margin-bottom: 18px; line-height: 1.6; }
-        .setup-grid { display: grid; grid-template-columns: 1fr 1fr auto; gap: 12px; align-items: end; }
-        .setup-group { display: flex; flex-direction: column; gap: 6px; }
-        .setup-label {
-            font-size: 11px; font-weight: 600; color: var(--text-muted);
-            text-transform: uppercase; letter-spacing: 0.8px;
-        }
-        .setup-input {
-            padding: 10px 14px; background: var(--bg-input);
-            border: 1px solid var(--border-primary); border-radius: var(--radius-sm);
-            color: var(--text-primary); font-size: 13px;
-            font-family: 'JetBrains Mono', monospace;
-            outline: none; transition: all 0.2s ease;
-        }
-        .setup-input:focus { border-color: var(--accent-primary); box-shadow: 0 0 0 3px var(--accent-glow); }
-        .setup-input::placeholder { color: var(--text-muted); }
+    /* GITHUB TOKEN SETUP */
+    .setup-panel {
+        background: var(--bg-card); border: 1px solid var(--border-primary);
+        border-radius: var(--radius-lg); padding: 28px; margin-bottom: 30px;
+    }
+    .setup-panel.connected { border-color: rgba(0, 184, 148, 0.3); }
+    .setup-title {
+        font-size: 15px; font-weight: 700; margin-bottom: 6px;
+        display: flex; align-items: center; gap: 10px;
+    }
+    .setup-desc { font-size: 13px; color: var(--text-secondary); margin-bottom: 18px; line-height: 1.6; }
+    .setup-grid { display: grid; grid-template-columns: 1fr 1fr auto; gap: 12px; align-items: end; }
+    .setup-group { display: flex; flex-direction: column; gap: 6px; }
+    .setup-label {
+        font-size: 11px; font-weight: 600; color: var(--text-muted);
+        text-transform: uppercase; letter-spacing: 0.8px;
+    }
+    .setup-input {
+        padding: 10px 14px; background: var(--bg-input);
+        border: 1px solid var(--border-primary); border-radius: var(--radius-sm);
+        color: var(--text-primary); font-size: 13px;
+        font-family: 'JetBrains Mono', monospace;
+        outline: none; transition: all 0.2s ease;
+    }
+    .setup-input:focus { border-color: var(--accent-primary); box-shadow: 0 0 0 3px var(--accent-glow); }
+    .setup-input::placeholder { color: var(--text-muted); }
 
-        .btn-connect {
-            padding: 10px 22px; background: linear-gradient(135deg, var(--accent-primary), #7c6cf0);
-            border: none; border-radius: var(--radius-sm); color: white;
-            font-size: 13px; font-weight: 700; cursor: pointer;
-            transition: all 0.3s ease; font-family: 'Inter', sans-serif;
-            white-space: nowrap; height: 42px;
-        }
-        .btn-connect:hover { box-shadow: 0 4px 16px rgba(108, 92, 231, 0.35); transform: translateY(-1px); }
-        .btn-connect:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .btn-connect {
+        padding: 10px 22px; background: linear-gradient(135deg, var(--accent-primary), #7c6cf0);
+        border: none; border-radius: var(--radius-sm); color: white;
+        font-size: 13px; font-weight: 700; cursor: pointer;
+        transition: all 0.3s ease; font-family: 'Inter', sans-serif;
+        white-space: nowrap; height: 42px;
+    }
+    .btn-connect:hover { box-shadow: 0 4px 16px rgba(108, 92, 231, 0.35); transform: translateY(-1px); }
+    .btn-connect:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-        .connection-status {
-            display: flex; align-items: center; gap: 8px;
-            padding: 10px 16px; border-radius: var(--radius-sm);
-            font-size: 12px; font-weight: 600; margin-top: 14px;
-        }
-        .connection-status.ok {
-            background: var(--success-bg); color: var(--success);
-            border: 1px solid rgba(0, 184, 148, 0.15);
-        }
-        .connection-status.err {
-            background: var(--danger-bg); color: var(--danger);
-            border: 1px solid rgba(225, 112, 85, 0.15);
-        }
+    .connection-status {
+        display: flex; align-items: center; gap: 8px;
+        padding: 10px 16px; border-radius: var(--radius-sm);
+        font-size: 12px; font-weight: 600; margin-top: 14px;
+    }
+    .connection-status.ok {
+        background: var(--success-bg); color: var(--success);
+        border: 1px solid rgba(0, 184, 148, 0.15);
+    }
+    .connection-status.err {
+        background: var(--danger-bg); color: var(--danger);
+        border: 1px solid rgba(225, 112, 85, 0.15);
+    }
 
-        /* STATS */
-        .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 40px; }
-        .stat-card {
-            background: var(--bg-card); border: 1px solid var(--border-primary);
-            border-radius: var(--radius-md); padding: 22px 24px; transition: all 0.3s ease;
-        }
-        .stat-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
-        .stat-label {
-            font-size: 12px; color: var(--text-muted);
-            text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 8px;
-        }
-        .stat-value {
-            font-size: 28px; font-weight: 800;
-            font-family: 'JetBrains Mono', monospace; letter-spacing: -1px;
-        }
-        .stat-value.accent { color: var(--accent-secondary); }
-        .stat-value.success { color: var(--success); }
-        .stat-value.warning { color: var(--warning); }
-        .stat-value.danger { color: var(--danger); }
-        .stat-change { font-size: 11px; color: var(--success); margin-top: 6px; font-weight: 500; }
+    /* STATS */
+    .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 40px; }
+    .stat-card {
+        background: var(--bg-card); border: 1px solid var(--border-primary);
+        border-radius: var(--radius-md); padding: 22px 24px; transition: all 0.3s ease;
+    }
+    .stat-card:hover { border-color: var(--border-hover); transform: translateY(-2px); }
+    .stat-label {
+        font-size: 12px; color: var(--text-muted);
+        text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 8px;
+    }
+    .stat-value {
+        font-size: 28px; font-weight: 800;
+        font-family: 'JetBrains Mono', monospace; letter-spacing: -1px;
+    }
+    .stat-value.accent { color: var(--accent-secondary); }
+    .stat-value.success { color: var(--success); }
+    .stat-value.warning { color: var(--warning); }
+    .stat-value.danger { color: var(--danger); }
+    .stat-change { font-size: 11px; color: var(--success); margin-top: 6px; font-weight: 500; }
 
-        /* MAIN GRID */
-        .main-grid { display: grid; grid-template-columns: 380px 1fr; gap: 24px; margin-bottom: 60px; }
+    /* MAIN GRID */
+    .main-grid { display: grid; grid-template-columns: 380px 1fr; gap: 24px; margin-bottom: 60px; }
 
-        /* PANEL */
-        .panel {
-            background: var(--bg-card); border: 1px solid var(--border-primary);
-            border-radius: var(--radius-lg); overflow: hidden;
-        }
-        .panel-header {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 20px 24px; border-bottom: 1px solid var(--border-primary);
-            flex-wrap: wrap; gap: 10px;
-        }
-        .panel-header-left { display: flex; align-items: center; gap: 12px; }
-        .panel-icon {
-            width: 36px; height: 36px; background: var(--accent-glow);
-            border: 1px solid rgba(108, 92, 231, 0.2);
-            border-radius: var(--radius-sm);
-            display: flex; align-items: center; justify-content: center; font-size: 16px;
-        }
-        .panel-title { font-size: 15px; font-weight: 700; }
-        .panel-subtitle { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
-        .panel-badge {
-            font-size: 11px; padding: 4px 12px; border-radius: 20px;
-            font-weight: 600; font-family: 'JetBrains Mono', monospace;
-        }
-        .badge-purple {
-            background: var(--accent-glow); color: var(--accent-secondary);
-            border: 1px solid rgba(108, 92, 231, 0.2);
-        }
-        .badge-green {
-            background: var(--success-bg); color: var(--success);
-            border: 1px solid rgba(0, 184, 148, 0.15);
-        }
-        .panel-body { padding: 24px; }
+    /* PANEL */
+    .panel {
+        background: var(--bg-card); border: 1px solid var(--border-primary);
+        border-radius: var(--radius-lg); overflow: hidden;
+    }
+    .panel-header {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 20px 24px; border-bottom: 1px solid var(--border-primary);
+        flex-wrap: wrap; gap: 10px;
+    }
+    .panel-header-left { display: flex; align-items: center; gap: 12px; }
+    .panel-icon {
+        width: 36px; height: 36px; background: var(--accent-glow);
+        border: 1px solid rgba(108, 92, 231, 0.2);
+        border-radius: var(--radius-sm);
+        display: flex; align-items: center; justify-content: center; font-size: 16px;
+    }
+    .panel-title { font-size: 15px; font-weight: 700; }
+    .panel-subtitle { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+    .panel-badge {
+        font-size: 11px; padding: 4px 12px; border-radius: 20px;
+        font-weight: 600; font-family: 'JetBrains Mono', monospace;
+    }
+    .badge-purple {
+        background: var(--accent-glow); color: var(--accent-secondary);
+        border: 1px solid rgba(108, 92, 231, 0.2);
+    }
+    .badge-green {
+        background: var(--success-bg); color: var(--success);
+        border: 1px solid rgba(0, 184, 148, 0.15);
+    }
+    .panel-body { padding: 24px; }
 
-        /* FORM */
-        .form-group { margin-bottom: 20px; }
-        .form-label {
-            display: block; font-size: 12px; font-weight: 600;
-            color: var(--text-secondary); text-transform: uppercase;
-            letter-spacing: 0.8px; margin-bottom: 8px;
-        }
-        .form-label .required { color: var(--danger); margin-left: 2px; }
-        .form-select, .form-input {
-            width: 100%; padding: 12px 16px;
-            background: var(--bg-input); border: 1px solid var(--border-primary);
-            border-radius: var(--radius-sm); color: var(--text-primary);
-            font-size: 14px; font-family: 'Inter', sans-serif;
-            transition: all 0.2s ease; outline: none;
-        }
-        .form-select {
-            cursor: pointer; appearance: none; -webkit-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%238888a0' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
-            background-repeat: no-repeat; background-position: right 16px center;
-            padding-right: 40px;
-        }
-        .form-select:focus, .form-input:focus {
-            border-color: var(--accent-primary); box-shadow: 0 0 0 3px var(--accent-glow);
-        }
-        .form-select option { background: var(--bg-secondary); color: var(--text-primary); }
-        .form-input::placeholder { color: var(--text-muted); }
+    /* FORM */
+    .form-group { margin-bottom: 20px; }
+    .form-label {
+        display: block; font-size: 12px; font-weight: 600;
+        color: var(--text-secondary); text-transform: uppercase;
+        letter-spacing: 0.8px; margin-bottom: 8px;
+    }
+    .form-label .required { color: var(--danger); margin-left: 2px; }
+    .form-select, .form-input {
+        width: 100%; padding: 12px 16px;
+        background: var(--bg-input); border: 1px solid var(--border-primary);
+        border-radius: var(--radius-sm); color: var(--text-primary);
+        font-size: 14px; font-family: 'Inter', sans-serif;
+        transition: all 0.2s ease; outline: none;
+    }
+    .form-select {
+        cursor: pointer; appearance: none; -webkit-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%238888a0' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+        background-repeat: no-repeat; background-position: right 16px center;
+        padding-right: 40px;
+    }
+    .form-select:focus, .form-input:focus {
+        border-color: var(--accent-primary); box-shadow: 0 0 0 3px var(--accent-glow);
+    }
+    .form-select option { background: var(--bg-secondary); color: var(--text-primary); }
+    .form-input::placeholder { color: var(--text-muted); }
 
-        .duration-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .duration-option {
-            padding: 14px 12px; background: var(--bg-input);
-            border: 1px solid var(--border-primary); border-radius: var(--radius-sm);
-            text-align: center; cursor: pointer; transition: all 0.2s ease; user-select: none;
-        }
-        .duration-option:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
-        .duration-option.selected {
-            border-color: var(--accent-primary); background: var(--accent-glow);
-            box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.08);
-        }
-        .duration-option.lifetime-opt.selected {
-            border-color: var(--lifetime); background: var(--lifetime-bg);
-            box-shadow: 0 0 0 3px rgba(253, 121, 168, 0.08);
-        }
-        .duration-name { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
-        .duration-desc { font-size: 10px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
-        .duration-option.selected .duration-name { color: var(--accent-secondary); }
-        .duration-option.lifetime-opt.selected .duration-name { color: var(--lifetime); }
+    .duration-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .duration-option {
+        padding: 14px 12px; background: var(--bg-input);
+        border: 1px solid var(--border-primary); border-radius: var(--radius-sm);
+        text-align: center; cursor: pointer; transition: all 0.2s ease; user-select: none;
+    }
+    .duration-option:hover { border-color: var(--border-hover); background: var(--bg-card-hover); }
+    .duration-option.selected {
+        border-color: var(--accent-primary); background: var(--accent-glow);
+        box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.08);
+    }
+    .duration-option.lifetime-opt.selected {
+        border-color: var(--lifetime); background: var(--lifetime-bg);
+        box-shadow: 0 0 0 3px rgba(253, 121, 168, 0.08);
+    }
+    .duration-name { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+    .duration-desc { font-size: 10px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
+    .duration-option.selected .duration-name { color: var(--accent-secondary); }
+    .duration-option.lifetime-opt.selected .duration-name { color: var(--lifetime); }
 
-        .form-note {
-            display: flex; align-items: flex-start; gap: 8px;
-            padding: 12px 14px; background: var(--info-bg);
-            border: 1px solid rgba(116, 185, 255, 0.1);
-            border-radius: var(--radius-sm); font-size: 12px;
-            color: var(--info); margin-top: 16px; line-height: 1.5;
-        }
+    .form-note {
+        display: flex; align-items: flex-start; gap: 8px;
+        padding: 12px 14px; background: var(--info-bg);
+        border: 1px solid rgba(116, 185, 255, 0.1);
+        border-radius: var(--radius-sm); font-size: 12px;
+        color: var(--info); margin-top: 16px; line-height: 1.5;
+    }
 
-        .btn-generate {
-            width: 100%; padding: 14px 24px;
-            background: linear-gradient(135deg, var(--accent-primary), #7c6cf0);
-            border: none; border-radius: var(--radius-sm); color: white;
-            font-size: 14px; font-weight: 700; font-family: 'Inter', sans-serif;
-            cursor: pointer; transition: all 0.3s ease; letter-spacing: 0.3px;
-            position: relative; overflow: hidden;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-        }
-        .btn-generate::before {
-            content: ''; position: absolute; inset: 0;
-            background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1), transparent);
-            transform: translateX(-100%); transition: transform 0.5s ease;
-        }
-        .btn-generate:hover::before { transform: translateX(100%); }
-        .btn-generate:hover { box-shadow: 0 6px 24px rgba(108, 92, 231, 0.35); transform: translateY(-1px); }
-        .btn-generate:active { transform: translateY(0); }
-        .btn-generate:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .btn-generate {
+        width: 100%; padding: 14px 24px;
+        background: linear-gradient(135deg, var(--accent-primary), #7c6cf0);
+        border: none; border-radius: var(--radius-sm); color: white;
+        font-size: 14px; font-weight: 700; font-family: 'Inter', sans-serif;
+        cursor: pointer; transition: all 0.3s ease; letter-spacing: 0.3px;
+        position: relative; overflow: hidden;
+        display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .btn-generate::before {
+        content: ''; position: absolute; inset: 0;
+        background: linear-gradient(135deg, transparent, rgba(255,255,255,0.1), transparent);
+        transform: translateX(-100%); transition: transform 0.5s ease;
+    }
+    .btn-generate:hover::before { transform: translateX(100%); }
+    .btn-generate:hover { box-shadow: 0 6px 24px rgba(108, 92, 231, 0.35); transform: translateY(-1px); }
+    .btn-generate:active { transform: translateY(0); }
+    .btn-generate:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-        .btn-spinner {
-            display: none; width: 18px; height: 18px;
-            border: 2px solid rgba(255,255,255,0.3); border-top-color: white;
-            border-radius: 50%; animation: spin 0.8s linear infinite;
-        }
-        .btn-generate.loading .btn-spinner { display: inline-block; }
-        .btn-generate.loading .btn-text { opacity: 0.7; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+    .btn-spinner {
+        display: none; width: 18px; height: 18px;
+        border: 2px solid rgba(255,255,255,0.3); border-top-color: white;
+        border-radius: 50%; animation: spin 0.8s linear infinite;
+    }
+    .btn-generate.loading .btn-spinner { display: inline-block; }
+    .btn-generate.loading .btn-text { opacity: 0.7; }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* KEY OUTPUT */
-        .key-output { margin-top: 20px; display: none; }
-        .key-output.show { display: block; animation: fadeSlideUp 0.4s ease; }
-        @keyframes fadeSlideUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .key-result {
-            background: var(--bg-input); border: 1px solid var(--success);
-            border-radius: var(--radius-sm); padding: 16px;
-        }
-        .key-result-header {
-            display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;
-        }
-        .key-result-label {
-            font-size: 11px; color: var(--success); font-weight: 600;
-            text-transform: uppercase; letter-spacing: 1px;
-        }
-        .key-result-copy {
-            padding: 4px 12px; background: var(--success-bg);
-            border: 1px solid rgba(0, 184, 148, 0.2); border-radius: 4px;
-            color: var(--success); font-size: 11px; font-weight: 600;
-            cursor: pointer; transition: all 0.2s ease; font-family: 'Inter', sans-serif;
-        }
-        .key-result-copy:hover { background: rgba(0, 184, 148, 0.15); }
-        .key-result-value {
-            font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
-            color: var(--text-primary); word-break: break-all; line-height: 1.6;
-            padding: 10px 12px; background: rgba(0,0,0,0.2); border-radius: 6px;
-        }
-        .key-meta { display: flex; gap: 16px; margin-top: 12px; flex-wrap: wrap; }
-        .key-meta-item { font-size: 11px; color: var(--text-muted); }
-        .key-meta-item strong { color: var(--text-secondary); }
-        .github-push-info {
-            margin-top: 16px; padding: 14px;
-            background: rgba(108, 92, 231, 0.05);
-            border: 1px solid rgba(108, 92, 231, 0.1);
-            border-radius: var(--radius-sm);
-        }
-        .github-push-info .info-row {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 4px 0; font-size: 12px;
-        }
-        .github-push-info .info-label { color: var(--text-muted); }
-        .github-push-info .info-value {
-            color: var(--text-secondary);
-            font-family: 'JetBrains Mono', monospace; font-size: 11px;
-        }
+    /* KEY OUTPUT */
+    .key-output { margin-top: 20px; display: none; }
+    .key-output.show { display: block; animation: fadeSlideUp 0.4s ease; }
+    @keyframes fadeSlideUp {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .key-result {
+        background: var(--bg-input); border: 1px solid var(--success);
+        border-radius: var(--radius-sm); padding: 16px;
+    }
+    .key-result-header {
+        display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;
+    }
+    .key-result-label {
+        font-size: 11px; color: var(--success); font-weight: 600;
+        text-transform: uppercase; letter-spacing: 1px;
+    }
+    .key-result-copy {
+        padding: 4px 12px; background: var(--success-bg);
+        border: 1px solid rgba(0, 184, 148, 0.2); border-radius: 4px;
+        color: var(--success); font-size: 11px; font-weight: 600;
+        cursor: pointer; transition: all 0.2s ease; font-family: 'Inter', sans-serif;
+    }
+    .key-result-copy:hover { background: rgba(0, 184, 148, 0.15); }
+    .key-result-value {
+        font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 600;
+        color: var(--text-primary); word-break: break-all; line-height: 1.6;
+        padding: 10px 12px; background: rgba(0,0,0,0.2); border-radius: 6px;
+    }
+    .key-meta { display: flex; gap: 16px; margin-top: 12px; flex-wrap: wrap; }
+    .key-meta-item { font-size: 11px; color: var(--text-muted); }
+    .key-meta-item strong { color: var(--text-secondary); }
+    .github-push-info {
+        margin-top: 16px; padding: 14px;
+        background: rgba(108, 92, 231, 0.05);
+        border: 1px solid rgba(108, 92, 231, 0.1);
+        border-radius: var(--radius-sm);
+    }
+    .github-push-info .info-row {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 4px 0; font-size: 12px;
+    }
+    .github-push-info .info-label { color: var(--text-muted); }
+    .github-push-info .info-value {
+        color: var(--text-secondary);
+        font-family: 'JetBrains Mono', monospace; font-size: 11px;
+    }
 
-        /* TABLE */
-        .table-controls {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 16px 24px; border-bottom: 1px solid var(--border-primary);
-            flex-wrap: wrap; gap: 12px;
-        }
-        .search-box {
-            display: flex; align-items: center; gap: 8px;
-            padding: 8px 14px; background: var(--bg-input);
-            border: 1px solid var(--border-primary); border-radius: var(--radius-sm);
-            transition: all 0.2s ease; min-width: 240px;
-        }
-        .search-box:focus-within { border-color: var(--accent-primary); box-shadow: 0 0 0 3px var(--accent-glow); }
-        .search-box input {
-            background: none; border: none; outline: none;
-            color: var(--text-primary); font-size: 13px;
-            font-family: 'Inter', sans-serif; width: 100%;
-        }
-        .search-box input::placeholder { color: var(--text-muted); }
-        .table-filters { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
-        .filter-btn {
-            padding: 6px 14px; background: transparent;
-            border: 1px solid var(--border-primary); border-radius: 20px;
-            color: var(--text-muted); font-size: 12px; font-weight: 500;
-            cursor: pointer; transition: all 0.2s ease; font-family: 'Inter', sans-serif;
-        }
-        .filter-btn:hover { border-color: var(--border-hover); color: var(--text-secondary); }
-        .filter-btn.active {
-            background: var(--accent-glow); border-color: var(--accent-primary);
-            color: var(--accent-secondary);
-        }
-        .keys-table { width: 100%; border-collapse: collapse; }
-        .keys-table thead th {
-            padding: 12px 20px; text-align: left; font-size: 11px;
-            font-weight: 700; color: var(--text-muted); text-transform: uppercase;
-            letter-spacing: 1px; border-bottom: 1px solid var(--border-primary);
-            background: rgba(0,0,0,0.15);
-        }
-        .keys-table tbody tr {
-            border-bottom: 1px solid rgba(42, 42, 58, 0.5);
-            transition: background 0.15s ease;
-        }
-        .keys-table tbody tr:hover { background: var(--bg-card-hover); }
-        .keys-table tbody tr:last-child { border-bottom: none; }
-        .keys-table tbody td { padding: 14px 20px; font-size: 13px; }
-        .key-cell {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px; font-weight: 500; color: var(--accent-secondary);
-        }
-        .type-badge {
-            display: inline-flex; align-items: center; gap: 5px;
-            padding: 4px 10px; border-radius: 4px; font-size: 11px;
-            font-weight: 600; font-family: 'JetBrains Mono', monospace;
-        }
-        .type-single { background: var(--info-bg); color: var(--info); border: 1px solid rgba(116, 185, 255, 0.15); }
-        .type-5h { background: var(--warning-bg); color: var(--warning); border: 1px solid rgba(253, 203, 110, 0.15); }
-        .type-1d { background: var(--success-bg); color: var(--success); border: 1px solid rgba(0, 184, 148, 0.15); }
-        .type-7d { background: var(--accent-glow); color: var(--accent-secondary); border: 1px solid rgba(108, 92, 231, 0.2); }
-        .type-30d { background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(225, 112, 85, 0.15); }
-        .type-lifetime { background: var(--lifetime-bg); color: var(--lifetime); border: 1px solid rgba(253, 121, 168, 0.15); }
-        .status-badge {
-            display: inline-flex; align-items: center; gap: 5px;
-            padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600;
-        }
-        .status-active { background: var(--success-bg); color: var(--success); border: 1px solid rgba(0, 184, 148, 0.15); }
-        .status-expired { background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(225, 112, 85, 0.15); }
-        .time-remaining { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-secondary); }
-        .time-remaining.urgent { color: var(--danger); }
-        .action-btn {
-            padding: 5px 10px; background: transparent;
-            border: 1px solid var(--border-primary); border-radius: 4px;
-            color: var(--text-muted); font-size: 12px; cursor: pointer;
-            transition: all 0.2s ease; font-family: 'Inter', sans-serif;
-        }
-        .action-btn:hover { border-color: var(--danger); color: var(--danger); background: var(--danger-bg); }
-        .action-btn.copy-btn:hover {
-            border-color: var(--accent-primary); color: var(--accent-secondary);
-            background: var(--accent-glow);
-        }
-        .actions-cell { display: flex; gap: 6px; }
+    /* TABLE */
+    .table-controls {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 16px 24px; border-bottom: 1px solid var(--border-primary);
+        flex-wrap: wrap; gap: 12px;
+    }
+    .search-box {
+        display: flex; align-items: center; gap: 8px;
+        padding: 8px 14px; background: var(--bg-input);
+        border: 1px solid var(--border-primary); border-radius: var(--radius-sm);
+        transition: all 0.2s ease; min-width: 240px;
+    }
+    .search-box:focus-within { border-color: var(--accent-primary); box-shadow: 0 0 0 3px var(--accent-glow); }
+    .search-box input {
+        background: none; border: none; outline: none;
+        color: var(--text-primary); font-size: 13px;
+        font-family: 'Inter', sans-serif; width: 100%;
+    }
+    .search-box input::placeholder { color: var(--text-muted); }
+    .table-filters { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .filter-btn {
+        padding: 6px 14px; background: transparent;
+        border: 1px solid var(--border-primary); border-radius: 20px;
+        color: var(--text-muted); font-size: 12px; font-weight: 500;
+        cursor: pointer; transition: all 0.2s ease; font-family: 'Inter', sans-serif;
+    }
+    .filter-btn:hover { border-color: var(--border-hover); color: var(--text-secondary); }
+    .filter-btn.active {
+        background: var(--accent-glow); border-color: var(--accent-primary);
+        color: var(--accent-secondary);
+    }
+    .keys-table { width: 100%; border-collapse: collapse; }
+    .keys-table thead th {
+        padding: 12px 20px; text-align: left; font-size: 11px;
+        font-weight: 700; color: var(--text-muted); text-transform: uppercase;
+        letter-spacing: 1px; border-bottom: 1px solid var(--border-primary);
+        background: rgba(0,0,0,0.15);
+    }
+    .keys-table tbody tr {
+        border-bottom: 1px solid rgba(42, 42, 58, 0.5);
+        transition: background 0.15s ease;
+    }
+    .keys-table tbody tr:hover { background: var(--bg-card-hover); }
+    .keys-table tbody tr:last-child { border-bottom: none; }
+    .keys-table tbody td { padding: 14px 20px; font-size: 13px; }
+    .key-cell {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 12px; font-weight: 500; color: var(--accent-secondary);
+    }
+    .type-badge {
+        display: inline-flex; align-items: center; gap: 5px;
+        padding: 4px 10px; border-radius: 4px; font-size: 11px;
+        font-weight: 600; font-family: 'JetBrains Mono', monospace;
+    }
+    .type-single { background: var(--info-bg); color: var(--info); border: 1px solid rgba(116, 185, 255, 0.15); }
+    .type-5h { background: var(--warning-bg); color: var(--warning); border: 1px solid rgba(253, 203, 110, 0.15); }
+    .type-1d { background: var(--success-bg); color: var(--success); border: 1px solid rgba(0, 184, 148, 0.15); }
+    .type-7d { background: var(--accent-glow); color: var(--accent-secondary); border: 1px solid rgba(108, 92, 231, 0.2); }
+    .type-30d { background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(225, 112, 85, 0.15); }
+    .type-lifetime { background: var(--lifetime-bg); color: var(--lifetime); border: 1px solid rgba(253, 121, 168, 0.15); }
+    .status-badge {
+        display: inline-flex; align-items: center; gap: 5px;
+        padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: 600;
+    }
+    .status-active { background: var(--success-bg); color: var(--success); border: 1px solid rgba(0, 184, 148, 0.15); }
+    .status-expired { background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(225, 112, 85, 0.15); }
+    .time-remaining { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text-secondary); }
+    .time-remaining.urgent { color: var(--danger); }
+    .action-btn {
+        padding: 5px 10px; background: transparent;
+        border: 1px solid var(--border-primary); border-radius: 4px;
+        color: var(--text-muted); font-size: 12px; cursor: pointer;
+        transition: all 0.2s ease; font-family: 'Inter', sans-serif;
+    }
+    .action-btn:hover { border-color: var(--danger); color: var(--danger); background: var(--danger-bg); }
+    .action-btn.copy-btn:hover {
+        border-color: var(--accent-primary); color: var(--accent-secondary);
+        background: var(--accent-glow);
+    }
+    .actions-cell { display: flex; gap: 6px; }
+    .key-row-expired { opacity: 0.45; }
 
-        .empty-state { text-align: center; padding: 60px 20px; }
-        .empty-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.3; }
-        .empty-title { font-size: 16px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; }
-        .empty-desc { font-size: 13px; color: var(--text-muted); }
+    .empty-state { text-align: center; padding: 60px 20px; }
+    .empty-icon { font-size: 48px; margin-bottom: 16px; opacity: 0.3; }
+    .empty-title { font-size: 16px; font-weight: 600; color: var(--text-secondary); margin-bottom: 6px; }
+    .empty-desc { font-size: 13px; color: var(--text-muted); }
 
-        .table-footer {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 14px 24px; border-top: 1px solid var(--border-primary);
-        }
-        .table-info { font-size: 12px; color: var(--text-muted); }
+    .table-footer {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 14px 24px; border-top: 1px solid var(--border-primary);
+    }
+    .table-info { font-size: 12px; color: var(--text-muted); }
 
-        .bulk-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-        .btn-sm {
-            padding: 6px 14px; font-size: 12px; border-radius: 6px;
-            font-weight: 600; cursor: pointer; transition: all 0.2s ease;
-            font-family: 'Inter', sans-serif; border: 1px solid;
-        }
-        .btn-sm.btn-outline-danger {
-            background: transparent; border-color: rgba(225, 112, 85, 0.3); color: var(--danger);
-        }
-        .btn-sm.btn-outline-danger:hover { background: var(--danger-bg); border-color: var(--danger); }
-        .btn-sm.btn-outline-accent {
-            background: transparent; border-color: rgba(108, 92, 231, 0.3); color: var(--accent-secondary);
-        }
-        .btn-sm.btn-outline-accent:hover { background: var(--accent-glow); border-color: var(--accent-primary); }
+    .bulk-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .btn-sm {
+        padding: 6px 14px; font-size: 12px; border-radius: 6px;
+        font-weight: 600; cursor: pointer; transition: all 0.2s ease;
+        font-family: 'Inter', sans-serif; border: 1px solid;
+    }
+    .btn-sm.btn-outline-danger {
+        background: transparent; border-color: rgba(225, 112, 85, 0.3); color: var(--danger);
+    }
+    .btn-sm.btn-outline-danger:hover { background: var(--danger-bg); border-color: var(--danger); }
+    .btn-sm.btn-outline-accent {
+        background: transparent; border-color: rgba(108, 92, 231, 0.3); color: var(--accent-secondary);
+    }
+    .btn-sm.btn-outline-accent:hover { background: var(--accent-glow); border-color: var(--accent-primary); }
 
-        /* TOAST */
-        .toast-container {
-            position: fixed; top: 24px; right: 24px; z-index: 9999;
-            display: flex; flex-direction: column; gap: 8px;
-        }
-        .toast {
-            padding: 14px 20px; background: var(--bg-card);
-            border: 1px solid var(--border-primary); border-radius: var(--radius-sm);
-            box-shadow: var(--shadow-lg); display: flex; align-items: center;
-            gap: 10px; font-size: 13px; font-weight: 500;
-            animation: toastIn 0.3s ease; min-width: 300px; max-width: 450px;
-        }
-        .toast.success { border-left: 3px solid var(--success); }
-        .toast.error { border-left: 3px solid var(--danger); }
-        .toast.info { border-left: 3px solid var(--info); }
-        @keyframes toastIn {
-            from { opacity: 0; transform: translateX(20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-        @keyframes toastOut {
-            from { opacity: 1; transform: translateX(0); }
-            to { opacity: 0; transform: translateX(20px); }
-        }
+    /* TOAST */
+    .toast-container {
+        position: fixed; top: 24px; right: 24px; z-index: 9999;
+        display: flex; flex-direction: column; gap: 8px;
+    }
+    .toast {
+        padding: 14px 20px; background: var(--bg-card);
+        border: 1px solid var(--border-primary); border-radius: var(--radius-sm);
+        box-shadow: var(--shadow-lg); display: flex; align-items: center;
+        gap: 10px; font-size: 13px; font-weight: 500;
+        animation: toastIn 0.3s ease; min-width: 300px; max-width: 450px;
+    }
+    .toast.success { border-left: 3px solid var(--success); }
+    .toast.error { border-left: 3px solid var(--danger); }
+    .toast.info { border-left: 3px solid var(--info); }
+    @keyframes toastIn {
+        from { opacity: 0; transform: translateX(20px); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes toastOut {
+        from { opacity: 1; transform: translateX(0); }
+        to { opacity: 0; transform: translateX(20px); }
+    }
 
-        /* MODAL */
-        .modal-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.6);
-            backdrop-filter: blur(4px); z-index: 9998;
-            display: none; align-items: center; justify-content: center;
-        }
-        .modal-overlay.show { display: flex; }
-        .modal {
-            background: var(--bg-card); border: 1px solid var(--border-primary);
-            border-radius: var(--radius-lg); width: 90%; max-width: 480px;
-            box-shadow: var(--shadow-lg); animation: modalIn 0.3s ease;
-        }
-        @keyframes modalIn {
-            from { opacity: 0; transform: scale(0.95) translateY(10px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        .modal-header {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 20px 24px; border-bottom: 1px solid var(--border-primary);
-        }
-        .modal-title { font-size: 16px; font-weight: 700; }
-        .modal-close {
-            width: 32px; height: 32px; display: flex; align-items: center;
-            justify-content: center; background: transparent;
-            border: 1px solid var(--border-primary); border-radius: 6px;
-            color: var(--text-muted); cursor: pointer; transition: all 0.2s ease; font-size: 16px;
-        }
-        .modal-close:hover { background: var(--danger-bg); border-color: var(--danger); color: var(--danger); }
-        .modal-body { padding: 24px; }
-        .modal-footer {
-            padding: 16px 24px; border-top: 1px solid var(--border-primary);
-            display: flex; justify-content: flex-end; gap: 10px;
-        }
-        .btn-secondary {
-            padding: 10px 20px; background: var(--bg-input);
-            border: 1px solid var(--border-primary); border-radius: var(--radius-sm);
-            color: var(--text-secondary); font-size: 13px; font-weight: 600;
-            cursor: pointer; transition: all 0.2s ease; font-family: 'Inter', sans-serif;
-        }
-        .btn-secondary:hover { border-color: var(--border-hover); color: var(--text-primary); }
-        .btn-danger {
-            padding: 10px 20px; background: var(--danger); border: none;
-            border-radius: var(--radius-sm); color: white; font-size: 13px;
-            font-weight: 600; cursor: pointer; transition: all 0.2s ease;
-            font-family: 'Inter', sans-serif;
-        }
-        .btn-danger:hover { background: #d63031; box-shadow: 0 4px 16px rgba(225, 112, 85, 0.3); }
+    /* MODAL */
+    .modal-overlay {
+        position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+        backdrop-filter: blur(4px); z-index: 9998;
+        display: none; align-items: center; justify-content: center;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal {
+        background: var(--bg-card); border: 1px solid var(--border-primary);
+        border-radius: var(--radius-lg); width: 90%; max-width: 480px;
+        box-shadow: var(--shadow-lg); animation: modalIn 0.3s ease;
+    }
+    @keyframes modalIn {
+        from { opacity: 0; transform: scale(0.95) translateY(10px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .modal-header {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 20px 24px; border-bottom: 1px solid var(--border-primary);
+    }
+    .modal-title { font-size: 16px; font-weight: 700; }
+    .modal-close {
+        width: 32px; height: 32px; display: flex; align-items: center;
+        justify-content: center; background: transparent;
+        border: 1px solid var(--border-primary); border-radius: 6px;
+        color: var(--text-muted); cursor: pointer; transition: all 0.2s ease; font-size: 16px;
+    }
+    .modal-close:hover { background: var(--danger-bg); border-color: var(--danger); color: var(--danger); }
+    .modal-body { padding: 24px; }
+    .modal-footer {
+        padding: 16px 24px; border-top: 1px solid var(--border-primary);
+        display: flex; justify-content: flex-end; gap: 10px;
+    }
+    .btn-secondary {
+        padding: 10px 20px; background: var(--bg-input);
+        border: 1px solid var(--border-primary); border-radius: var(--radius-sm);
+        color: var(--text-secondary); font-size: 13px; font-weight: 600;
+        cursor: pointer; transition: all 0.2s ease; font-family: 'Inter', sans-serif;
+    }
+    .btn-secondary:hover { border-color: var(--border-hover); color: var(--text-primary); }
+    .btn-danger {
+        padding: 10px 20px; background: var(--danger); border: none;
+        border-radius: var(--radius-sm); color: white; font-size: 13px;
+        font-weight: 600; cursor: pointer; transition: all 0.2s ease;
+        font-family: 'Inter', sans-serif;
+    }
+    .btn-danger:hover { background: #d63031; box-shadow: 0 4px 16px rgba(225, 112, 85, 0.3); }
 
-        .section-content { display: none; }
-        .section-content.active { display: block; }
+    .section-content { display: none; }
+    .section-content.active { display: block; }
 
-        .app-footer {
-            text-align: center; padding: 30px 0 40px;
-            border-top: 1px solid var(--border-primary);
-        }
-        .footer-text { font-size: 12px; color: var(--text-muted); }
-        .footer-text a { color: var(--accent-secondary); text-decoration: none; }
-        .footer-text a:hover { text-decoration: underline; }
-        .footer-links {
-            display: flex; align-items: center; justify-content: center;
-            gap: 20px; margin-top: 10px;
-        }
-        .footer-link {
-            font-size: 12px; color: var(--text-muted);
-            text-decoration: none; transition: color 0.2s ease;
-        }
-        .footer-link:hover { color: var(--text-secondary); }
+    .app-footer {
+        text-align: center; padding: 30px 0 40px;
+        border-top: 1px solid var(--border-primary);
+    }
+    .footer-text { font-size: 12px; color: var(--text-muted); }
+    .footer-text a { color: var(--accent-secondary); text-decoration: none; }
+    .footer-text a:hover { text-decoration: underline; }
+    .footer-links {
+        display: flex; align-items: center; justify-content: center;
+        gap: 20px; margin-top: 10px;
+    }
+    .footer-link {
+        font-size: 12px; color: var(--text-muted);
+        text-decoration: none; transition: color 0.2s ease;
+    }
+    .footer-link:hover { color: var(--text-secondary); }
 
-        /* LOADING OVERLAY */
-        .push-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.7);
-            backdrop-filter: blur(6px); z-index: 99999;
-            display: none; align-items: center; justify-content: center;
-            flex-direction: column; gap: 20px;
-        }
-        .push-overlay.show { display: flex; }
-        .push-loader {
-            width: 50px; height: 50px;
-            border: 3px solid var(--border-primary);
-            border-top-color: var(--accent-secondary);
-            border-radius: 50%; animation: spin 1s linear infinite;
-        }
-        .push-text {
-            font-size: 15px; font-weight: 600; color: var(--text-primary);
-        }
-        .push-subtext {
-            font-size: 12px; color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
-        }
+    /* LOADING OVERLAY */
+    .push-overlay {
+        position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+        backdrop-filter: blur(6px); z-index: 99999;
+        display: none; align-items: center; justify-content: center;
+        flex-direction: column; gap: 20px;
+    }
+    .push-overlay.show { display: flex; }
+    .push-loader {
+        width: 50px; height: 50px;
+        border: 3px solid var(--border-primary);
+        border-top-color: var(--accent-secondary);
+        border-radius: 50%; animation: spin 1s linear infinite;
+    }
+    .push-text {
+        font-size: 15px; font-weight: 600; color: var(--text-primary);
+    }
+    .push-subtext {
+        font-size: 12px; color: var(--text-muted);
+        font-family: 'JetBrains Mono', monospace;
+    }
 
-        /* AUTO DELETE INDICATOR */
-        .auto-delete-badge {
-            display: inline-flex; align-items: center; gap: 5px;
-            padding: 3px 8px; border-radius: 4px; font-size: 10px;
-            font-weight: 700; font-family: 'JetBrains Mono', monospace;
-            background: rgba(225, 112, 85, 0.12);
-            color: var(--danger);
-            border: 1px solid rgba(225, 112, 85, 0.2);
-            margin-left: 8px;
-            animation: blinkBadge 2s ease-in-out infinite;
-        }
-        @keyframes blinkBadge {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
+    @media (max-width: 1024px) {
+        .main-grid { grid-template-columns: 1fr; }
+        .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+        .navbar { flex-direction: column; align-items: flex-start; }
+        .stats-bar { grid-template-columns: 1fr 1fr; gap: 10px; }
+        .setup-grid { grid-template-columns: 1fr; }
+        .duration-grid { grid-template-columns: 1fr; }
+        .page-header h1 { font-size: 26px; }
+        .table-controls { flex-direction: column; align-items: stretch; }
+        .search-box { min-width: auto; }
+        .keys-table { display: block; overflow-x: auto; }
+    }
+    @media (max-width: 480px) {
+        .app-container { padding: 0 14px; }
+        .stats-bar { grid-template-columns: 1fr; }
+    }
 
-        @media (max-width: 1024px) {
-            .main-grid { grid-template-columns: 1fr; }
-            .stats-bar { grid-template-columns: repeat(2, 1fr); }
-        }
-        @media (max-width: 768px) {
-            .navbar { flex-direction: column; align-items: flex-start; }
-            .stats-bar { grid-template-columns: 1fr 1fr; gap: 10px; }
-            .setup-grid { grid-template-columns: 1fr; }
-            .duration-grid { grid-template-columns: 1fr; }
-            .page-header h1 { font-size: 26px; }
-            .table-controls { flex-direction: column; align-items: stretch; }
-            .search-box { min-width: auto; }
-            .keys-table { display: block; overflow-x: auto; }
-        }
-        @media (max-width: 480px) {
-            .app-container { padding: 0 14px; }
-            .stats-bar { grid-template-columns: 1fr; }
-        }
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-secondary); }
+    ::-webkit-scrollbar-thumb { background: var(--border-primary); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
+</style>
+</head> <body> <div class="bg-grid"></div> <div class="bg-orb bg-orb-1"></div> <div class="bg-orb bg-orb-2"></div> <div class="bg-orb bg-orb-3"></div>
+text
 
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg-secondary); }
-        ::-webkit-scrollbar-thumb { background: var(--border-primary); border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
-    </style>
-</head>
-<body>
-    <div class="bg-grid"></div>
-    <div class="bg-orb bg-orb-1"></div>
-    <div class="bg-orb bg-orb-2"></div>
-    <div class="bg-orb bg-orb-3"></div>
+<!-- Push Loading Overlay -->
+<div class="push-overlay" id="pushOverlay">
+    <div class="push-loader"></div>
+    <div class="push-text" id="pushText">GitHub'a gönderiliyor...</div>
+    <div class="push-subtext" id="pushSubtext">bugrahena/BERL-N-KEYS</div>
+</div>
 
-    <!-- Push Loading Overlay -->
-    <div class="push-overlay" id="pushOverlay">
-        <div class="push-loader"></div>
-        <div class="push-text" id="pushText">GitHub'a gönderiliyor...</div>
-        <div class="push-subtext" id="pushSubtext">bugrahena/BERL-N-KEYS</div>
-    </div>
+<!-- Toast -->
+<div class="toast-container" id="toastContainer"></div>
 
-    <!-- Toast -->
-    <div class="toast-container" id="toastContainer"></div>
-
-    <!-- Delete Modal -->
-    <div class="modal-overlay" id="deleteModal">
-        <div class="modal">
-            <div class="modal-header">
-                <div class="modal-title">⚠️ Key Silme Onayı</div>
-                <button class="modal-close" onclick="closeModal()">&times;</button>
+<!-- Delete Modal -->
+<div class="modal-overlay" id="deleteModal">
+    <div class="modal">
+        <div class="modal-header">
+            <div class="modal-title">⚠️ Key Silme Onayı</div>
+            <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.7;">
+                Bu key kalıcı olarak silinecek ve GitHub'dan kaldırılacak. Geri getirilemez.
+            </p>
+            <div style="margin-top: 16px; padding: 12px; background: var(--danger-bg); border-radius: 8px; border: 1px solid rgba(225,112,85,0.15);">
+                <div style="font-size: 11px; color: var(--danger); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">Silinecek Key</div>
+                <div id="deleteKeyValue" style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--text-primary); word-break: break-all;"></div>
             </div>
-            <div class="modal-body">
-                <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.7;">
-                    Bu key kalıcı olarak silinecek ve GitHub'dan kaldırılacak. Geri getirilemez.
-                </p>
-                <div style="margin-top: 16px; padding: 12px; background: var(--danger-bg); border-radius: 8px; border: 1px solid rgba(225,112,85,0.15);">
-                    <div style="font-size: 11px; color: var(--danger); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">Silinecek Key</div>
-                    <div id="deleteKeyValue" style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--text-primary); word-break: break-all;"></div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-secondary" onclick="closeModal()">Vazgeç</button>
-                <button class="btn-danger" onclick="confirmDelete()">Kalıcı Olarak Sil</button>
-            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" onclick="closeModal()">Vazgeç</button>
+            <button class="btn-danger" onclick="confirmDelete()">Kalıcı Olarak Sil</button>
         </div>
     </div>
+</div>
 
-    <div class="app-container">
-        <!-- Navbar -->
-        <nav class="navbar">
-            <div class="nav-brand">
-                <div class="nav-logo">B</div>
-                <div>
-                    <div class="nav-title">Berlin <span>Lite</span></div>
-                </div>
-                <span class="nav-version">v3.2.1</span>
+<div class="app-container">
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <div class="nav-logo">B</div>
+            <div>
+                <div class="nav-title">Berlin <span>Lite</span></div>
             </div>
-            <div class="nav-links">
-                <a class="nav-link active" onclick="switchTab('dashboard')" id="tab-dashboard">Dashboard</a>
-                <a class="nav-link" onclick="switchTab('keys')" id="tab-keys">GitHub Preview</a>
-            </div>
-            <div class="nav-status">
-                <span class="status-dot"></span>
-                <span id="connectionLabel">Bağlantı Bekleniyor</span>
-            </div>
-        </nav>
-
-        <!-- Header -->
-        <div class="page-header">
-            <h1>Key Management Panel</h1>
-            <p>Berlin Lite lisans keylerini oluşturun ve GitHub reposuna otomatik push edin. Süresi dolan keyler <strong>otomatik silinir</strong> ve GitHub güncellenir.</p>
+            <span class="nav-version">v3.2.1</span>
         </div>
-
-        <!-- GitHub Connection Setup -->
-        <div class="setup-panel" id="setupPanel">
-            <div class="setup-title">
-                <span>⚙️</span> GitHub API Bağlantısı
-            </div>
-            <div class="setup-desc">
-                Key'lerin GitHub'a push edilebilmesi için Personal Access Token gereklidir.
-                <strong>Settings → Developer settings → Personal access tokens → Tokens (classic)</strong> yolundan
-                <code style="background: var(--bg-input); padding: 2px 6px; border-radius: 4px; font-size: 12px;">repo</code> yetkili token oluşturun.
-            </div>
-            <div class="setup-grid">
-                <div class="setup-group">
-                    <label class="setup-label">GitHub Token</label>
-                    <input type="password" class="setup-input" id="githubToken"
-                        placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
-                        value="">
-                </div>
-                <div class="setup-group">
-                    <label class="setup-label">Repo (owner/repo)</label>
-                    <input type="text" class="setup-input" id="githubRepo"
-                        placeholder="bugrahena/BERL-N-KEYS"
-                        value="bugrahena/BERL-N-KEYS">
-                </div>
-                <button class="btn-connect" id="connectBtn" onclick="testConnection()">
-                    Bağlan
-                </button>
-            </div>
-            <div id="connectionStatus" style="display:none;"></div>
+        <div class="nav-links">
+            <a class="nav-link active" onclick="switchTab('dashboard')" id="tab-dashboard">Dashboard</a>
+            <a class="nav-link" onclick="switchTab('keys')" id="tab-keys">GitHub Preview</a>
         </div>
+        <div class="nav-status">
+            <span class="status-dot"></span>
+            <span id="connectionLabel">Bağlantı Bekleniyor</span>
+        </div>
+    </nav>
 
-        <!-- Dashboard -->
-        <div class="section-content active" id="section-dashboard">
-            <!-- Stats -->
-            <div class="stats-bar">
-                <div class="stat-card">
-                    <div class="stat-label">Toplam Key</div>
-                    <div class="stat-value accent" id="statTotal">0</div>
-                    <div class="stat-change">↗ Tüm zamanlar</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Aktif Key</div>
-                    <div class="stat-value success" id="statActive">0</div>
-                    <div class="stat-change">● Şu an aktif</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Otomatik Silinen</div>
-                    <div class="stat-value danger" id="statExpired">0</div>
-                    <div class="stat-change">🗑️ Otomatik silindi</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Lifetime Key</div>
-                    <div class="stat-value warning" id="statLifetime">0</div>
-                    <div class="stat-change">∞ Süresiz</div>
-                </div>
+    <!-- Header -->
+    <div class="page-header">
+        <h1>Key Management Panel</h1>
+        <p>Berlin Lite lisans keylerini oluşturun ve GitHub reposuna otomatik push edin. Süresi dolan keyler otomatik silinir.</p>
+    </div>
+
+    <!-- GitHub Connection Setup -->
+    <div class="setup-panel" id="setupPanel">
+        <div class="setup-title">
+            <span>⚙️</span> GitHub API Bağlantısı
+        </div>
+        <div class="setup-desc">
+            Key'lerin GitHub'a push edilebilmesi için Personal Access Token gereklidir.
+            <strong>Settings → Developer settings → Personal access tokens → Tokens (classic)</strong> yolundan
+            <code style="background: var(--bg-input); padding: 2px 6px; border-radius: 4px; font-size: 12px;">repo</code> yetkili token oluşturun.
+        </div>
+        <div class="setup-grid">
+            <div class="setup-group">
+                <label class="setup-label">GitHub Token</label>
+                <input type="password" class="setup-input" id="githubToken"
+                    placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
+                    value="">
             </div>
+            <div class="setup-group">
+                <label class="setup-label">Repo (owner/repo)</label>
+                <input type="text" class="setup-input" id="githubRepo"
+                    placeholder="bugrahena/BERL-N-KEYS"
+                    value="bugrahena/BERL-N-KEYS">
+            </div>
+            <button class="btn-connect" id="connectBtn" onclick="testConnection()">
+                Bağlan
+            </button>
+        </div>
+        <div id="connectionStatus" style="display:none;"></div>
+    </div>
 
-            <!-- Main Grid -->
-            <div class="main-grid">
-                <!-- Generator -->
-                <div class="panel">
-                    <div class="panel-header">
-                        <div class="panel-header-left">
-                            <div class="panel-icon">🔑</div>
-                            <div>
-                                <div class="panel-title">Key Oluştur</div>
-                                <div class="panel-subtitle">Yeni lisans anahtarı üret</div>
-                            </div>
-                        </div>
-                        <span class="panel-badge badge-purple">Generator</span>
-                    </div>
-                    <div class="panel-body">
-                        <div class="form-group">
-                            <label class="form-label">Süre Tipi <span class="required">*</span></label>
-                            <div class="duration-grid">
-                                <div class="duration-option" onclick="selectDuration(this, 'single')">
-                                    <div class="duration-name">Tek Kullanım</div>
-                                    <div class="duration-desc">1 kez giriş</div>
-                                </div>
-                                <div class="duration-option" onclick="selectDuration(this, '5h')">
-                                    <div class="duration-name">5 Saat</div>
-                                    <div class="duration-desc">5 hours</div>
-                                </div>
-                                <div class="duration-option" onclick="selectDuration(this, '1d')">
-                                    <div class="duration-name">1 Gün</div>
-                                    <div class="duration-desc">24 hours</div>
-                                </div>
-                                <div class="duration-option selected" onclick="selectDuration(this, '7d')">
-                                    <div class="duration-name">7 Gün</div>
-                                    <div class="duration-desc">168 hours</div>
-                                </div>
-                                <div class="duration-option" onclick="selectDuration(this, '30d')">
-                                    <div class="duration-name">30 Gün</div>
-                                    <div class="duration-desc">720 hours</div>
-                                </div>
-                                <div class="duration-option lifetime-opt" onclick="selectDuration(this, 'lifetime')">
-                                    <div class="duration-name">♾️ Lifetime</div>
-                                    <div class="duration-desc">süresiz</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Not (Opsiyonel)</label>
-                            <input type="text" class="form-input" id="keyNote" placeholder="Kullanıcı adı veya not..." maxlength="50">
-                        </div>
-
-                        <div class="form-group">
-                            <label class="form-label">Key Formatı</label>
-                            <select class="form-select" id="keyPrefix">
-                                <option value="BERLIN">BERLIN-XXXX-XXXX-XXXX</option>
-                                <option value="BRL">BRL-XXXX-XXXX-XXXX-XXXX</option>
-                                <option value="LITE">LITE-XXXX-XXXX-XXXX</option>
-                            </select>
-                        </div>
-
-                        <button class="btn-generate" id="generateBtn" onclick="generateKey()">
-                            <span class="btn-spinner"></span>
-                            <span class="btn-text">🔐 Key Oluştur & GitHub'a Push Et</span>
-                        </button>
-
-                        <div class="form-note">
-                            <span>ℹ️</span>
-                            <span>Key oluşturulduğunda GitHub'a push edilir. Süresi dolan keyler <strong>otomatik silinir</strong> ve GitHub güncellenir.</span>
-                        </div>
-
-                        <div class="key-output" id="keyOutput">
-                            <div class="key-result">
-                                <div class="key-result-header">
-                                    <span class="key-result-label">✅ Key Oluşturuldu & Push Edildi</span>
-                                    <button class="key-result-copy" onclick="copyGeneratedKey()">📋 Kopyala</button>
-                                </div>
-                                <div class="key-result-value" id="generatedKeyValue"></div>
-                                <div class="key-meta">
-                                    <div class="key-meta-item"><strong>Süre:</strong> <span id="generatedKeyDuration"></span></div>
-                                    <div class="key-meta-item"><strong>Tarih:</strong> <span id="generatedKeyDate"></span></div>
-                                </div>
-                            </div>
-                            <div class="github-push-info">
-                                <div class="info-row">
-                                    <span class="info-label">Repository</span>
-                                    <span class="info-value" id="pushRepo">—</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-label">Dosya</span>
-                                    <span class="info-value">BERLİN KEYS</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-label">Durum</span>
-                                    <span class="info-value" style="color: var(--success);" id="pushStatus">✓ Pushed</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Key List -->
-                <div class="panel">
-                    <div class="panel-header">
-                        <div class="panel-header-left">
-                            <div class="panel-icon">📋</div>
-                            <div>
-                                <div class="panel-title">
-                                    Aktif Keyler
-                                    <span class="auto-delete-badge">⚡ Otomatik Silme Aktif</span>
-                                </div>
-                                <div class="panel-subtitle">Gerçek zamanlı takip — süresi dolanlar otomatik silinir</div>
-                            </div>
-                        </div>
-                        <div class="bulk-actions">
-                            <button class="btn-sm btn-outline-accent" onclick="manualCheckAndClean()">🔄 Temizle</button>
-                        </div>
-                    </div>
-
-                    <div class="table-controls">
-                        <div class="search-box">
-                            <span>🔍</span>
-                            <input type="text" placeholder="Key veya not ile ara..." id="searchInput" oninput="filterKeys()">
-                        </div>
-                        <div class="table-filters">
-                            <button class="filter-btn active" onclick="setFilter('all', this)">Tümü</button>
-                            <button class="filter-btn" onclick="setFilter('active', this)">Aktif</button>
-                            <button class="filter-btn" onclick="setFilter('lifetime', this)">Lifetime</button>
-                        </div>
-                    </div>
-
-                    <div id="keysTableContainer">
-                        <table class="keys-table">
-                            <thead>
-                                <tr>
-                                    <th>Key</th>
-                                    <th>Tür</th>
-                                    <th>Durum</th>
-                                    <th>Kalan Süre</th>
-                                    <th>Not</th>
-                                    <th>İşlem</th>
-                                </tr>
-                            </thead>
-                            <tbody id="keysTableBody"></tbody>
-                        </table>
-                    </div>
-
-                    <div class="empty-state" id="emptyState" style="display: none;">
-                        <div class="empty-icon">🔑</div>
-                        <div class="empty-title">Henüz key oluşturulmadı</div>
-                        <div class="empty-desc">Sol panelden yeni bir key oluşturun.</div>
-                    </div>
-
-                    <div class="table-footer">
-                        <div class="table-info" id="tableInfo">0 key</div>
-                        <div style="font-size: 11px; color: var(--text-muted);" id="autoDeleteInfo">
-                            ⏱️ Otomatik kontrol: 30 saniyede bir
-                        </div>
-                    </div>
-                </div>
+    <!-- Dashboard -->
+    <div class="section-content active" id="section-dashboard">
+        <!-- Stats -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <div class="stat-label">Toplam Key</div>
+                <div class="stat-value accent" id="statTotal">0</div>
+                <div class="stat-change">↗ Tüm zamanlar</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Aktif Key</div>
+                <div class="stat-value success" id="statActive">0</div>
+                <div class="stat-change">● Şu an aktif</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Süresi Dolan</div>
+                <div class="stat-value danger" id="statExpired">0</div>
+                <div class="stat-change">↘ Otomatik silindi</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Lifetime Key</div>
+                <div class="stat-value warning" id="statLifetime">0</div>
+                <div class="stat-change">∞ Süresiz</div>
             </div>
         </div>
 
-        <!-- GitHub Preview -->
-        <div class="section-content" id="section-keys">
-            <div class="panel" style="margin-bottom: 40px;">
+        <!-- Main Grid -->
+        <div class="main-grid">
+            <!-- Generator -->
+            <div class="panel">
                 <div class="panel-header">
                     <div class="panel-header-left">
-                        <div class="panel-icon">📦</div>
+                        <div class="panel-icon">🔑</div>
                         <div>
-                            <div class="panel-title">GitHub Dosya Önizleme</div>
-                            <div class="panel-subtitle" id="previewRepoName">bugrahena/BERL-N-KEYS → BERLİN KEYS</div>
+                            <div class="panel-title">Key Oluştur</div>
+                            <div class="panel-subtitle">Yeni lisans anahtarı üret</div>
                         </div>
                     </div>
-                    <span class="panel-badge badge-green" id="syncBadge">Synced</span>
+                    <span class="panel-badge badge-purple">Generator</span>
                 </div>
                 <div class="panel-body">
-                    <div style="background: var(--bg-input); border-radius: var(--radius-sm); padding: 20px; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 2.2; max-height: 500px; overflow-y: auto; border: 1px solid var(--border-primary); white-space: pre-wrap;" id="githubPreview">
-                        Bağlantı bekleniyor...
+                    <div class="form-group">
+                        <label class="form-label">Süre Tipi <span class="required">*</span></label>
+                        <div class="duration-grid">
+                            <div class="duration-option" onclick="selectDuration(this, 'single')">
+                                <div class="duration-name">Tek Kullanım</div>
+                                <div class="duration-desc">1 kez giriş</div>
+                            </div>
+                            <div class="duration-option" onclick="selectDuration(this, '5h')">
+                                <div class="duration-name">5 Saat</div>
+                                <div class="duration-desc">5 hours</div>
+                            </div>
+                            <div class="duration-option" onclick="selectDuration(this, '1d')">
+                                <div class="duration-name">1 Gün</div>
+                                <div class="duration-desc">24 hours</div>
+                            </div>
+                            <div class="duration-option selected" onclick="selectDuration(this, '7d')">
+                                <div class="duration-name">7 Gün</div>
+                                <div class="duration-desc">168 hours</div>
+                            </div>
+                            <div class="duration-option" onclick="selectDuration(this, '30d')">
+                                <div class="duration-name">30 Gün</div>
+                                <div class="duration-desc">720 hours</div>
+                            </div>
+                            <div class="duration-option lifetime-opt" onclick="selectDuration(this, 'lifetime')">
+                                <div class="duration-name">♾️ Lifetime</div>
+                                <div class="duration-desc">süresiz</div>
+                            </div>
+                        </div>
                     </div>
-                    <div style="margin-top: 16px; display: flex; gap: 10px;">
-                        <button class="btn-sm btn-outline-accent" onclick="fetchFromGitHub()">🔄 GitHub'dan Çek</button>
-                        <button class="btn-sm btn-outline-accent" onclick="pushToGitHub()">📤 Zorla Push Et</button>
+
+                    <div class="form-group">
+                        <label class="form-label">Not (Opsiyonel)</label>
+                        <input type="text" class="form-input" id="keyNote" placeholder="Kullanıcı adı veya not..." maxlength="50">
                     </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Key Formatı</label>
+                        <select class="form-select" id="keyPrefix">
+                            <option value="BERLIN">BERLIN-XXXX-XXXX-XXXX</option>
+                            <option value="BRL">BRL-XXXX-XXXX-XXXX-XXXX</option>
+                            <option value="LITE">LITE-XXXX-XXXX-XXXX</option>
+                        </select>
+                    </div>
+
+                    <button class="btn-generate" id="generateBtn" onclick="generateKey()">
+                        <span class="btn-spinner"></span>
+                        <span class="btn-text">🔐 Key Oluştur & GitHub'a Push Et</span>
+                    </button>
+
+                    <div class="form-note">
+                        <span>ℹ️</span>
+                        <span>Key oluşturulduğunda otomatik olarak GitHub reposuna push edilir. Süresi dolan keyler otomatik silinir ve repo güncellenir.</span>
+                    </div>
+
+                    <div class="key-output" id="keyOutput">
+                        <div class="key-result">
+                            <div class="key-result-header">
+                                <span class="key-result-label">✅ Key Oluşturuldu & Push Edildi</span>
+                                <button class="key-result-copy" onclick="copyGeneratedKey()">📋 Kopyala</button>
+                            </div>
+                            <div class="key-result-value" id="generatedKeyValue"></div>
+                            <div class="key-meta">
+                                <div class="key-meta-item"><strong>Süre:</strong> <span id="generatedKeyDuration"></span></div>
+                                <div class="key-meta-item"><strong>Tarih:</strong> <span id="generatedKeyDate"></span></div>
+                            </div>
+                        </div>
+                        <div class="github-push-info">
+                            <div class="info-row">
+                                <span class="info-label">Repository</span>
+                                <span class="info-value" id="pushRepo">—</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Dosya</span>
+                                <span class="info-value">BERLİN KEYS</span>
+                            </div>
+                            <div class="info-row">
+                                <span class="info-label">Durum</span>
+                                <span class="info-value" style="color: var(--success);" id="pushStatus">✓ Pushed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Key List -->
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-header-left">
+                        <div class="panel-icon">📋</div>
+                        <div>
+                            <div class="panel-title">Aktif Keyler</div>
+                            <div class="panel-subtitle">Gerçek zamanlı takip</div>
+                        </div>
+                    </div>
+                    <div class="bulk-actions">
+                        <button class="btn-sm btn-outline-danger" onclick="clearExpired()">🗑️ Expired Sil</button>
+                    </div>
+                </div>
+
+                <div class="table-controls">
+                    <div class="search-box">
+                        <span>🔍</span>
+                        <input type="text" placeholder="Key veya not ile ara..." id="searchInput" oninput="filterKeys()">
+                    </div>
+                    <div class="table-filters">
+                        <button class="filter-btn active" onclick="setFilter('all', this)">Tümü</button>
+                        <button class="filter-btn" onclick="setFilter('active', this)">Aktif</button>
+                        <button class="filter-btn" onclick="setFilter('expired', this)">Expired</button>
+                        <button class="filter-btn" onclick="setFilter('lifetime', this)">Lifetime</button>
+                    </div>
+                </div>
+
+                <div id="keysTableContainer">
+                    <table class="keys-table">
+                        <thead>
+                            <tr>
+                                <th>Key</th>
+                                <th>Tür</th>
+                                <th>Durum</th>
+                                <th>Kalan Süre</th>
+                                <th>Not</th>
+                                <th>İşlem</th>
+                            </tr>
+                        </thead>
+                        <tbody id="keysTableBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="empty-state" id="emptyState" style="display: none;">
+                    <div class="empty-icon">🔑</div>
+                    <div class="empty-title">Henüz key oluşturulmadı</div>
+                    <div class="empty-desc">Sol panelden yeni bir key oluşturun.</div>
+                </div>
+
+                <div class="table-footer">
+                    <div class="table-info" id="tableInfo">0 key</div>
+                    <div></div>
                 </div>
             </div>
         </div>
-
-        <!-- Footer -->
-        <footer class="app-footer">
-            <div class="footer-text">
-                Berlin Lite Key Management &copy; 2024 — Built by <a href="https://github.com/bugrahena" target="_blank">bugrahena</a>
-            </div>
-            <div class="footer-links">
-                <a class="footer-link" href="https://github.com/bugrahena/BERL-N-KEYS" target="_blank">GitHub Repo</a>
-                <a class="footer-link" href="#">Dökümantasyon</a>
-            </div>
-        </footer>
     </div>
 
-    <script>
-        // ==================== CONFIG ====================
-        const GITHUB_FILE_PATH = 'BERLİN KEYS';
-        const GITHUB_FILE_PATH_ENCODED = 'BERL%C4%B0N%20KEYS';
+    <!-- GitHub Preview -->
+    <div class="section-content" id="section-keys">
+        <div class="panel" style="margin-bottom: 40px;">
+            <div class="panel-header">
+                <div class="panel-header-left">
+                    <div class="panel-icon">📦</div>
+                    <div>
+                        <div class="panel-title">GitHub Dosya Önizleme</div>
+                        <div class="panel-subtitle" id="previewRepoName">bugrahena/BERL-N-KEYS → BERLİN KEYS</div>
+                    </div>
+                </div>
+                <span class="panel-badge badge-green" id="syncBadge">Synced</span>
+            </div>
+            <div class="panel-body">
+                <div style="background: var(--bg-input); border-radius: var(--radius-sm); padding: 20px; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 2.2; max-height: 500px; overflow-y: auto; border: 1px solid var(--border-primary); white-space: pre-wrap;" id="githubPreview">
+                    Bağlantı bekleniyor...
+                </div>
+                <div style="margin-top: 16px; display: flex; gap: 10px;">
+                    <button class="btn-sm btn-outline-accent" onclick="fetchFromGitHub()">🔄 GitHub'dan Çek</button>
+                    <button class="btn-sm btn-outline-accent" onclick="pushToGitHub()">📤 Zorla Push Et</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
-        // ==================== STATE ====================
-        let keys = JSON.parse(localStorage.getItem('berlin_keys') || '[]');
-        let selectedDuration = '7d';
-        let currentFilter = 'all';
-        let deleteTargetId = null;
-        let githubConnected = false;
-        let fileSHA = null;
+    <!-- Footer -->
+    <footer class="app-footer">
+        <div class="footer-text">
+            Berlin Lite Key Management &copy; 2024 — Built by <a href="https://github.com/bugrahena" target="_blank">bugrahena</a>
+        </div>
+        <div class="footer-links">
+            <a class="footer-link" href="https://github.com/bugrahena/BERL-N-KEYS" target="_blank">GitHub Repo</a>
+            <a class="footer-link" href="#">Dökümantasyon</a>
+        </div>
+    </footer>
+</div>
 
-        // Otomatik silme istatistiği için
-        let totalAutoDeleted = parseInt(localStorage.getItem('berlin_auto_deleted') || '0');
+<script>
+    // ==================== CONFIG ====================
+    const GITHUB_FILE_PATH = 'BERLİN KEYS';
+    const GITHUB_FILE_PATH_ENCODED = 'BERL%C4%B0N%20KEYS';
 
-        const durationMap = {
-            'single':   { label: 'Tek Kullanım', ms: 0,           class: 'type-single' },
-            '5h':       { label: '5 Saat',        ms: 5*3600000,   class: 'type-5h' },
-            '1d':       { label: '1 Gün',          ms: 86400000,    class: 'type-1d' },
-            '7d':       { label: '7 Gün',          ms: 604800000,   class: 'type-7d' },
-            '30d':      { label: '30 Gün',         ms: 2592000000,  class: 'type-30d' },
-            'lifetime': { label: 'Lifetime',       ms: -1,          class: 'type-lifetime' }
-        };
+    // ==================== STATE ====================
+    let keys = JSON.parse(localStorage.getItem('berlin_keys') || '[]');
+    let selectedDuration = '7d';
+    let currentFilter = 'all';
+    let deleteTargetId = null;
+    let githubConnected = false;
+    let fileSHA = null;
 
-        // ==================== GITHUB API ====================
-        function getToken() { return document.getElementById('githubToken').value.trim(); }
-        function getRepo()  { return document.getElementById('githubRepo').value.trim(); }
+    const durationMap = {
+        'single': { label: 'Tek Kullanım', ms: 0, class: 'type-single' },
+        '5h':     { label: '5 Saat',       ms: 5 * 3600000, class: 'type-5h' },
+        '1d':     { label: '1 Gün',        ms: 86400000, class: 'type-1d' },
+        '7d':     { label: '7 Gün',        ms: 604800000, class: 'type-7d' },
+        '30d':    { label: '30 Gün',       ms: 2592000000, class: 'type-30d' },
+        'lifetime': { label: 'Lifetime',   ms: -1, class: 'type-lifetime' }
+    };
 
-        async function testConnection() {
-            const token = getToken();
-            const repo  = getRepo();
+    // ==================== GITHUB API ====================
+    function getToken() { return document.getElementById('githubToken').value.trim(); }
+    function getRepo() { return document.getElementById('githubRepo').value.trim(); }
 
-            if (!token || !repo) {
-                showToast('error', 'Token ve Repo alanlarını doldurun.');
-                return;
+    async function testConnection() {
+        const token = getToken();
+        const repo = getRepo();
+
+        if (!token || !repo) {
+            showToast('error', 'Token ve Repo alanlarını doldurun.');
+            return;
+        }
+
+        const btn = document.getElementById('connectBtn');
+        btn.textContent = 'Bağlanıyor...';
+        btn.disabled = true;
+
+        try {
+            const res = await fetch(`https://api.github.com/repos/${repo}`, {
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            });
+
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+            const data = await res.json();
+            githubConnected = true;
+
+            localStorage.setItem('berlin_gh_token', token);
+            localStorage.setItem('berlin_gh_repo', repo);
+
+            document.getElementById('connectionStatus').style.display = 'block';
+            document.getElementById('connectionStatus').className = 'connection-status ok';
+            document.getElementById('connectionStatus').innerHTML = `✅ <strong>${data.full_name}</strong> reposuna başarıyla bağlandı!`;
+
+            document.getElementById('connectionLabel').textContent = 'GitHub Bağlı';
+            document.getElementById('setupPanel').classList.add('connected');
+
+            btn.textContent = '✓ Bağlı';
+
+            showToast('success', `GitHub bağlantısı başarılı: ${data.full_name}`);
+
+            // Fetch existing file
+            await fetchFileFromGitHub();
+
+        } catch (err) {
+            document.getElementById('connectionStatus').style.display = 'block';
+            document.getElementById('connectionStatus').className = 'connection-status err';
+            document.getElementById('connectionStatus').innerHTML = `❌ Bağlantı hatası: ${err.message}`;
+
+            btn.textContent = 'Bağlan';
+            btn.disabled = false;
+            githubConnected = false;
+            showToast('error', `GitHub bağlantı hatası: ${err.message}`);
+        }
+    }
+
+    async function fetchFileFromGitHub() {
+        const token = getToken();
+        const repo = getRepo();
+        if (!token || !repo) return;
+
+        try {
+            const res = await fetch(`https://api.github.com/repos/${repo}/contents/${GITHUB_FILE_PATH_ENCODED}`, {
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            });
+
+            if (res.ok) {
+                const data = await res.json();
+                fileSHA = data.sha;
+                const content = atob(data.content.replace(/\n/g, ''));
+                document.getElementById('githubPreview').textContent = content;
+
+                // Parse existing keys from file
+                parseKeysFromContent(content);
+            } else if (res.status === 404) {
+                fileSHA = null;
+                // File doesn't exist yet, that's okay
             }
+        } catch (err) {
+            console.error('Fetch file error:', err);
+        }
+    }
 
-            const btn = document.getElementById('connectBtn');
-            btn.textContent = 'Bağlanıyor...';
-            btn.disabled = true;
+    function parseKeysFromContent(content) {
+        // Try to parse keys from the file content to sync local state
+        const lines = content.split('\n');
+        const existingKeyStrings = keys.map(k => k.key);
+
+        lines.forEach(line => {
+            const match = line.match(/^(.+?)\s*:\s*((?:BERLIN|BRL|LITE)-[A-Z0-9-]+)/);
+            if (match) {
+                const durationLabel = match[1].trim();
+                const keyStr = match[2].trim();
+
+                if (!existingKeyStrings.includes(keyStr)) {
+                    // Find duration type from label
+                    let durType = 'lifetime';
+                    Object.entries(durationMap).forEach(([key, val]) => {
+                        if (val.label === durationLabel) durType = key;
+                    });
+
+                    // Parse expiry from line if available
+                    let expiresAt = -1;
+                    const expiryMatch = line.match(/Bitiş:\s*(.+?)(?:\s*\||$)/);
+
+                    keys.push({
+                        id: 'key_imported_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+                        key: keyStr,
+                        duration: durType,
+                        durationLabel: durationLabel,
+                        createdAt: Date.now(),
+                        expiresAt: expiresAt,
+                        note: 'GitHub import',
+                        status: 'active'
+                    });
+                }
+            }
+        });
+
+        saveKeys();
+        renderKeys();
+        updateStats();
+    }
+
+    function buildFileContent() {
+        const now = new Date();
+        const dateStr = formatDate(now.getTime());
+        const activeKeys = keys.filter(k => k.status === 'active');
+
+        let content = `═══════════════════════════════════════════════\n`;
+        content += `       BERLİN LITE — LİSANS ANAHTARLARI\n`;
+        content += `═══════════════════════════════════════════════\n\n`;
+        content += `Son Güncelleme: ${dateStr}\n`;
+        content += `Toplam Aktif Key: ${activeKeys.length}\n\n`;
+        content += `───────────────────────────────────────────────\n\n`;
+
+        if (activeKeys.length === 0) {
+            content += `Aktif key bulunmuyor.\n`;
+        } else {
+            activeKeys.forEach(key => {
+                let expiryText;
+                if (key.expiresAt === -1) {
+                    expiryText = 'Süresiz (Lifetime)';
+                } else if (key.expiresAt === 0) {
+                    expiryText = 'Tek Kullanım';
+                } else {
+                    expiryText = formatDate(key.expiresAt);
+                }
+
+                const note = key.note && key.note !== '—' ? ` | Not: ${key.note}` : '';
+
+                content += `${key.durationLabel} : ${key.key}\n`;
+                content += `  └─ Bitiş: ${expiryText}${note}\n\n`;
+            });
+        }
+
+        content += `───────────────────────────────────────────────\n`;
+        content += `Berlin Lite Key Management System\n`;
+        content += `github.com/bugrahena/BERL-N-KEYS\n`;
+
+        return content;
+    }
+
+    async function pushToGitHub() {
+        const token = getToken();
+        const repo = getRepo();
+
+        if (!token || !repo) {
+            showToast('error', 'Önce GitHub bağlantısını kurun.');
+            return;
+        }
+
+        showPushOverlay('GitHub\'a push ediliyor...', `${repo}`);
+
+        try {
+            // First get the current file SHA (needed for updates)
+            let currentSHA = fileSHA;
 
             try {
-                const res = await fetch(`https://api.github.com/repos/${repo}`, {
+                const getRes = await fetch(`https://api.github.com/repos/${repo}/contents/${GITHUB_FILE_PATH_ENCODED}`, {
                     headers: {
                         'Authorization': `token ${token}`,
                         'Accept': 'application/vnd.github.v3+json'
                     }
                 });
 
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-                const data = await res.json();
-                githubConnected = true;
-
-                localStorage.setItem('berlin_gh_token', token);
-                localStorage.setItem('berlin_gh_repo', repo);
-
-                document.getElementById('connectionStatus').style.display = 'block';
-                document.getElementById('connectionStatus').className = 'connection-status ok';
-                document.getElementById('connectionStatus').innerHTML =
-                    `✅ <strong>${data.full_name}</strong> reposuna başarıyla bağlandı!`;
-
-                document.getElementById('connectionLabel').textContent = 'GitHub Bağlı';
-                document.getElementById('setupPanel').classList.add('connected');
-                btn.textContent = '✓ Bağlı';
-
-                showToast('success', `GitHub bağlantısı başarılı: ${data.full_name}`);
-
-                // Mevcut dosyayı çek
-                await fetchFileFromGitHub();
-
-                // Bağlandıktan hemen sonra expire kontrolü yap
-                checkExpiry();
-
-            } catch (err) {
-                document.getElementById('connectionStatus').style.display = 'block';
-                document.getElementById('connectionStatus').className = 'connection-status err';
-                document.getElementById('connectionStatus').innerHTML =
-                    `❌ Bağlantı hatası: ${err.message}`;
-
-                btn.textContent = 'Bağlan';
-                btn.disabled = false;
-                githubConnected = false;
-                showToast('error', `GitHub bağlantı hatası: ${err.message}`);
-            }
-        }
-
-        async function fetchFileFromGitHub() {
-            const token = getToken();
-            const repo  = getRepo();
-            if (!token || !repo) return;
-
-            try {
-                const res = await fetch(
-                    `https://api.github.com/repos/${repo}/contents/${GITHUB_FILE_PATH_ENCODED}`,
-                    {
-                        headers: {
-                            'Authorization': `token ${token}`,
-                            'Accept': 'application/vnd.github.v3+json'
-                        }
-                    }
-                );
-
-                if (res.ok) {
-                    const data = await res.json();
-                    fileSHA = data.sha;
-                    const content = atob(data.content.replace(/\n/g, ''));
-                    document.getElementById('githubPreview').textContent = content;
-                    parseKeysFromContent(content);
-                } else if (res.status === 404) {
-                    fileSHA = null;
-                }
-            } catch (err) {
-                console.error('Fetch file error:', err);
-            }
-        }
-
-        function parseKeysFromContent(content) {
-            const lines = content.split('\n');
-            const existingKeyStrings = keys.map(k => k.key);
-
-            lines.forEach(line => {
-                const match = line.match(/^(.+?)\s*:\s*((?:BERLIN|BRL|LITE)-[A-Z0-9-]+)/);
-                if (match) {
-                    const durationLabel = match[1].trim();
-                    const keyStr        = match[2].trim();
-
-                    if (!existingKeyStrings.includes(keyStr)) {
-                        let durType = 'lifetime';
-                        Object.entries(durationMap).forEach(([key, val]) => {
-                            if (val.label === durationLabel) durType = key;
-                        });
-
-                        keys.push({
-                            id:            'key_imported_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
-                            key:           keyStr,
-                            duration:      durType,
-                            durationLabel: durationLabel,
-                            createdAt:     Date.now(),
-                            expiresAt:     -1,
-                            note:          'GitHub import',
-                            status:        'active'
-                        });
-                    }
-                }
-            });
-
-            saveKeys();
-            renderKeys();
-            updateStats();
-        }
-
-        function buildFileContent() {
-            const now        = new Date();
-            const dateStr    = formatDate(now.getTime());
-            const activeKeys = keys.filter(k => k.status === 'active');
-
-            let content = `═══════════════════════════════════════════════\n`;
-            content    += `       BERLİN LITE — LİSANS ANAHTARLARI\n`;
-            content    += `═══════════════════════════════════════════════\n\n`;
-            content    += `Son Güncelleme: ${dateStr}\n`;
-            content    += `Toplam Aktif Key: ${activeKeys.length}\n\n`;
-            content    += `───────────────────────────────────────────────\n\n`;
-
-            if (activeKeys.length === 0) {
-                content += `Aktif key bulunmuyor.\n`;
-            } else {
-                activeKeys.forEach(key => {
-                    let expiryText;
-                    if (key.expiresAt === -1) {
-                        expiryText = 'Süresiz (Lifetime)';
-                    } else if (key.expiresAt === 0) {
-                        expiryText = 'Tek Kullanım';
-                    } else {
-                        expiryText = formatDate(key.expiresAt);
-                    }
-
-                    const note = (key.note && key.note !== '—') ? ` | Not: ${key.note}` : '';
-                    content += `${key.durationLabel} : ${key.key}\n`;
-                    content += `  └─ Bitiş: ${expiryText}${note}\n\n`;
-                });
-            }
-
-            content += `───────────────────────────────────────────────\n`;
-            content += `Berlin Lite Key Management System\n`;
-            content += `github.com/bugrahena/BERL-N-KEYS\n`;
-
-            return content;
-        }
-
-        async function pushToGitHub(silent = false) {
-            const token = getToken();
-            const repo  = getRepo();
-
-            if (!token || !repo) {
-                if (!silent) showToast('error', 'Önce GitHub bağlantısını kurun.');
-                return;
-            }
-
-            if (!silent) showPushOverlay('GitHub\'a push ediliyor...', `${repo}`);
-
-            try {
-                // Güncel SHA'yı al
-                let currentSHA = fileSHA;
-                try {
-                    const getRes = await fetch(
-                        `https://api.github.com/repos/${repo}/contents/${GITHUB_FILE_PATH_ENCODED}`,
-                        {
-                            headers: {
-                                'Authorization': `token ${token}`,
-                                'Accept': 'application/vnd.github.v3+json'
-                            }
-                        }
-                    );
-                    if (getRes.ok) {
-                        const getData = await getRes.json();
-                        currentSHA = getData.sha;
-                    } else {
-                        currentSHA = null;
-                    }
-                } catch (e) {
+                if (getRes.ok) {
+                    const getData = await getRes.json();
+                    currentSHA = getData.sha;
+                } else {
                     currentSHA = null;
                 }
-
-                const content       = buildFileContent();
-                const contentBase64 = btoa(unescape(encodeURIComponent(content)));
-
-                const body = {
-                    message: `🔑 Key güncelleme — ${formatDate(Date.now())}`,
-                    content: contentBase64,
-                    branch: 'main'
-                };
-                if (currentSHA) body.sha = currentSHA;
-
-                const putRes = await fetch(
-                    `https://api.github.com/repos/${repo}/contents/${GITHUB_FILE_PATH_ENCODED}`,
-                    {
-                        method: 'PUT',
-                        headers: {
-                            'Authorization': `token ${token}`,
-                            'Accept': 'application/vnd.github.v3+json',
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(body)
-                    }
-                );
-
-                if (!putRes.ok) {
-                    const errData = await putRes.json();
-                    throw new Error(errData.message || `HTTP ${putRes.status}`);
-                }
-
-                const putData = await putRes.json();
-                fileSHA = putData.content.sha;
-
-                if (!silent) hidePushOverlay();
-                if (!silent) showToast('success', '✅ GitHub\'a başarıyla push edildi!');
-
-                // Önizlemeyi güncelle
-                document.getElementById('githubPreview').textContent = content;
-                document.getElementById('syncBadge').textContent = 'Synced';
-
-            } catch (err) {
-                if (!silent) hidePushOverlay();
-                if (!silent) showToast('error', `GitHub push hatası: ${err.message}`);
-                console.error('Push error:', err);
-            }
-        }
-
-        async function fetchFromGitHub() {
-            const token = getToken();
-            const repo  = getRepo();
-
-            if (!token || !repo) {
-                showToast('error', 'Önce GitHub bağlantısını kurun.');
-                return;
+            } catch (e) {
+                currentSHA = null;
             }
 
-            try {
-                const res = await fetch(
-                    `https://api.github.com/repos/${repo}/contents/${GITHUB_FILE_PATH_ENCODED}`,
-                    {
-                        headers: {
-                            'Authorization': `token ${token}`,
-                            'Accept': 'application/vnd.github.v3+json'
-                        }
-                    }
-                );
+            const content = buildFileContent();
+            const contentBase64 = btoa(unescape(encodeURIComponent(content)));
 
-                if (res.ok) {
-                    const data    = await res.json();
-                    fileSHA       = data.sha;
-                    const content = atob(data.content.replace(/\n/g, ''));
-                    document.getElementById('githubPreview').textContent = content;
-                    showToast('success', 'GitHub\'dan başarıyla çekildi.');
-                } else if (res.status === 404) {
-                    document.getElementById('githubPreview').textContent =
-                        'Dosya henüz oluşturulmamış. Key oluşturduğunuzda otomatik oluşturulacak.';
-                    showToast('info', 'Dosya henüz GitHub\'da yok.');
-                } else {
-                    throw new Error(`HTTP ${res.status}`);
-                }
-            } catch (err) {
-                showToast('error', `GitHub çekme hatası: ${err.message}`);
-            }
-        }
-
-        // ==================== KEY GENERATION ====================
-        function generateRandomSegment(length) {
-            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-            let result  = '';
-            const array = new Uint32Array(length);
-            crypto.getRandomValues(array);
-            for (let i = 0; i < length; i++) {
-                result += chars[array[i] % chars.length];
-            }
-            return result;
-        }
-
-        function generateKeyString() {
-            const prefix = document.getElementById('keyPrefix').value;
-            if (prefix === 'BRL') {
-                return `${prefix}-${generateRandomSegment(4)}-${generateRandomSegment(4)}-${generateRandomSegment(4)}-${generateRandomSegment(4)}`;
-            }
-            return `${prefix}-${generateRandomSegment(4)}-${generateRandomSegment(4)}-${generateRandomSegment(4)}`;
-        }
-
-        async function generateKey() {
-            if (!githubConnected) {
-                showToast('error', 'Önce GitHub bağlantısını kurun!');
-                return;
-            }
-
-            const btn = document.getElementById('generateBtn');
-            btn.classList.add('loading');
-            btn.disabled = true;
-
-            const keyString = generateKeyString();
-            const note      = document.getElementById('keyNote').value.trim();
-            const now       = Date.now();
-            const durInfo   = durationMap[selectedDuration];
-
-            const keyObj = {
-                id:            'key_' + now + '_' + Math.random().toString(36).substr(2, 6),
-                key:           keyString,
-                duration:      selectedDuration,
-                durationLabel: durInfo.label,
-                createdAt:     now,
-                expiresAt:     durInfo.ms === -1 ? -1 : (durInfo.ms === 0 ? 0 : now + durInfo.ms),
-                note:          note || '—',
-                status:        'active'
+            const body = {
+                message: `🔑 Key güncelleme — ${formatDate(Date.now())}`,
+                content: contentBase64,
+                branch: 'main'
             };
 
-            keys.unshift(keyObj);
-            saveKeys();
-            renderKeys();
-            updateStats();
-
-            // Key çıktısını göster
-            document.getElementById('generatedKeyValue').textContent   = keyString;
-            document.getElementById('generatedKeyDuration').textContent = durInfo.label;
-            document.getElementById('generatedKeyDate').textContent     = formatDate(now);
-            document.getElementById('pushRepo').textContent             = getRepo();
-            document.getElementById('keyNote').value                    = '';
-
-            // GitHub'a push et
-            await pushToGitHub();
-            document.getElementById('keyOutput').classList.add('show');
-
-            btn.classList.remove('loading');
-            btn.disabled = false;
-        }
-
-        // ==================== AUTO DELETE (ANA DEĞİŞİKLİK) ====================
-        /**
-         * Süresi dolan keyleri tespit eder, localStorage'dan tamamen siler
-         * ve GitHub'a sessizce push eder.
-         */
-        async function checkExpiry() {
-            const now = Date.now();
-
-            // Süresi dolanları bul
-            const toDelete = keys.filter(key =>
-                key.status === 'active' &&
-                key.expiresAt > 0 &&          // 0 = tek kullanım (manuel), -1 = lifetime
-                now >= key.expiresAt
-            );
-
-            if (toDelete.length === 0) return; // Silinecek yok, dur
-
-            // İstatistik güncelle
-            totalAutoDeleted += toDelete.length;
-            localStorage.setItem('berlin_auto_deleted', totalAutoDeleted.toString());
-
-            // Süresi dolanları listeden tamamen çıkar (status değiştirme yok, direkt sil)
-            keys = keys.filter(key =>
-                !(key.status === 'active' &&
-                  key.expiresAt > 0 &&
-                  now >= key.expiresAt)
-            );
-
-            saveKeys();
-            renderKeys();
-            updateStats();
-
-            // Bildirim göster
-            showToast('info',
-                `🗑️ ${toDelete.length} key süresi dolduğu için otomatik silindi.`
-            );
-
-            // GitHub'a sessizce push et (overlay gösterme)
-            if (githubConnected) {
-                try {
-                    await pushToGitHubSilent();
-                } catch (e) {
-                    console.error('Auto-delete push error:', e);
-                }
-            }
-        }
-
-        /**
-         * Overlay göstermeden arka planda GitHub'a push eder.
-         * Sadece otomatik silme için kullanılır.
-         */
-        async function pushToGitHubSilent() {
-            const token = getToken();
-            const repo  = getRepo();
-            if (!token || !repo) return;
-
-            try {
-                let currentSHA = fileSHA;
-                try {
-                    const getRes = await fetch(
-                        `https://api.github.com/repos/${repo}/contents/${GITHUB_FILE_PATH_ENCODED}`,
-                        {
-                            headers: {
-                                'Authorization': `token ${token}`,
-                                'Accept': 'application/vnd.github.v3+json'
-                            }
-                        }
-                    );
-                    if (getRes.ok) {
-                        const getData = await getRes.json();
-                        currentSHA = getData.sha;
-                    } else {
-                        currentSHA = null;
-                    }
-                } catch (e) {
-                    currentSHA = null;
-                }
-
-                const content       = buildFileContent();
-                const contentBase64 = btoa(unescape(encodeURIComponent(content)));
-
-                const body = {
-                    message: `🗑️ Süresi dolan keyler otomatik silindi — ${formatDate(Date.now())}`,
-                    content: contentBase64,
-                    branch:  'main'
-                };
-                if (currentSHA) body.sha = currentSHA;
-
-                const putRes = await fetch(
-                    `https://api.github.com/repos/${repo}/contents/${GITHUB_FILE_PATH_ENCODED}`,
-                    {
-                        method: 'PUT',
-                        headers: {
-                            'Authorization': `token ${token}`,
-                            'Accept': 'application/vnd.github.v3+json',
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(body)
-                    }
-                );
-
-                if (putRes.ok) {
-                    const putData = await putRes.json();
-                    fileSHA = putData.content.sha;
-                    document.getElementById('githubPreview').textContent = content;
-                    document.getElementById('syncBadge').textContent = 'Synced';
-                    showToast('success', '✅ GitHub otomatik güncellendi.');
-                }
-            } catch (err) {
-                console.error('Silent push error:', err);
-            }
-        }
-
-        /**
-         * Manuel temizle butonu: expire kontrolü yap ve push et.
-         */
-        async function manualCheckAndClean() {
-            await checkExpiry();
-            if (githubConnected) {
-                await pushToGitHub();
-            }
-        }
-
-        // ==================== UI FUNCTIONS ====================
-        function selectDuration(el, duration) {
-            document.querySelectorAll('.duration-option').forEach(opt => opt.classList.remove('selected'));
-            el.classList.add('selected');
-            selectedDuration = duration;
-        }
-
-        function saveKeys() {
-            localStorage.setItem('berlin_keys', JSON.stringify(keys));
-        }
-
-        function deleteKey(id) {
-            deleteTargetId = id;
-            const key = keys.find(k => k.id === id);
-            if (key) {
-                document.getElementById('deleteKeyValue').textContent = key.key;
-                document.getElementById('deleteModal').classList.add('show');
-            }
-        }
-
-        async function confirmDelete() {
-            if (!deleteTargetId) return;
-
-            keys = keys.filter(k => k.id !== deleteTargetId);
-            saveKeys();
-            renderKeys();
-            updateStats();
-            closeModal();
-            deleteTargetId = null;
-
-            showToast('success', 'Key silindi, GitHub güncelleniyor...');
-
-            if (githubConnected) {
-                await pushToGitHub();
-            }
-        }
-
-        function closeModal() {
-            document.getElementById('deleteModal').classList.remove('show');
-        }
-
-        function copyKeyText(keyStr) {
-            navigator.clipboard.writeText(keyStr).then(() => {
-                showToast('success', 'Key panoya kopyalandı.');
-            });
-        }
-
-        function copyGeneratedKey() {
-            const val = document.getElementById('generatedKeyValue').textContent;
-            navigator.clipboard.writeText(val).then(() => {
-                showToast('success', 'Key panoya kopyalandı.');
-            });
-        }
-
-        // ==================== RENDERING ====================
-        function renderKeys() {
-            const tbody          = document.getElementById('keysTableBody');
-            const emptyState     = document.getElementById('emptyState');
-            const tableContainer = document.getElementById('keysTableContainer');
-            const searchValue    = (document.getElementById('searchInput').value || '').toLowerCase();
-
-            let filtered = [...keys];
-
-            // Filtre uygula (artık sadece active ve lifetime var)
-            if (currentFilter === 'active') {
-                filtered = filtered.filter(k => k.status === 'active' && k.duration !== 'lifetime');
-            } else if (currentFilter === 'lifetime') {
-                filtered = filtered.filter(k => k.duration === 'lifetime');
+            if (currentSHA) {
+                body.sha = currentSHA;
             }
 
-            if (searchValue) {
-                filtered = filtered.filter(k =>
-                    k.key.toLowerCase().includes(searchValue) ||
-                    (k.note || '').toLowerCase().includes(searchValue)
-                );
-            }
-
-            if (filtered.length === 0) {
-                tableContainer.style.display = 'none';
-                emptyState.style.display     = 'block';
-            } else {
-                tableContainer.style.display = 'block';
-                emptyState.style.display     = 'none';
-            }
-
-            tbody.innerHTML = '';
-
-            filtered.forEach(key => {
-                const durInfo   = durationMap[key.duration] || durationMap['lifetime'];
-                const remaining = getRemaining(key);
-
-                const tr = document.createElement('tr');
-
-                tr.innerHTML = `
-                    <td><span class="key-cell">${key.key}</span></td>
-                    <td><span class="type-badge ${durInfo.class}">${key.durationLabel}</span></td>
-                    <td><span class="status-badge status-active">● Active</span></td>
-                    <td><span class="time-remaining ${remaining.urgent ? 'urgent' : ''}">${remaining.text}</span></td>
-                    <td style="font-size:12px; color: var(--text-muted);">${key.note || '—'}</td>
-                    <td>
-                        <div class="actions-cell">
-                            <button class="action-btn copy-btn" onclick="copyKeyText('${key.key}')" title="Kopyala">📋</button>
-                            <button class="action-btn" onclick="deleteKey('${key.id}')" title="Sil">🗑️</button>
-                        </div>
-                    </td>
-                `;
-
-                tbody.appendChild(tr);
+            const putRes = await fetch(`https://api.github.com/repos/${repo}/contents/${GITHUB_FILE_PATH_ENCODED}`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
             });
 
-            document.getElementById('tableInfo').textContent =
-                `${filtered.length} / ${keys.length} key • Toplam ${totalAutoDeleted} key otomatik silindi`;
+            if (!putRes.ok) {
+                const errData = await putRes.json();
+                throw new Error(errData.message || `HTTP ${putRes.status}`);
+            }
+
+            const putData = await putRes.json();
+            fileSHA = putData.content.sha;
+
+            hidePushOverlay();
+            showToast('success', '✅ GitHub\'a başarıyla push edildi!');
+
+            // Update preview
+            document.getElementById('githubPreview').textContent = content;
+            document.getElementById('syncBadge').textContent = 'Synced';
+
+        } catch (err) {
+            hidePushOverlay();
+            showToast('error', `GitHub push hatası: ${err.message}`);
+            console.error('Push error:', err);
+        }
+    }
+
+    async function fetchFromGitHub() {
+        const token = getToken();
+        const repo = getRepo();
+
+        if (!token || !repo) {
+            showToast('error', 'Önce GitHub bağlantısını kurun.');
+            return;
         }
 
-        function getRemaining(key) {
-            if (key.expiresAt === -1) return { text: '∞ Süresiz', urgent: false };
-            if (key.expiresAt === 0)  return { text: '1 kullanım', urgent: false };
+        try {
+            const res = await fetch(`https://api.github.com/repos/${repo}/contents/${GITHUB_FILE_PATH_ENCODED}`, {
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            });
 
-            const diff = key.expiresAt - Date.now();
-            if (diff <= 0) return { text: 'Siliniyor...', urgent: true };
-
-            const d        = Math.floor(diff / 86400000);
-            const h        = Math.floor((diff % 86400000) / 3600000);
-            const m        = Math.floor((diff % 3600000) / 60000);
-            const isUrgent = diff < 3600000;
-
-            if (d > 0) return { text: `${d}g ${h}s kaldı`, urgent: isUrgent };
-            if (h > 0) return { text: `${h}s ${m}dk kaldı`, urgent: isUrgent };
-            return { text: `${m}dk kaldı`, urgent: true };
-        }
-
-        function updateStats() {
-            const active   = keys.filter(k => k.status === 'active');
-            const lifetime = keys.filter(k => k.duration === 'lifetime' && k.status === 'active');
-
-            document.getElementById('statTotal').textContent    = keys.length;
-            document.getElementById('statActive').textContent   = active.length;
-            document.getElementById('statExpired').textContent  = totalAutoDeleted;
-            document.getElementById('statLifetime').textContent = lifetime.length;
-        }
-
-        function setFilter(filter, btn) {
-            currentFilter = filter;
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            renderKeys();
-        }
-
-        function filterKeys() { renderKeys(); }
-
-        function switchTab(tab) {
-            document.querySelectorAll('.section-content').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            document.getElementById('section-' + tab).classList.add('active');
-            document.getElementById('tab-' + tab).classList.add('active');
-
-            if (tab === 'keys') {
-                const content = buildFileContent();
+            if (res.ok) {
+                const data = await res.json();
+                fileSHA = data.sha;
+                const content = atob(data.content.replace(/\n/g, ''));
                 document.getElementById('githubPreview').textContent = content;
-                document.getElementById('previewRepoName').textContent =
-                    `${getRepo() || 'bugrahena/BERL-N-KEYS'} → BERLİN KEYS`;
+                showToast('success', 'GitHub\'dan başarıyla çekildi.');
+            } else if (res.status === 404) {
+                document.getElementById('githubPreview').textContent = 'Dosya henüz oluşturulmamış. Key oluşturduğunuzda otomatik oluşturulacak.';
+                showToast('info', 'Dosya henüz GitHub\'da yok.');
+            } else {
+                throw new Error(`HTTP ${res.status}`);
+            }
+        } catch (err) {
+            showToast('error', `GitHub çekme hatası: ${err.message}`);
+        }
+    }
+
+    // ==================== KEY GENERATION ====================
+    function generateRandomSegment(length) {
+        const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+        let result = '';
+        const array = new Uint32Array(length);
+        crypto.getRandomValues(array);
+        for (let i = 0; i < length; i++) {
+            result += chars[array[i] % chars.length];
+        }
+        return result;
+    }
+
+    function generateKeyString() {
+        const prefix = document.getElementById('keyPrefix').value;
+        if (prefix === 'BRL') {
+            return `${prefix}-${generateRandomSegment(4)}-${generateRandomSegment(4)}-${generateRandomSegment(4)}-${generateRandomSegment(4)}`;
+        }
+        return `${prefix}-${generateRandomSegment(4)}-${generateRandomSegment(4)}-${generateRandomSegment(4)}`;
+    }
+
+    async function generateKey() {
+        if (!githubConnected) {
+            showToast('error', 'Önce GitHub bağlantısını kurun!');
+            return;
+        }
+
+        const btn = document.getElementById('generateBtn');
+        btn.classList.add('loading');
+        btn.disabled = true;
+
+        const keyString = generateKeyString();
+        const note = document.getElementById('keyNote').value.trim();
+        const now = Date.now();
+        const durInfo = durationMap[selectedDuration];
+
+        const keyObj = {
+            id: 'key_' + now + '_' + Math.random().toString(36).substr(2, 6),
+            key: keyString,
+            duration: selectedDuration,
+            durationLabel: durInfo.label,
+            createdAt: now,
+            expiresAt: durInfo.ms === -1 ? -1 : (durInfo.ms === 0 ? 0 : now + durInfo.ms),
+            note: note || '—',
+            status: 'active'
+        };
+
+        keys.unshift(keyObj);
+        saveKeys();
+        renderKeys();
+        updateStats();
+
+        // Show key output immediately
+        document.getElementById('generatedKeyValue').textContent = keyString;
+        document.getElementById('generatedKeyDuration').textContent = durInfo.label;
+        document.getElementById('generatedKeyDate').textContent = formatDate(now);
+        document.getElementById('pushRepo').textContent = getRepo();
+        document.getElementById('keyNote').value = '';
+
+        // Push to GitHub
+        await pushToGitHub();
+
+        document.getElementById('keyOutput').classList.add('show');
+
+        btn.classList.remove('loading');
+        btn.disabled = false;
+    }
+
+    // ==================== UI FUNCTIONS ====================
+    function selectDuration(el, duration) {
+        document.querySelectorAll('.duration-option').forEach(opt => opt.classList.remove('selected'));
+        el.classList.add('selected');
+        selectedDuration = duration;
+    }
+
+    function saveKeys() {
+        localStorage.setItem('berlin_keys', JSON.stringify(keys));
+    }
+
+    function checkExpiry() {
+        const now = Date.now();
+        let changed = false;
+
+        keys.forEach(key => {
+            if (key.status === 'active') {
+                if (key.expiresAt > 0 && now >= key.expiresAt) {
+                    key.status = 'expired';
+                    changed = true;
+                }
+            }
+        });
+
+        if (changed) {
+            saveKeys();
+            renderKeys();
+            updateStats();
+            // Auto-push expired changes
+            if (githubConnected) {
+                pushToGitHub();
             }
         }
+    }
 
-        // ==================== TOAST ====================
-        function showToast(type, message) {
-            const container = document.getElementById('toastContainer');
-            const icons     = { success: '✅', error: '❌', info: 'ℹ️' };
-            const toast     = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.innerHTML = `<span>${icons[type]}</span><span>${message}</span>`;
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.style.animation = 'toastOut 0.3s ease forwards';
-                setTimeout(() => toast.remove(), 300);
-            }, 4000);
+    function deleteKey(id) {
+        deleteTargetId = id;
+        const key = keys.find(k => k.id === id);
+        if (key) {
+            document.getElementById('deleteKeyValue').textContent = key.key;
+            document.getElementById('deleteModal').classList.add('show');
+        }
+    }
+
+    async function confirmDelete() {
+        if (!deleteTargetId) return;
+
+        keys = keys.filter(k => k.id !== deleteTargetId);
+        saveKeys();
+        renderKeys();
+        updateStats();
+        closeModal();
+        deleteTargetId = null;
+
+        showToast('success', 'Key silindi, GitHub güncelleniyor...');
+
+        if (githubConnected) {
+            await pushToGitHub();
+        }
+    }
+
+    function closeModal() {
+        document.getElementById('deleteModal').classList.remove('show');
+    }
+
+    async function clearExpired() {
+        const expiredCount = keys.filter(k => k.status === 'expired' || k.status === 'used').length;
+        if (expiredCount === 0) {
+            showToast('info', 'Silinecek expired key yok.');
+            return;
+        }
+        keys = keys.filter(k => k.status === 'active');
+        saveKeys();
+        renderKeys();
+        updateStats();
+
+        showToast('success', `${expiredCount} expired key silindi.`);
+
+        if (githubConnected) {
+            await pushToGitHub();
+        }
+    }
+
+    function copyKeyText(keyStr) {
+        navigator.clipboard.writeText(keyStr).then(() => {
+            showToast('success', 'Key panoya kopyalandı.');
+        });
+    }
+
+    function copyGeneratedKey() {
+        const val = document.getElementById('generatedKeyValue').textContent;
+        navigator.clipboard.writeText(val).then(() => {
+            showToast('success', 'Key panoya kopyalandı.');
+        });
+    }
+
+    // ==================== RENDERING ====================
+    function renderKeys() {
+        const tbody = document.getElementById('keysTableBody');
+        const emptyState = document.getElementById('emptyState');
+        const tableContainer = document.getElementById('keysTableContainer');
+        const searchValue = (document.getElementById('searchInput').value || '').toLowerCase();
+
+        let filtered = [...keys];
+
+        if (currentFilter === 'active') filtered = filtered.filter(k => k.status === 'active');
+        else if (currentFilter === 'expired') filtered = filtered.filter(k => k.status === 'expired' || k.status === 'used');
+        else if (currentFilter === 'lifetime') filtered = filtered.filter(k => k.duration === 'lifetime');
+
+        if (searchValue) {
+            filtered = filtered.filter(k =>
+                k.key.toLowerCase().includes(searchValue) ||
+                (k.note || '').toLowerCase().includes(searchValue)
+            );
         }
 
-        // ==================== PUSH OVERLAY ====================
-        function showPushOverlay(text, sub) {
-            document.getElementById('pushText').textContent    = text;
-            document.getElementById('pushSubtext').textContent = sub;
-            document.getElementById('pushOverlay').classList.add('show');
+        if (filtered.length === 0) {
+            tableContainer.style.display = 'none';
+            emptyState.style.display = 'block';
+        } else {
+            tableContainer.style.display = 'block';
+            emptyState.style.display = 'none';
         }
 
-        function hidePushOverlay() {
-            document.getElementById('pushOverlay').classList.remove('show');
+        tbody.innerHTML = '';
+
+        filtered.forEach(key => {
+            const isExpired = key.status === 'expired' || key.status === 'used';
+            const durInfo = durationMap[key.duration] || durationMap['lifetime'];
+            const remaining = getRemaining(key);
+
+            const tr = document.createElement('tr');
+            if (isExpired) tr.className = 'key-row-expired';
+
+            tr.innerHTML = `
+                <td><span class="key-cell">${key.key}</span></td>
+                <td><span class="type-badge ${durInfo.class}">${key.durationLabel}</span></td>
+                <td><span class="status-badge ${isExpired ? 'status-expired' : 'status-active'}">${isExpired ? '⊘ Expired' : '● Active'}</span></td>
+                <td><span class="time-remaining ${remaining.urgent ? 'urgent' : ''}">${remaining.text}</span></td>
+                <td style="font-size:12px; color: var(--text-muted);">${key.note || '—'}</td>
+                <td>
+                    <div class="actions-cell">
+                        <button class="action-btn copy-btn" onclick="copyKeyText('${key.key}')" title="Kopyala">📋</button>
+                        <button class="action-btn" onclick="deleteKey('${key.id}')" title="Sil">🗑️</button>
+                    </div>
+                </td>
+            `;
+
+            tbody.appendChild(tr);
+        });
+
+        document.getElementById('tableInfo').textContent = `${filtered.length} / ${keys.length} key`;
+    }
+
+    function getRemaining(key) {
+        if (key.status === 'expired') return { text: 'Süresi doldu', urgent: true };
+        if (key.status === 'used') return { text: 'Kullanıldı', urgent: true };
+        if (key.expiresAt === -1) return { text: '∞ Süresiz', urgent: false };
+        if (key.expiresAt === 0) return { text: '1 kullanım', urgent: false };
+
+        const diff = key.expiresAt - Date.now();
+        if (diff <= 0) return { text: 'Süresi doldu', urgent: true };
+
+        const d = Math.floor(diff / 86400000);
+        const h = Math.floor((diff % 86400000) / 3600000);
+        const m = Math.floor((diff % 3600000) / 60000);
+        const isUrgent = diff < 3600000;
+
+        if (d > 0) return { text: `${d}g ${h}s kaldı`, urgent: isUrgent };
+        if (h > 0) return { text: `${h}s ${m}dk kaldı`, urgent: isUrgent };
+        return { text: `${m}dk kaldı`, urgent: true };
+    }
+
+    function updateStats() {
+        document.getElementById('statTotal').textContent = keys.length;
+        document.getElementById('statActive').textContent = keys.filter(k => k.status === 'active').length;
+        document.getElementById('statExpired').textContent = keys.filter(k => k.status === 'expired' || k.status === 'used').length;
+        document.getElementById('statLifetime').textContent = keys.filter(k => k.duration === 'lifetime' && k.status === 'active').length;
+    }
+
+    function setFilter(filter, btn) {
+        currentFilter = filter;
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        renderKeys();
+    }
+
+    function filterKeys() { renderKeys(); }
+
+    function switchTab(tab) {
+        document.querySelectorAll('.section-content').forEach(s => s.classList.remove('active'));
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        document.getElementById('section-' + tab).classList.add('active');
+        document.getElementById('tab-' + tab).classList.add('active');
+
+        if (tab === 'keys') {
+            const content = buildFileContent();
+            document.getElementById('githubPreview').textContent = content;
+            document.getElementById('previewRepoName').textContent = `${getRepo() || 'bugrahena/BERL-N-KEYS'} → BERLİN KEYS`;
+        }
+    }
+
+    // ==================== TOAST ====================
+    function showToast(type, message) {
+        const container = document.getElementById('toastContainer');
+        const icons = { success: '✅', error: '❌', info: 'ℹ️' };
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        toast.innerHTML = `<span>${icons[type]}</span><span>${message}</span>`;
+        container.appendChild(toast);
+        setTimeout(() => {
+            toast.style.animation = 'toastOut 0.3s ease forwards';
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
+    }
+
+    // ==================== PUSH OVERLAY ====================
+    function showPushOverlay(text, sub) {
+        document.getElementById('pushText').textContent = text;
+        document.getElementById('pushSubtext').textContent = sub;
+        document.getElementById('pushOverlay').classList.add('show');
+    }
+
+    function hidePushOverlay() {
+        document.getElementById('pushOverlay').classList.remove('show');
+    }
+
+    // ==================== UTILITY ====================
+    function formatDate(ts) {
+        const d = new Date(ts);
+        const pad = n => String(n).padStart(2, '0');
+        return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+    }
+
+    // ==================== INIT ====================
+    function init() {
+        // Restore saved token/repo
+        const savedToken = localStorage.getItem('berlin_gh_token');
+        const savedRepo = localStorage.getItem('berlin_gh_repo');
+
+        if (savedToken) document.getElementById('githubToken').value = savedToken;
+        if (savedRepo) document.getElementById('githubRepo').value = savedRepo;
+
+        // Auto-connect if saved
+        if (savedToken && savedRepo) {
+            testConnection();
         }
 
-        // ==================== UTILITY ====================
-        function formatDate(ts) {
-            const d   = new Date(ts);
-            const pad = n => String(n).padStart(2, '0');
-            return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
-        }
+        checkExpiry();
+        renderKeys();
+        updateStats();
 
-        // ==================== INIT ====================
-        function init() {
-            // Kayıtlı token/repo geri yükle
-            const savedToken = localStorage.getItem('berlin_gh_token');
-            const savedRepo  = localStorage.getItem('berlin_gh_repo');
-
-            if (savedToken) document.getElementById('githubToken').value = savedToken;
-            if (savedRepo)  document.getElementById('githubRepo').value  = savedRepo;
-
-            // Otomatik bağlan
-            if (savedToken && savedRepo) {
-                testConnection();
-            }
-
-            // İlk render
+        // Check expiry every 30 sec
+        setInterval(() => {
             checkExpiry();
             renderKeys();
-            updateStats();
+        }, 30000);
+    }
 
-            // ✅ Her 30 saniyede expire kontrolü — süresi dolanlar silinir ve GitHub güncellenir
-            setInterval(async () => {
-                await checkExpiry();
-                renderKeys();
-            }, 30000);
-
-            // Geri sayım için her saniye render et (kalan süre doğru görünsün)
-            setInterval(() => {
-                renderKeys();
-            }, 60000);
-        }
-
-        init();
-    </script>
-</body>
-</html>
+    init();
+</script>
+</body> </html>
