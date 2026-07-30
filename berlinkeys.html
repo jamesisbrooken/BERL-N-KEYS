@@ -211,7 +211,7 @@
         }
 
         /* STATS */
-        .stats-bar { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 40px; }
+        .stats-bar { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 40px; }
         .stat-card {
             background: var(--bg-card); border: 1px solid var(--border-primary);
             border-radius: var(--radius-md); padding: 22px 24px; transition: all 0.3s ease;
@@ -229,6 +229,7 @@
         .stat-value.success { color: var(--success); }
         .stat-value.warning { color: var(--warning); }
         .stat-value.danger { color: var(--danger); }
+        .stat-value.info { color: var(--info); }
         .stat-change { font-size: 11px; color: var(--success); margin-top: 6px; font-weight: 500; }
 
         /* MAIN GRID */
@@ -268,6 +269,10 @@
         .badge-orange {
             background: var(--warning-bg); color: var(--warning);
             border: 1px solid rgba(253, 203, 110, 0.2);
+        }
+        .badge-cyan {
+            background: var(--info-bg); color: var(--info);
+            border: 1px solid rgba(116, 185, 255, 0.2);
         }
         .panel-body { padding: 24px; }
 
@@ -510,6 +515,10 @@
             background: transparent; border-color: rgba(108, 92, 231, 0.3); color: var(--accent-secondary);
         }
         .btn-sm.btn-outline-accent:hover { background: var(--accent-glow); border-color: var(--accent-primary); }
+        .btn-sm.btn-outline-success {
+            background: transparent; border-color: rgba(0, 184, 148, 0.3); color: var(--success);
+        }
+        .btn-sm.btn-outline-success:hover { background: var(--success-bg); border-color: var(--success); }
 
         /* TOAST */
         .toast-container {
@@ -582,6 +591,14 @@
             font-family: 'Inter', sans-serif;
         }
         .btn-danger:hover { background: #d63031; box-shadow: 0 4px 16px rgba(225, 112, 85, 0.3); }
+        .btn-primary-modal {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--accent-primary), #7c6cf0);
+            border: none; border-radius: var(--radius-sm); color: white;
+            font-size: 13px; font-weight: 600; cursor: pointer;
+            transition: all 0.2s ease; font-family: 'Inter', sans-serif;
+        }
+        .btn-primary-modal:hover { box-shadow: 0 4px 16px rgba(108, 92, 231, 0.35); }
 
         .section-content { display: none; }
         .section-content.active { display: block; }
@@ -617,50 +634,17 @@
             border-top-color: var(--accent-secondary);
             border-radius: 50%; animation: spin 1s linear infinite;
         }
-        .push-text {
-            font-size: 15px; font-weight: 600; color: var(--text-primary);
-        }
-        .push-subtext {
-            font-size: 12px; color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
-        }
+        .push-text { font-size: 15px; font-weight: 600; color: var(--text-primary); }
+        .push-subtext { font-size: 12px; color: var(--text-muted); font-family: 'JetBrains Mono', monospace; }
 
-        /* ==================== HWID PANEL STİLLERİ ==================== */
-        .hwid-panel {
-            background: var(--bg-card);
-            border: 1px solid var(--border-primary);
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            margin-bottom: 30px;
-        }
-        .hwid-panel-header {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 20px 24px; border-bottom: 1px solid var(--border-primary);
-            background: linear-gradient(135deg, rgba(108,92,231,0.05), rgba(253,121,168,0.03));
-            flex-wrap: wrap; gap: 10px;
-        }
-        .hwid-stats-bar {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
-            border-bottom: 1px solid var(--border-primary);
-        }
-        .hwid-stat-item {
-            padding: 16px 24px; text-align: center;
-            border-right: 1px solid var(--border-primary);
-        }
-        .hwid-stat-item:last-child { border-right: none; }
-        .hwid-stat-label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 4px; }
-        .hwid-stat-value { font-size: 22px; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
-
+        /* ===== HWID PANEL ===== */
         .hwid-add-form {
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--border-primary);
+            padding: 20px 24px; border-bottom: 1px solid var(--border-primary);
             background: rgba(0,0,0,0.1);
         }
         .hwid-form-row {
-            display: grid;
-            grid-template-columns: 160px 1fr 180px 180px auto;
-            gap: 10px;
-            align-items: end;
+            display: grid; grid-template-columns: 1fr 1.5fr 140px 1fr auto;
+            gap: 10px; align-items: end;
         }
         .hwid-form-group { display: flex; flex-direction: column; gap: 5px; }
         .hwid-form-label {
@@ -688,24 +672,17 @@
         }
         .hwid-form-select:focus { border-color: var(--accent-primary); box-shadow: 0 0 0 3px var(--accent-glow); }
         .hwid-form-select option { background: var(--bg-secondary); }
-
         .btn-add-hwid {
-            padding: 9px 18px;
-            background: linear-gradient(135deg, var(--accent-primary), #7c6cf0);
-            border: none; border-radius: var(--radius-sm);
-            color: white; font-size: 12px; font-weight: 700;
-            cursor: pointer; transition: all 0.3s ease;
-            font-family: 'Inter', sans-serif; white-space: nowrap;
-            display: flex; align-items: center; gap: 6px; height: 38px;
+            padding: 9px 18px; background: linear-gradient(135deg, var(--accent-primary), #7c6cf0);
+            border: none; border-radius: var(--radius-sm); color: white;
+            font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif; white-space: nowrap; height: 38px;
         }
         .btn-add-hwid:hover { box-shadow: 0 4px 16px rgba(108,92,231,0.35); transform: translateY(-1px); }
-        .btn-add-hwid:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
-        /* HWID TABLOSU */
-        .hwid-table-wrapper { overflow-x: auto; }
         .hwid-table { width: 100%; border-collapse: collapse; }
         .hwid-table thead th {
-            padding: 11px 18px; text-align: left; font-size: 10px;
+            padding: 11px 16px; text-align: left; font-size: 10px;
             font-weight: 700; color: var(--text-muted); text-transform: uppercase;
             letter-spacing: 1px; border-bottom: 1px solid var(--border-primary);
             background: rgba(0,0,0,0.2); white-space: nowrap;
@@ -715,194 +692,86 @@
             transition: background 0.15s ease;
         }
         .hwid-table tbody tr:hover { background: var(--bg-card-hover); }
-        .hwid-table tbody tr:last-child { border-bottom: none; }
-        .hwid-table tbody td { padding: 13px 18px; font-size: 12px; vertical-align: middle; }
+        .hwid-table tbody td { padding: 12px 16px; font-size: 12px; vertical-align: middle; }
+        .hwid-table tbody tr.hwid-expired-row { opacity: 0.4; }
 
-        .hwid-name-cell {
-            display: flex; flex-direction: column; gap: 2px;
-        }
-        .hwid-username {
-            font-size: 13px; font-weight: 700; color: var(--text-primary);
-        }
-        .hwid-username-badge {
+        .hwid-user-badge {
             display: inline-flex; align-items: center; gap: 5px;
-            padding: 2px 8px; background: var(--accent-glow);
-            border: 1px solid rgba(108,92,231,0.2); border-radius: 4px;
-            font-size: 10px; font-weight: 700; color: var(--accent-secondary);
-            text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px;
-            width: fit-content;
+            font-weight: 700; color: var(--text-primary); font-size: 13px;
         }
-        .hwid-value-cell {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 11px; color: var(--warning);
-            background: rgba(253,203,110,0.05);
-            padding: 4px 8px; border-radius: 4px;
-            border: 1px solid rgba(253,203,110,0.1);
-            word-break: break-all; max-width: 220px;
-            display: inline-block;
+        .hwid-value-mono {
+            font-family: 'JetBrains Mono', monospace; font-size: 11px;
+            color: var(--warning); background: rgba(253,203,110,0.06);
+            padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(253,203,110,0.1);
+            word-break: break-all; max-width: 200px; display: inline-block;
         }
-        .hwid-note-cell {
-            font-size: 11px; color: var(--text-muted); max-width: 160px;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        .hwid-countdown-cell {
+            font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
         }
+        .hwid-countdown-cell.ok { color: var(--success); }
+        .hwid-countdown-cell.warn { color: var(--warning); }
+        .hwid-countdown-cell.crit { color: var(--danger); animation: blinkText 1s ease-in-out infinite; }
+        .hwid-countdown-cell.life { color: var(--lifetime); }
+        .hwid-countdown-cell.dead { color: var(--text-muted); }
+        @keyframes blinkText { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
 
-        /* Geri sayım */
-        .hwid-countdown {
-            display: flex; flex-direction: column; gap: 3px;
-        }
-        .hwid-countdown-main {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 12px; font-weight: 700; color: var(--success);
-            display: flex; align-items: center; gap: 5px;
-        }
-        .hwid-countdown-main.warning { color: var(--warning); }
-        .hwid-countdown-main.danger { color: var(--danger); animation: blinkText 1s ease-in-out infinite; }
-        .hwid-countdown-main.expired { color: var(--text-muted); }
-        .hwid-countdown-main.lifetime { color: var(--lifetime); }
-        @keyframes blinkText { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
-        .hwid-countdown-bar {
-            width: 100px; height: 3px; background: var(--border-primary);
-            border-radius: 2px; overflow: hidden;
-        }
-        .hwid-countdown-fill {
-            height: 100%; border-radius: 2px; transition: width 1s linear;
-        }
-        .hwid-countdown-sub {
-            font-size: 10px; color: var(--text-muted);
-            font-family: 'JetBrains Mono', monospace;
-        }
+        .hwid-bar-wrap { width: 80px; height: 4px; background: var(--border-primary); border-radius: 2px; margin-top: 4px; }
+        .hwid-bar-fill { height: 100%; border-radius: 2px; transition: width 1s linear; }
 
-        .hwid-status-badge {
-            display: inline-flex; align-items: center; gap: 5px;
-            padding: 4px 10px; border-radius: 4px; font-size: 10px; font-weight: 700;
+        .hwid-status-pill {
+            display: inline-flex; align-items: center; gap: 4px;
+            padding: 3px 10px; border-radius: 4px; font-size: 10px; font-weight: 700;
             text-transform: uppercase; letter-spacing: 0.5px;
         }
-        .hwid-status-active {
-            background: var(--success-bg); color: var(--success);
-            border: 1px solid rgba(0,184,148,0.2);
-        }
-        .hwid-status-expired {
-            background: var(--danger-bg); color: var(--danger);
-            border: 1px solid rgba(225,112,85,0.2);
-        }
-        .hwid-status-lifetime {
-            background: var(--lifetime-bg); color: var(--lifetime);
-            border: 1px solid rgba(253,121,168,0.2);
-        }
-        .hwid-status-dot {
-            width: 6px; height: 6px; border-radius: 50%;
-        }
-        .hwid-status-active .hwid-status-dot { background: var(--success); animation: pulse 2s ease-in-out infinite; }
-        .hwid-status-expired .hwid-status-dot { background: var(--danger); }
-        .hwid-status-lifetime .hwid-status-dot { background: var(--lifetime); animation: pulse 2s ease-in-out infinite; }
+        .hwid-status-pill.active { background: var(--success-bg); color: var(--success); border: 1px solid rgba(0,184,148,0.2); }
+        .hwid-status-pill.expired { background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(225,112,85,0.2); }
+        .hwid-status-pill.lifetime { background: var(--lifetime-bg); color: var(--lifetime); border: 1px solid rgba(253,121,168,0.2); }
+        .hwid-status-pill .dot { width: 5px; height: 5px; border-radius: 50%; }
+        .hwid-status-pill.active .dot { background: var(--success); }
+        .hwid-status-pill.expired .dot { background: var(--danger); }
+        .hwid-status-pill.lifetime .dot { background: var(--lifetime); }
 
-        .hwid-action-btn {
-            padding: 5px 10px; background: transparent;
-            border: 1px solid var(--border-primary); border-radius: 4px;
-            color: var(--text-muted); font-size: 11px; cursor: pointer;
-            transition: all 0.2s ease; font-family: 'Inter', sans-serif;
+        .hwid-action-btns { display: flex; gap: 4px; }
+        .hwid-act-btn {
+            padding: 4px 8px; background: transparent; border: 1px solid var(--border-primary);
+            border-radius: 4px; color: var(--text-muted); font-size: 11px; cursor: pointer;
+            transition: all 0.2s ease;
         }
-        .hwid-action-btn:hover { border-color: var(--danger); color: var(--danger); background: var(--danger-bg); }
-        .hwid-action-btn.copy { }
-        .hwid-action-btn.copy:hover { border-color: var(--accent-primary); color: var(--accent-secondary); background: var(--accent-glow); }
-        .hwid-actions { display: flex; gap: 5px; }
+        .hwid-act-btn:hover { border-color: var(--danger); color: var(--danger); background: var(--danger-bg); }
+        .hwid-act-btn.cp:hover { border-color: var(--accent-primary); color: var(--accent-secondary); background: var(--accent-glow); }
 
-        .hwid-empty {
-            text-align: center; padding: 50px 20px;
-        }
+        .hwid-empty { text-align: center; padding: 50px 20px; }
         .hwid-empty-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.25; }
         .hwid-empty-title { font-size: 14px; font-weight: 600; color: var(--text-secondary); margin-bottom: 4px; }
         .hwid-empty-desc { font-size: 12px; color: var(--text-muted); }
 
-        /* HWID MODAL - büyütülmüş */
-        .hwid-modal { max-width: 600px !important; }
-        .hwid-modal-info {
-            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 16px;
+        .hwid-stats-row {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 0;
+            border-bottom: 1px solid var(--border-primary);
         }
-        .hwid-modal-field {
+        .hwid-stat-item {
+            padding: 14px 20px; text-align: center;
+            border-right: 1px solid var(--border-primary);
+        }
+        .hwid-stat-item:last-child { border-right: none; }
+        .hwid-stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 4px; }
+        .hwid-stat-val { font-size: 20px; font-weight: 800; font-family: 'JetBrains Mono', monospace; }
+
+        /* HWID Kisi Üzerine Kurma Modal */
+        .modal-wide { max-width: 560px !important; }
+        .hwid-bind-info {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 14px;
+        }
+        .hwid-bind-field {
             background: var(--bg-input); border: 1px solid var(--border-primary);
             border-radius: var(--radius-sm); padding: 12px 14px;
         }
-        .hwid-modal-field-label {
-            font-size: 10px; font-weight: 700; color: var(--text-muted);
-            text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 5px;
-        }
-        .hwid-modal-field-value {
-            font-size: 13px; font-weight: 600; color: var(--text-primary);
-            font-family: 'JetBrains Mono', monospace; word-break: break-all;
-        }
+        .hwid-bind-field-label { font-size: 10px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 5px; }
+        .hwid-bind-field-value { font-size: 13px; font-weight: 600; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; word-break: break-all; }
 
-        /* HWID DOGRULAMA EKRANI */
-        .hwid-verify-screen {
-            position: fixed; inset: 0; z-index: 999998;
-            background: var(--bg-primary);
-            display: flex; align-items: center; justify-content: center;
-            flex-direction: column;
+        @media (max-width: 1200px) {
+            .stats-bar { grid-template-columns: repeat(3, 1fr); }
         }
-        .hwid-verify-screen.hidden { display: none; }
-        .hwid-verify-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-primary);
-            border-radius: var(--radius-lg);
-            padding: 40px;
-            width: 90%; max-width: 480px;
-            box-shadow: var(--shadow-lg);
-            text-align: center;
-        }
-        .hwid-verify-logo {
-            width: 64px; height: 64px;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            border-radius: var(--radius-md);
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 900; font-size: 28px; color: white;
-            margin: 0 auto 20px;
-            box-shadow: 0 8px 24px rgba(108,92,231,0.3);
-        }
-        .hwid-verify-title {
-            font-size: 22px; font-weight: 800; margin-bottom: 6px;
-            background: linear-gradient(135deg, var(--text-primary), var(--accent-secondary));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-        }
-        .hwid-verify-subtitle { font-size: 13px; color: var(--text-secondary); margin-bottom: 28px; line-height: 1.6; }
-        .hwid-verify-input-wrap { position: relative; margin-bottom: 14px; }
-        .hwid-verify-input {
-            width: 100%; padding: 13px 16px 13px 44px;
-            background: var(--bg-input); border: 1px solid var(--border-primary);
-            border-radius: var(--radius-sm); color: var(--text-primary);
-            font-size: 13px; font-family: 'JetBrains Mono', monospace;
-            outline: none; transition: all 0.2s ease; text-align: left;
-        }
-        .hwid-verify-input:focus { border-color: var(--accent-primary); box-shadow: 0 0 0 3px var(--accent-glow); }
-        .hwid-verify-input::placeholder { color: var(--text-muted); font-size: 12px; }
-        .hwid-verify-icon {
-            position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-            font-size: 16px; pointer-events: none;
-        }
-        .btn-hwid-verify {
-            width: 100%; padding: 13px 24px;
-            background: linear-gradient(135deg, var(--accent-primary), #7c6cf0);
-            border: none; border-radius: var(--radius-sm); color: white;
-            font-size: 14px; font-weight: 700; cursor: pointer;
-            transition: all 0.3s ease; font-family: 'Inter', sans-serif;
-            margin-bottom: 14px; display: flex; align-items: center; justify-content: center; gap: 8px;
-        }
-        .btn-hwid-verify:hover { box-shadow: 0 6px 24px rgba(108,92,231,0.35); transform: translateY(-1px); }
-        .btn-hwid-verify:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
-        .hwid-verify-error {
-            padding: 10px 14px; background: var(--danger-bg);
-            border: 1px solid rgba(225,112,85,0.2); border-radius: var(--radius-sm);
-            color: var(--danger); font-size: 12px; font-weight: 600;
-            margin-bottom: 12px; display: none;
-        }
-        .hwid-verify-error.show { display: block; animation: fadeSlideUp 0.3s ease; }
-        .hwid-verify-note {
-            font-size: 11px; color: var(--text-muted); line-height: 1.6;
-        }
-        .hwid-verify-note strong { color: var(--text-secondary); }
-
-        /* HWID DELETE MODAL */
-        #hwidDeleteModal .modal { max-width: 460px; }
-
         @media (max-width: 1024px) {
             .main-grid { grid-template-columns: 1fr; }
             .stats-bar { grid-template-columns: repeat(2, 1fr); }
@@ -918,8 +787,7 @@
             .search-box { min-width: auto; }
             .keys-table { display: block; overflow-x: auto; }
             .hwid-form-row { grid-template-columns: 1fr; }
-            .hwid-stats-bar { grid-template-columns: 1fr; }
-            .hwid-modal-info { grid-template-columns: 1fr; }
+            .hwid-table { display: block; overflow-x: auto; }
         }
         @media (max-width: 480px) {
             .app-container { padding: 0 14px; }
@@ -938,57 +806,15 @@
     <div class="bg-orb bg-orb-2"></div>
     <div class="bg-orb bg-orb-3"></div>
 
-    <!-- ==================== HWID DOĞRULAMA EKRANI ==================== -->
-    <div class="hwid-verify-screen" id="hwidVerifyScreen">
-        <div class="bg-grid" style="opacity:0.5;"></div>
-        <div class="bg-orb bg-orb-1" style="opacity:0.5;"></div>
-        <div class="bg-orb bg-orb-2" style="opacity:0.5;"></div>
-        <div class="hwid-verify-card">
-            <div class="hwid-verify-logo">B</div>
-            <div class="hwid-verify-title">Berlin Lite</div>
-            <div class="hwid-verify-subtitle">
-                Panel erişimi için HWID doğrulaması gereklidir.<br>
-                Kayıtlı HWID numaranızı girin.
-            </div>
-
-            <div class="hwid-verify-error" id="hwidVerifyError"></div>
-
-            <div class="hwid-verify-input-wrap">
-                <span class="hwid-verify-icon">🔒</span>
-                <input
-                    type="text"
-                    class="hwid-verify-input"
-                    id="hwidVerifyInput"
-                    placeholder="HWID numaranızı girin..."
-                    onkeydown="if(event.key==='Enter') verifyHWID()"
-                    autocomplete="off"
-                    spellcheck="false"
-                >
-            </div>
-
-            <button class="btn-hwid-verify" id="hwidVerifyBtn" onclick="verifyHWID()">
-                <span id="hwidVerifyBtnSpinner" class="btn-spinner" style="display:none;"></span>
-                <span>🔐 Doğrula & Giriş Yap</span>
-            </button>
-
-            <div class="hwid-verify-note">
-                <strong>Kayıtlı değil misiniz?</strong> Yönetici ile iletişime geçin.<br>
-                HWID doğrulama sistemi — Berlin Lite v3.2.1
-            </div>
-        </div>
-    </div>
-
-    <!-- Push Loading Overlay -->
     <div class="push-overlay" id="pushOverlay">
         <div class="push-loader"></div>
         <div class="push-text" id="pushText">GitHub'a gönderiliyor...</div>
         <div class="push-subtext" id="pushSubtext">bugrahena/BERL-N-KEYS</div>
     </div>
 
-    <!-- Toast -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- Delete Modal (Keys) -->
+    <!-- Delete Key Modal -->
     <div class="modal-overlay" id="deleteModal">
         <div class="modal">
             <div class="modal-header">
@@ -997,7 +823,7 @@
             </div>
             <div class="modal-body">
                 <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.7;">
-                    Bu key kalıcı olarak silinecek ve GitHub'dan kaldırılacak. Geri getirilemez.
+                    Bu key kalıcı olarak silinecek ve GitHub'dan kaldırılacak. İlişkili HWID kaydı da silinecek.
                 </p>
                 <div style="margin-top: 16px; padding: 12px; background: var(--danger-bg); border-radius: 8px; border: 1px solid rgba(225,112,85,0.15);">
                     <div style="font-size: 11px; color: var(--danger); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;">Silinecek Key</div>
@@ -1011,81 +837,61 @@
         </div>
     </div>
 
-    <!-- HWID Delete Modal -->
+    <!-- Delete HWID Modal -->
     <div class="modal-overlay" id="hwidDeleteModal">
-        <div class="modal hwid-modal">
+        <div class="modal modal-wide">
             <div class="modal-header">
                 <div class="modal-title">⚠️ HWID Silme Onayı</div>
-                <button class="modal-close" onclick="closeHwidModal()">&times;</button>
+                <button class="modal-close" onclick="closeHwidDeleteModal()">&times;</button>
             </div>
             <div class="modal-body">
-                <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.7;">
-                    Bu HWID kaydı kalıcı olarak silinecek. Kullanıcı bir daha bu panel'e erişemeyecek.
-                </p>
-                <div class="hwid-modal-info">
-                    <div class="hwid-modal-field">
-                        <div class="hwid-modal-field-label">Kullanıcı</div>
-                        <div class="hwid-modal-field-value" id="hwidDeleteName">—</div>
-                    </div>
-                    <div class="hwid-modal-field">
-                        <div class="hwid-modal-field-label">Süre</div>
-                        <div class="hwid-modal-field-value" id="hwidDeleteDuration">—</div>
-                    </div>
-                    <div class="hwid-modal-field" style="grid-column: span 2;">
-                        <div class="hwid-modal-field-label">HWID</div>
-                        <div class="hwid-modal-field-value" id="hwidDeleteValue" style="color: var(--warning);">—</div>
-                    </div>
+                <p style="color: var(--text-secondary); font-size: 14px; line-height: 1.7;">Bu HWID kaydı ve ilişkili key kalıcı olarak silinecek.</p>
+                <div class="hwid-bind-info">
+                    <div class="hwid-bind-field"><div class="hwid-bind-field-label">Kullanıcı</div><div class="hwid-bind-field-value" id="hwidDelName">—</div></div>
+                    <div class="hwid-bind-field"><div class="hwid-bind-field-label">Süre</div><div class="hwid-bind-field-value" id="hwidDelDur">—</div></div>
+                    <div class="hwid-bind-field" style="grid-column:span 2;"><div class="hwid-bind-field-label">HWID</div><div class="hwid-bind-field-value" id="hwidDelVal" style="color:var(--warning);">—</div></div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn-secondary" onclick="closeHwidModal()">Vazgeç</button>
-                <button class="btn-danger" onclick="confirmHwidDelete()">HWID'i Sil</button>
+                <button class="btn-secondary" onclick="closeHwidDeleteModal()">Vazgeç</button>
+                <button class="btn-danger" onclick="confirmHwidDelete()">Sil</button>
             </div>
         </div>
     </div>
 
-    <!-- HWID Add Modal (Key oluştururken HWID sorma) -->
-    <div class="modal-overlay" id="hwidKeyModal">
-        <div class="modal" style="max-width: 520px;">
+    <!-- Key Oluşturma: Kişi Üzerine Kur Modal -->
+    <div class="modal-overlay" id="hwidBindModal">
+        <div class="modal modal-wide">
             <div class="modal-header">
-                <div class="modal-title">🖥️ Key için HWID Bağla</div>
-                <button class="modal-close" onclick="closeHwidKeyModal()">&times;</button>
+                <div class="modal-title">🖥️ Bir Kişi Üzerine Kur</div>
+                <button class="modal-close" onclick="closeHwidBindModal()">&times;</button>
             </div>
             <div class="modal-body">
                 <p style="color: var(--text-secondary); font-size: 13px; line-height: 1.7; margin-bottom: 18px;">
-                    Bu key'i tek bir kişi üzerine kurmak için HWID bilgilerini girin.
-                    Key süresi dolduğunda HWID kaydı da otomatik silinecektir.
+                    Key'i bir kişinin HWID'sine bağlayabilirsiniz. Süre dolduğunda hem key hem HWID otomatik silinir.
                 </p>
-
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:14px;">
                     <div>
-                        <div class="hwid-form-label" style="margin-bottom: 6px;">Kullanıcı Adı</div>
-                        <input type="text" class="hwid-form-input" id="hwidKeyName" placeholder="örn: bugrahena" style="width:100%;">
+                        <div class="hwid-form-label" style="margin-bottom:6px;">İsim <span style="color:var(--danger);">*</span></div>
+                        <input type="text" class="hwid-form-input" id="bindName" placeholder="örn: bugrahena" style="width:100%;">
                     </div>
                     <div>
-                        <div class="hwid-form-label" style="margin-bottom: 6px;">Not (Opsiyonel)</div>
-                        <input type="text" class="hwid-form-input" id="hwidKeyNote" placeholder="örn: VIP müşteri" style="width:100%;">
+                        <div class="hwid-form-label" style="margin-bottom:6px;">Not (Opsiyonel)</div>
+                        <input type="text" class="hwid-form-input" id="bindNote" placeholder="örn: VIP müşteri" style="width:100%;">
                     </div>
                 </div>
-
-                <div style="margin-bottom: 14px;">
-                    <div class="hwid-form-label" style="margin-bottom: 6px;">HWID Numarası <span style="color:var(--danger);">*</span></div>
-                    <input type="text" class="hwid-form-input" id="hwidKeyHwid"
-                        placeholder="HWID numarasını buraya girin..."
-                        style="width:100%; font-size:12px;"
-                        autocomplete="off" spellcheck="false">
-                    <div style="font-size: 11px; color: var(--text-muted); margin-top: 5px;">
-                        💡 Kullanıcının cihaz HWID'ini girin. Süre dolduğunda bu HWID otomatik kaldırılır.
-                    </div>
+                <div style="margin-bottom:14px;">
+                    <div class="hwid-form-label" style="margin-bottom:6px;">HWID Numarası <span style="color:var(--danger);">*</span></div>
+                    <input type="text" class="hwid-form-input" id="bindHwid" placeholder="Kullanıcının HWID numarasını girin..." style="width:100%;" autocomplete="off" spellcheck="false">
+                    <div style="font-size:11px; color:var(--text-muted); margin-top:5px;">İsim büyük/küçük harf duyarlıdır.</div>
                 </div>
-
-                <div style="padding: 12px; background: var(--warning-bg); border: 1px solid rgba(253,203,110,0.15); border-radius: var(--radius-sm); font-size: 12px; color: var(--warning);">
-                    ⚡ Seçilen süre: <strong id="hwidKeyDurationDisplay">—</strong> — Key süresi dolduğunda HWID de otomatik silinir.
+                <div style="padding:12px; background:var(--warning-bg); border:1px solid rgba(253,203,110,0.15); border-radius:var(--radius-sm); font-size:12px; color:var(--warning);">
+                    ⚡ Seçilen süre: <strong id="bindDurationDisplay">—</strong> — Süre dolunca key + HWID otomatik silinir.
                 </div>
             </div>
             <div class="modal-footer">
-                <button class="btn-secondary" onclick="skipHwidAndGenerate()">HWID'siz Devam Et</button>
-                <button class="btn-danger" style="background: linear-gradient(135deg, var(--accent-primary), #7c6cf0);" onclick="confirmHwidAndGenerate()">🔐 Key Oluştur & HWID Kaydet</button>
+                <button class="btn-secondary" onclick="skipBindAndGenerate()">HWID'siz Oluştur</button>
+                <button class="btn-primary-modal" onclick="confirmBindAndGenerate()">🔐 Key Oluştur & HWID Kaydet</button>
             </div>
         </div>
     </div>
@@ -1114,76 +920,48 @@
         <!-- Header -->
         <div class="page-header">
             <h1>Key Management Panel</h1>
-            <p>Berlin Lite lisans keylerini oluşturun ve GitHub reposuna otomatik push edin. Süresi dolan keyler otomatik silinir.</p>
+            <p>Berlin Lite lisans keylerini oluşturun, HWID bağlayın ve GitHub reposuna otomatik push edin. Süresi dolan keyler ve HWID'ler otomatik silinir.</p>
         </div>
 
         <!-- GitHub Connection Setup -->
         <div class="setup-panel" id="setupPanel">
-            <div class="setup-title">
-                <span>⚙️</span> GitHub API Bağlantısı
-            </div>
+            <div class="setup-title"><span>⚙️</span> GitHub API Bağlantısı</div>
             <div class="setup-desc">
-                Key'lerin GitHub'a push edilebilmesi için Personal Access Token gereklidir.
+                Key'lerin ve HWID'lerin GitHub'a push edilebilmesi için Personal Access Token gereklidir.
                 <strong>Settings → Developer settings → Personal access tokens → Tokens (classic)</strong> yolundan
-                <code style="background: var(--bg-input); padding: 2px 6px; border-radius: 4px; font-size: 12px;">repo</code> yetkili token oluşturun.
+                <code style="background:var(--bg-input); padding:2px 6px; border-radius:4px; font-size:12px;">repo</code> yetkili token oluşturun.
             </div>
             <div class="setup-grid">
                 <div class="setup-group">
                     <label class="setup-label">GitHub Token</label>
-                    <input type="password" class="setup-input" id="githubToken"
-                        placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
-                        value="">
+                    <input type="password" class="setup-input" id="githubToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" value="">
                 </div>
                 <div class="setup-group">
                     <label class="setup-label">Repo (owner/repo)</label>
-                    <input type="text" class="setup-input" id="githubRepo"
-                        placeholder="bugrahena/BERL-N-KEYS"
-                        value="bugrahena/BERL-N-KEYS">
+                    <input type="text" class="setup-input" id="githubRepo" placeholder="bugrahena/BERL-N-KEYS" value="bugrahena/BERL-N-KEYS">
                 </div>
-                <button class="btn-connect" id="connectBtn" onclick="testConnection()">
-                    Bağlan
-                </button>
+                <button class="btn-connect" id="connectBtn" onclick="testConnection()">Bağlan</button>
             </div>
             <div id="connectionStatus" style="display:none;"></div>
         </div>
 
-        <!-- Dashboard -->
+        <!-- ===== DASHBOARD ===== -->
         <div class="section-content active" id="section-dashboard">
-            <!-- Stats -->
             <div class="stats-bar">
-                <div class="stat-card">
-                    <div class="stat-label">Toplam Key</div>
-                    <div class="stat-value accent" id="statTotal">0</div>
-                    <div class="stat-change">↗ Tüm zamanlar</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Aktif Key</div>
-                    <div class="stat-value success" id="statActive">0</div>
-                    <div class="stat-change">● Şu an aktif</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Süresi Dolan</div>
-                    <div class="stat-value danger" id="statExpired">0</div>
-                    <div class="stat-change">↘ Otomatik silindi</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-label">Lifetime Key</div>
-                    <div class="stat-value warning" id="statLifetime">0</div>
-                    <div class="stat-change">∞ Süresiz</div>
-                </div>
+                <div class="stat-card"><div class="stat-label">Toplam Key</div><div class="stat-value accent" id="statTotal">0</div><div class="stat-change">↗ Tüm zamanlar</div></div>
+                <div class="stat-card"><div class="stat-label">Aktif Key</div><div class="stat-value success" id="statActive">0</div><div class="stat-change">● Şu an aktif</div></div>
+                <div class="stat-card"><div class="stat-label">Süresi Dolan</div><div class="stat-value danger" id="statExpired">0</div><div class="stat-change">↘ Otomatik silindi</div></div>
+                <div class="stat-card"><div class="stat-label">Lifetime Key</div><div class="stat-value warning" id="statLifetime">0</div><div class="stat-change">∞ Süresiz</div></div>
+                <div class="stat-card"><div class="stat-label">Kayıtlı HWID</div><div class="stat-value info" id="statHwid">0</div><div class="stat-change">🖥️ Aktif cihaz</div></div>
             </div>
 
-            <!-- Main Grid -->
             <div class="main-grid">
                 <!-- Generator -->
                 <div class="panel">
                     <div class="panel-header">
                         <div class="panel-header-left">
                             <div class="panel-icon">🔑</div>
-                            <div>
-                                <div class="panel-title">Key Oluştur</div>
-                                <div class="panel-subtitle">Yeni lisans anahtarı üret</div>
-                            </div>
+                            <div><div class="panel-title">Key Oluştur</div><div class="panel-subtitle">Yeni lisans anahtarı üret</div></div>
                         </div>
                         <span class="panel-badge badge-purple">Generator</span>
                     </div>
@@ -1191,38 +969,18 @@
                         <div class="form-group">
                             <label class="form-label">Süre Tipi <span class="required">*</span></label>
                             <div class="duration-grid">
-                                <div class="duration-option" onclick="selectDuration(this, 'single')">
-                                    <div class="duration-name">Tek Kullanım</div>
-                                    <div class="duration-desc">1 kez giriş</div>
-                                </div>
-                                <div class="duration-option" onclick="selectDuration(this, '5h')">
-                                    <div class="duration-name">5 Saat</div>
-                                    <div class="duration-desc">5 hours</div>
-                                </div>
-                                <div class="duration-option" onclick="selectDuration(this, '1d')">
-                                    <div class="duration-name">1 Gün</div>
-                                    <div class="duration-desc">24 hours</div>
-                                </div>
-                                <div class="duration-option selected" onclick="selectDuration(this, '7d')">
-                                    <div class="duration-name">7 Gün</div>
-                                    <div class="duration-desc">168 hours</div>
-                                </div>
-                                <div class="duration-option" onclick="selectDuration(this, '30d')">
-                                    <div class="duration-name">30 Gün</div>
-                                    <div class="duration-desc">720 hours</div>
-                                </div>
-                                <div class="duration-option lifetime-opt" onclick="selectDuration(this, 'lifetime')">
-                                    <div class="duration-name">♾️ Lifetime</div>
-                                    <div class="duration-desc">süresiz</div>
-                                </div>
+                                <div class="duration-option" onclick="selectDuration(this,'single')"><div class="duration-name">Tek Kullanım</div><div class="duration-desc">1 kez giriş</div></div>
+                                <div class="duration-option" onclick="selectDuration(this,'5h')"><div class="duration-name">5 Saat</div><div class="duration-desc">5 hours</div></div>
+                                <div class="duration-option" onclick="selectDuration(this,'1d')"><div class="duration-name">1 Gün</div><div class="duration-desc">24 hours</div></div>
+                                <div class="duration-option selected" onclick="selectDuration(this,'7d')"><div class="duration-name">7 Gün</div><div class="duration-desc">168 hours</div></div>
+                                <div class="duration-option" onclick="selectDuration(this,'30d')"><div class="duration-name">30 Gün</div><div class="duration-desc">720 hours</div></div>
+                                <div class="duration-option lifetime-opt" onclick="selectDuration(this,'lifetime')"><div class="duration-name">♾️ Lifetime</div><div class="duration-desc">süresiz</div></div>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label class="form-label">Not (Opsiyonel)</label>
                             <input type="text" class="form-input" id="keyNote" placeholder="Kullanıcı adı veya not..." maxlength="50">
                         </div>
-
                         <div class="form-group">
                             <label class="form-label">Key Formatı</label>
                             <select class="form-select" id="keyPrefix">
@@ -1231,17 +989,11 @@
                                 <option value="LITE">LITE-XXXX-XXXX-XXXX</option>
                             </select>
                         </div>
-
-                        <button class="btn-generate" id="generateBtn" onclick="openHwidKeyModal()">
+                        <button class="btn-generate" id="generateBtn" onclick="openBindModal()">
                             <span class="btn-spinner"></span>
                             <span class="btn-text">🔐 Key Oluştur & GitHub'a Push Et</span>
                         </button>
-
-                        <div class="form-note">
-                            <span>ℹ️</span>
-                            <span>Key oluşturulduğunda HWID bağlanabilir. Süre dolduğunda hem key hem HWID otomatik silinir ve repo güncellenir.</span>
-                        </div>
-
+                        <div class="form-note"><span>ℹ️</span><span>Key oluşturulduğunda bir kişi üzerine kurabilirsiniz. Süre dolunca hem key hem HWID otomatik silinir.</span></div>
                         <div class="key-output" id="keyOutput">
                             <div class="key-result">
                                 <div class="key-result-header">
@@ -1252,21 +1004,14 @@
                                 <div class="key-meta">
                                     <div class="key-meta-item"><strong>Süre:</strong> <span id="generatedKeyDuration"></span></div>
                                     <div class="key-meta-item"><strong>Tarih:</strong> <span id="generatedKeyDate"></span></div>
+                                    <div class="key-meta-item"><strong>HWID:</strong> <span id="generatedKeyHwid">—</span></div>
                                 </div>
                             </div>
                             <div class="github-push-info">
-                                <div class="info-row">
-                                    <span class="info-label">Repository</span>
-                                    <span class="info-value" id="pushRepo">—</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-label">Dosya</span>
-                                    <span class="info-value">BERLİN KEYS</span>
-                                </div>
-                                <div class="info-row">
-                                    <span class="info-label">Durum</span>
-                                    <span class="info-value" style="color: var(--success);" id="pushStatus">✓ Pushed</span>
-                                </div>
+                                <div class="info-row"><span class="info-label">Repository</span><span class="info-value" id="pushRepo">—</span></div>
+                                <div class="info-row"><span class="info-label">Key Dosyası</span><span class="info-value">BERLİN KEYS</span></div>
+                                <div class="info-row"><span class="info-label">HWID Dosyası</span><span class="info-value">HWİD</span></div>
+                                <div class="info-row"><span class="info-label">Durum</span><span class="info-value" style="color:var(--success);" id="pushStatus">✓ Pushed</span></div>
                             </div>
                         </div>
                     </div>
@@ -1277,212 +1022,118 @@
                     <div class="panel-header">
                         <div class="panel-header-left">
                             <div class="panel-icon">📋</div>
-                            <div>
-                                <div class="panel-title">Aktif Keyler</div>
-                                <div class="panel-subtitle">Gerçek zamanlı takip</div>
-                            </div>
+                            <div><div class="panel-title">Aktif Keyler</div><div class="panel-subtitle">Gerçek zamanlı takip</div></div>
                         </div>
-                        <div class="bulk-actions">
-                            <button class="btn-sm btn-outline-danger" onclick="clearExpired()">🗑️ Expired Sil</button>
-                        </div>
+                        <div class="bulk-actions"><button class="btn-sm btn-outline-danger" onclick="clearExpired()">🗑️ Expired Sil</button></div>
                     </div>
-
                     <div class="table-controls">
-                        <div class="search-box">
-                            <span>🔍</span>
-                            <input type="text" placeholder="Key veya not ile ara..." id="searchInput" oninput="filterKeys()">
-                        </div>
+                        <div class="search-box"><span>🔍</span><input type="text" placeholder="Key veya not ile ara..." id="searchInput" oninput="filterKeys()"></div>
                         <div class="table-filters">
-                            <button class="filter-btn active" onclick="setFilter('all', this)">Tümü</button>
-                            <button class="filter-btn" onclick="setFilter('active', this)">Aktif</button>
-                            <button class="filter-btn" onclick="setFilter('expired', this)">Expired</button>
-                            <button class="filter-btn" onclick="setFilter('lifetime', this)">Lifetime</button>
+                            <button class="filter-btn active" onclick="setFilter('all',this)">Tümü</button>
+                            <button class="filter-btn" onclick="setFilter('active',this)">Aktif</button>
+                            <button class="filter-btn" onclick="setFilter('expired',this)">Expired</button>
+                            <button class="filter-btn" onclick="setFilter('lifetime',this)">Lifetime</button>
                         </div>
                     </div>
-
                     <div id="keysTableContainer">
                         <table class="keys-table">
-                            <thead>
-                                <tr>
-                                    <th>Key</th>
-                                    <th>Tür</th>
-                                    <th>Durum</th>
-                                    <th>Kalan Süre</th>
-                                    <th>Not</th>
-                                    <th>İşlem</th>
-                                </tr>
-                            </thead>
+                            <thead><tr><th>Key</th><th>Tür</th><th>Durum</th><th>Kalan Süre</th><th>HWID</th><th>Not</th><th>İşlem</th></tr></thead>
                             <tbody id="keysTableBody"></tbody>
                         </table>
                     </div>
-
-                    <div class="empty-state" id="emptyState" style="display: none;">
-                        <div class="empty-icon">🔑</div>
-                        <div class="empty-title">Henüz key oluşturulmadı</div>
-                        <div class="empty-desc">Sol panelden yeni bir key oluşturun.</div>
-                    </div>
-
-                    <div class="table-footer">
-                        <div class="table-info" id="tableInfo">0 key</div>
-                        <div></div>
-                    </div>
+                    <div class="empty-state" id="emptyState" style="display:none;"><div class="empty-icon">🔑</div><div class="empty-title">Henüz key oluşturulmadı</div><div class="empty-desc">Sol panelden yeni bir key oluşturun.</div></div>
+                    <div class="table-footer"><div class="table-info" id="tableInfo">0 key</div><div></div></div>
                 </div>
             </div>
         </div>
 
-        <!-- ==================== HWID YÖNETİMİ SAYFASI ==================== -->
+        <!-- ===== HWID YÖNETİMİ ===== -->
         <div class="section-content" id="section-hwid">
-            <div class="hwid-panel">
-                <!-- Header -->
-                <div class="hwid-panel-header">
+            <div class="panel" style="margin-bottom:40px;">
+                <div class="panel-header">
                     <div class="panel-header-left">
                         <div class="panel-icon" style="font-size:18px;">🖥️</div>
-                        <div>
-                            <div class="panel-title">HWID Yönetimi</div>
-                            <div class="panel-subtitle">Hardware ID kayıtları & geri sayım takibi</div>
-                        </div>
+                        <div><div class="panel-title">HWID Yönetimi</div><div class="panel-subtitle">Hardware ID kayıtları & geri sayım</div></div>
                     </div>
-                    <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
-                        <span class="panel-badge badge-orange" id="hwidTotalBadge">0 Kayıt</span>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                        <span class="panel-badge badge-cyan" id="hwidBadge">0 Aktif</span>
                         <button class="btn-sm btn-outline-danger" onclick="clearExpiredHwids()">🗑️ Expired Sil</button>
-                        <button class="btn-sm btn-outline-accent" onclick="pushHwidToGithub()">📤 GitHub'a Push</button>
+                        <button class="btn-sm btn-outline-accent" onclick="pushHwidToGithub()">📤 HWID Push</button>
                     </div>
                 </div>
 
-                <!-- İstatistikler -->
-                <div class="hwid-stats-bar">
-                    <div class="hwid-stat-item">
-                        <div class="hwid-stat-label">Toplam HWID</div>
-                        <div class="hwid-stat-value accent" id="hwidStatTotal">0</div>
-                    </div>
-                    <div class="hwid-stat-item">
-                        <div class="hwid-stat-label">Aktif</div>
-                        <div class="hwid-stat-value success" id="hwidStatActive">0</div>
-                    </div>
-                    <div class="hwid-stat-item">
-                        <div class="hwid-stat-label">Süresi Dolmuş</div>
-                        <div class="hwid-stat-value danger" id="hwidStatExpired">0</div>
-                    </div>
+                <div class="hwid-stats-row">
+                    <div class="hwid-stat-item"><div class="hwid-stat-label">Toplam</div><div class="hwid-stat-val accent" id="hwidStatTotal">0</div></div>
+                    <div class="hwid-stat-item"><div class="hwid-stat-label">Aktif</div><div class="hwid-stat-val success" id="hwidStatActive">0</div></div>
+                    <div class="hwid-stat-item"><div class="hwid-stat-label">Expired</div><div class="hwid-stat-val danger" id="hwidStatExpired">0</div></div>
                 </div>
 
-                <!-- HWID Ekleme Formu -->
                 <div class="hwid-add-form">
-                    <div style="font-size:12px; font-weight:700; color:var(--text-secondary); margin-bottom:12px; display:flex; align-items:center; gap:8px;">
-                        <span>➕</span> Yeni HWID Kaydı Ekle
-                    </div>
+                    <div style="font-size:12px; font-weight:700; color:var(--text-secondary); margin-bottom:12px;">➕ Manuel HWID Ekle</div>
                     <div class="hwid-form-row">
-                        <div class="hwid-form-group">
-                            <label class="hwid-form-label">Kullanıcı Adı <span style="color:var(--danger);">*</span></label>
-                            <input type="text" class="hwid-form-input" id="hwidFormName" placeholder="örn: bugrahena">
-                        </div>
-                        <div class="hwid-form-group">
-                            <label class="hwid-form-label">HWID Numarası <span style="color:var(--danger);">*</span></label>
-                            <input type="text" class="hwid-form-input" id="hwidFormHwid"
-                                placeholder="HWID numarasını girin..."
-                                autocomplete="off" spellcheck="false">
-                        </div>
-                        <div class="hwid-form-group">
-                            <label class="hwid-form-label">Süre</label>
+                        <div class="hwid-form-group"><label class="hwid-form-label">İsim *</label><input type="text" class="hwid-form-input" id="hwidFormName" placeholder="bugrahena"></div>
+                        <div class="hwid-form-group"><label class="hwid-form-label">HWID Numarası *</label><input type="text" class="hwid-form-input" id="hwidFormHwid" placeholder="HWID girin..." autocomplete="off" spellcheck="false"></div>
+                        <div class="hwid-form-group"><label class="hwid-form-label">Süre</label>
                             <select class="hwid-form-select" id="hwidFormDuration">
-                                <option value="5h">5 Saat</option>
-                                <option value="1d">1 Gün</option>
-                                <option value="7d" selected>7 Gün</option>
-                                <option value="30d">30 Gün</option>
-                                <option value="lifetime">Lifetime ♾️</option>
+                                <option value="5h">5 Saat</option><option value="1d">1 Gün</option><option value="7d" selected>7 Gün</option><option value="30d">30 Gün</option><option value="lifetime">Lifetime ♾️</option>
                             </select>
                         </div>
-                        <div class="hwid-form-group">
-                            <label class="hwid-form-label">Not (Opsiyonel)</label>
-                            <input type="text" class="hwid-form-input" id="hwidFormNote" placeholder="örn: VIP kullanıcı">
-                        </div>
-                        <button class="btn-add-hwid" onclick="addHwid()">
-                            ➕ Ekle
-                        </button>
+                        <div class="hwid-form-group"><label class="hwid-form-label">Not</label><input type="text" class="hwid-form-input" id="hwidFormNote" placeholder="VIP kullanıcı..."></div>
+                        <button class="btn-add-hwid" onclick="manualAddHwid()">➕ Ekle</button>
                     </div>
                 </div>
 
-                <!-- HWID Tablosu -->
-                <div class="hwid-table-wrapper" id="hwidTableWrapper">
+                <div style="overflow-x:auto;" id="hwidTableWrap">
                     <table class="hwid-table">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Kullanıcı</th>
-                                <th>HWID Numarası</th>
-                                <th>Süre</th>
-                                <th>Geri Sayım</th>
-                                <th>Bitiş Tarihi</th>
-                                <th>Not</th>
-                                <th>Durum</th>
-                                <th>İşlem</th>
-                            </tr>
-                        </thead>
+                        <thead><tr><th>#</th><th>İsim</th><th>HWID Numarası</th><th>Kalan Süre</th><th>Not</th><th>Durum</th><th>İşlem</th></tr></thead>
                         <tbody id="hwidTableBody"></tbody>
                     </table>
                 </div>
-
-                <div class="hwid-empty" id="hwidEmptyState" style="display:none;">
-                    <div class="hwid-empty-icon">🖥️</div>
-                    <div class="hwid-empty-title">Henüz HWID kaydı yok</div>
-                    <div class="hwid-empty-desc">Yukarıdaki formu kullanarak yeni HWID kaydı ekleyin.</div>
-                </div>
-
-                <div style="padding: 12px 18px; border-top: 1px solid var(--border-primary); display:flex; justify-content:space-between; align-items:center;">
+                <div class="hwid-empty" id="hwidEmpty" style="display:none;"><div class="hwid-empty-icon">🖥️</div><div class="hwid-empty-title">Henüz HWID kaydı yok</div><div class="hwid-empty-desc">Key oluştururken kişi üzerine kurun veya yukarıdan manuel ekleyin.</div></div>
+                <div style="padding:12px 18px; border-top:1px solid var(--border-primary); display:flex; justify-content:space-between;">
                     <div style="font-size:11px; color:var(--text-muted);" id="hwidTableInfo">0 kayıt</div>
-                    <div style="font-size:11px; color:var(--text-muted);">Süresi dolan HWID'ler otomatik silinir</div>
+                    <div style="font-size:11px; color:var(--text-muted);">Süre dolunca otomatik silinir & GitHub güncellenir</div>
                 </div>
             </div>
 
-            <!-- HWID Dosyası Önizleme -->
-            <div class="panel" style="margin-bottom: 40px;">
+            <!-- HWID Dosya Önizleme -->
+            <div class="panel" style="margin-bottom:40px;">
                 <div class="panel-header">
                     <div class="panel-header-left">
                         <div class="panel-icon">📄</div>
-                        <div>
-                            <div class="panel-title">HWİD Dosyası Önizleme</div>
-                            <div class="panel-subtitle">bugrahena/BERL-N-KEYS → HWİD</div>
-                        </div>
+                        <div><div class="panel-title">HWİD Dosyası Önizleme</div><div class="panel-subtitle">bugrahena/BERL-N-KEYS → HWİD</div></div>
                     </div>
-                    <span class="panel-badge badge-green">Önizleme</span>
+                    <span class="panel-badge badge-green">Preview</span>
                 </div>
                 <div class="panel-body">
-                    <div style="background: var(--bg-input); border-radius: var(--radius-sm); padding: 20px; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 2.0; max-height: 400px; overflow-y: auto; border: 1px solid var(--border-primary); white-space: pre-wrap;" id="hwidFilePreview">
-                        HWID verisi bekleniyor...
-                    </div>
+                    <div style="background:var(--bg-input); border-radius:var(--radius-sm); padding:20px; font-family:'JetBrains Mono',monospace; font-size:12px; line-height:2; max-height:400px; overflow-y:auto; border:1px solid var(--border-primary); white-space:pre-wrap;" id="hwidPreview">Henüz HWID kaydı yok.</div>
                 </div>
             </div>
         </div>
 
-        <!-- GitHub Preview -->
+        <!-- ===== GITHUB PREVIEW ===== -->
         <div class="section-content" id="section-keys">
-            <div class="panel" style="margin-bottom: 40px;">
+            <div class="panel" style="margin-bottom:40px;">
                 <div class="panel-header">
                     <div class="panel-header-left">
                         <div class="panel-icon">📦</div>
-                        <div>
-                            <div class="panel-title">GitHub Dosya Önizleme</div>
-                            <div class="panel-subtitle" id="previewRepoName">bugrahena/BERL-N-KEYS → BERLİN KEYS</div>
-                        </div>
+                        <div><div class="panel-title">GitHub Dosya Önizleme</div><div class="panel-subtitle" id="previewRepoName">bugrahena/BERL-N-KEYS → BERLİN KEYS</div></div>
                     </div>
                     <span class="panel-badge badge-green" id="syncBadge">Synced</span>
                 </div>
                 <div class="panel-body">
-                    <div style="background: var(--bg-input); border-radius: var(--radius-sm); padding: 20px; font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 2.2; max-height: 500px; overflow-y: auto; border: 1px solid var(--border-primary); white-space: pre-wrap;" id="githubPreview">
-                        Bağlantı bekleniyor...
-                    </div>
-                    <div style="margin-top: 16px; display: flex; gap: 10px;">
+                    <div style="background:var(--bg-input); border-radius:var(--radius-sm); padding:20px; font-family:'JetBrains Mono',monospace; font-size:13px; line-height:2.2; max-height:500px; overflow-y:auto; border:1px solid var(--border-primary); white-space:pre-wrap;" id="githubPreview">Bağlantı bekleniyor...</div>
+                    <div style="margin-top:16px; display:flex; gap:10px;">
                         <button class="btn-sm btn-outline-accent" onclick="fetchFromGitHub()">🔄 GitHub'dan Çek</button>
-                        <button class="btn-sm btn-outline-accent" onclick="pushToGitHub()">📤 Zorla Push Et</button>
+                        <button class="btn-sm btn-outline-accent" onclick="pushToGitHub()">📤 Key Push</button>
+                        <button class="btn-sm btn-outline-success" onclick="pushHwidToGithub()">📤 HWID Push</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Footer -->
         <footer class="app-footer">
-            <div class="footer-text">
-                Berlin Lite Key Management &copy; 2024 — Built by <a href="https://github.com/bugrahena" target="_blank">bugrahena</a>
-            </div>
+            <div class="footer-text">Berlin Lite Key Management &copy; 2024 — Built by <a href="https://github.com/bugrahena" target="_blank">bugrahena</a></div>
             <div class="footer-links">
                 <a class="footer-link" href="https://github.com/bugrahena/BERL-N-KEYS" target="_blank">GitHub Repo</a>
                 <a class="footer-link" href="#">Dökümantasyon</a>
@@ -1490,1458 +1141,487 @@
         </footer>
     </div>
 
-    <script>
-        // ==================== CONFIG ====================
-        const GITHUB_FILE_PATH = 'BERLİN KEYS';
-        const GITHUB_FILE_PATH_ENCODED = 'BERL%C4%B0N%20KEYS';
-        const GITHUB_HWID_FILE_PATH = 'HWİD';
-        const GITHUB_HWID_FILE_PATH_ENCODED = 'HW%C4%B0D';
-        const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1532294643192954990/gxokE1aPvILgni6IcxK5agzQkt8DmV0NjeoAEGt7LPq7kdNxBXR4w4e-a_U9KOO8MgLj';
+<script>
+// ==================== CONFIG ====================
+const GITHUB_KEY_PATH_ENCODED = 'BERL%C4%B0N%20KEYS';
+const GITHUB_HWID_PATH_ENCODED = 'HW%C4%B0D';
+const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1532294643192954990/gxokE1aPvILgni6IcxK5agzQkt8DmV0NjeoAEGt7LPq7kdNxBXR4w4e-a_U9KOO8MgLj';
 
-        // ==================== STATE ====================
-        let keys = JSON.parse(localStorage.getItem('berlin_keys') || '[]');
-        let hwids = JSON.parse(localStorage.getItem('berlin_hwids') || '[]');
-        let selectedDuration = '7d';
-        let currentFilter = 'all';
-        let deleteTargetId = null;
-        let hwidDeleteTargetId = null;
-        let githubConnected = false;
-        let fileSHA = null;
-        let hwidFileSHA = null;
-        let hwidCountdownInterval = null;
-        let pendingKeyGeneration = false;
+// ==================== STATE ====================
+let keys = JSON.parse(localStorage.getItem('berlin_keys') || '[]');
+let hwidList = JSON.parse(localStorage.getItem('berlin_hwids') || '[]');
+let selectedDuration = '7d';
+let currentFilter = 'all';
+let deleteTargetId = null;
+let hwidDeleteTargetId = null;
+let githubConnected = false;
+let keySHA = null;
+let hwidSHA = null;
 
-        // ==================== ÖRNEK HWID VERİLERİ ====================
-        // İlk çalıştırmada örnek HWID ekle
-        function initSampleHwids() {
-            if (hwids.length === 0) {
-                const now = Date.now();
-                hwids = [
-                    {
-                        id: 'hwid_sample_1',
-                        username: 'bugrahena',
-                        hwid: 'BERLIN-HWID-A1B2-C3D4-E5F6-G7H8',
-                        duration: '7d',
-                        durationLabel: '7 Gün',
-                        createdAt: now,
-                        expiresAt: now + (7 * 24 * 3600000),
-                        note: 'Admin kullanıcı — Geliştirici',
-                        status: 'active'
-                    },
-                    {
-                        id: 'hwid_sample_2',
-                        username: 'testuser',
-                        hwid: 'BERLIN-HWID-X9Y8-Z7W6-V5U4-T3S2',
-                        duration: '1d',
-                        durationLabel: '1 Gün',
-                        createdAt: now - 3600000,
-                        expiresAt: now + (23 * 3600000),
-                        note: 'Test hesabı',
-                        status: 'active'
-                    }
-                ];
-                saveHwids();
-            }
+const durationMap = {
+    'single':   { label: 'Tek Kullanım', ms: 0,          cls: 'type-single' },
+    '5h':       { label: '5 Saat',       ms: 5*3600000,   cls: 'type-5h' },
+    '1d':       { label: '1 Gün',        ms: 86400000,    cls: 'type-1d' },
+    '7d':       { label: '7 Gün',        ms: 604800000,   cls: 'type-7d' },
+    '30d':      { label: '30 Gün',       ms: 2592000000,  cls: 'type-30d' },
+    'lifetime': { label: 'Lifetime',     ms: -1,          cls: 'type-lifetime' }
+};
+
+// ==================== HELPERS ====================
+function getToken() { return document.getElementById('githubToken').value.trim(); }
+function getRepo() { return document.getElementById('githubRepo').value.trim(); }
+function saveKeys() { localStorage.setItem('berlin_keys', JSON.stringify(keys)); }
+function saveHwids() { localStorage.setItem('berlin_hwids', JSON.stringify(hwidList)); }
+function esc(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function pad(n) { return String(n).padStart(2,'0'); }
+function formatDate(ts) { const d=new Date(ts); return `${pad(d.getDate())}.${pad(d.getMonth()+1)}.${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`; }
+function genSeg(n) { const c='ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; let r=''; const a=new Uint32Array(n); crypto.getRandomValues(a); for(let i=0;i<n;i++) r+=c[a[i]%c.length]; return r; }
+function genKeyStr() { const p=document.getElementById('keyPrefix').value; return p==='BRL'?`${p}-${genSeg(4)}-${genSeg(4)}-${genSeg(4)}-${genSeg(4)}`:`${p}-${genSeg(4)}-${genSeg(4)}-${genSeg(4)}`; }
+
+// ==================== TOAST ====================
+function showToast(type, msg) {
+    const c=document.getElementById('toastContainer');
+    const icons={success:'✅',error:'❌',info:'ℹ️'};
+    const t=document.createElement('div'); t.className=`toast ${type}`;
+    t.innerHTML=`<span>${icons[type]}</span><span>${msg}</span>`;
+    c.appendChild(t);
+    setTimeout(()=>{ t.style.animation='toastOut 0.3s ease forwards'; setTimeout(()=>t.remove(),300); },4000);
+}
+
+// ==================== PUSH OVERLAY ====================
+function showPush(t,s) { document.getElementById('pushText').textContent=t; document.getElementById('pushSubtext').textContent=s; document.getElementById('pushOverlay').classList.add('show'); }
+function hidePush() { document.getElementById('pushOverlay').classList.remove('show'); }
+
+// ==================== DISCORD WEBHOOK ====================
+async function webhook(type, data) {
+    try {
+        const now = new Date();
+        let embed = { footer:{text:'Berlin Lite Panel'}, timestamp:now.toISOString() };
+        if (type==='key_created') {
+            embed.title='🔑 Yeni Key Oluşturuldu'; embed.color=0x6c5ce7;
+            embed.fields=[
+                {name:'🗝️ Key',value:'```'+data.key+'```',inline:false},
+                {name:'⏱️ Süre',value:data.duration,inline:true},
+                {name:'📝 Not',value:data.note||'—',inline:true},
+                {name:'🖥️ HWID',value:data.hwid||'Bağlı değil',inline:false},
+                {name:'👤 İsim',value:data.username||'—',inline:true}
+            ];
+        } else if (type==='key_expired') {
+            embed.title='⌛ Key Süresi Doldu — Otomatik Silindi'; embed.color=0xfdcb6e;
+            embed.fields=[{name:'🗝️ Key',value:'```'+data.key+'```',inline:false},{name:'⏱️ Süre',value:data.duration,inline:true}];
+        } else if (type==='key_deleted') {
+            embed.title='🗑️ Key Silindi'; embed.color=0xe17055;
+            embed.fields=[{name:'🗝️ Key',value:'```'+data.key+'```',inline:false}];
+        } else if (type==='hwid_added') {
+            embed.title='🖥️ HWID Kaydı Eklendi'; embed.color=0x00b894;
+            embed.fields=[
+                {name:'👤 İsim',value:`**${data.username}**`,inline:true},
+                {name:'⏱️ Süre',value:data.duration,inline:true},
+                {name:'🔢 HWID',value:'`'+data.hwid+'`',inline:false},
+                {name:'📝 Not',value:data.note||'—',inline:true}
+            ];
+        } else if (type==='hwid_expired') {
+            embed.title='⌛ HWID Süresi Doldu — Otomatik Kaldırıldı'; embed.color=0xfdcb6e;
+            embed.fields=[{name:'👤 İsim',value:`**${data.username}**`,inline:true},{name:'🔢 HWID',value:'`'+data.hwid+'`',inline:false}];
+        } else if (type==='hwid_deleted') {
+            embed.title='🗑️ HWID Silindi'; embed.color=0xe17055;
+            embed.fields=[{name:'👤 İsim',value:`**${data.username}**`,inline:true},{name:'🔢 HWID',value:'`'+data.hwid+'`',inline:false}];
         }
+        await fetch(DISCORD_WEBHOOK,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:'Berlin Lite Panel',embeds:[embed]})});
+    } catch(e) { console.warn('Webhook error:',e); }
+}
 
-        // ==================== HWID DOĞRULAMA ====================
-        // Doğrulanmış HWID'ler (lokalde kayıtlı olanlar)
-        function getVerifiedHwids() {
-            return hwids.filter(h => h.status === 'active');
-        }
+// ==================== GITHUB CONNECTION ====================
+async function testConnection() {
+    const token=getToken(), repo=getRepo();
+    if(!token||!repo) { showToast('error','Token ve Repo doldurun.'); return; }
+    const btn=document.getElementById('connectBtn'); btn.textContent='Bağlanıyor...'; btn.disabled=true;
+    try {
+        const res=await fetch(`https://api.github.com/repos/${repo}`,{headers:{'Authorization':`token ${token}`,'Accept':'application/vnd.github.v3+json'}});
+        if(!res.ok) throw new Error(`HTTP ${res.status}`);
+        const d=await res.json(); githubConnected=true;
+        localStorage.setItem('berlin_gh_token',token); localStorage.setItem('berlin_gh_repo',repo);
+        document.getElementById('connectionStatus').style.display='block';
+        document.getElementById('connectionStatus').className='connection-status ok';
+        document.getElementById('connectionStatus').innerHTML=`✅ <strong>${d.full_name}</strong> bağlandı!`;
+        document.getElementById('connectionLabel').textContent='GitHub Bağlı';
+        document.getElementById('setupPanel').classList.add('connected');
+        btn.textContent='✓ Bağlı';
+        showToast('success',`GitHub bağlandı: ${d.full_name}`);
+        await fetchKeyFile(); await fetchHwidFile();
+    } catch(e) {
+        document.getElementById('connectionStatus').style.display='block';
+        document.getElementById('connectionStatus').className='connection-status err';
+        document.getElementById('connectionStatus').innerHTML=`❌ Hata: ${e.message}`;
+        btn.textContent='Bağlan'; btn.disabled=false; githubConnected=false;
+        showToast('error',`Bağlantı hatası: ${e.message}`);
+    }
+}
 
-        function verifyHWID() {
-            const input = document.getElementById('hwidVerifyInput').value.trim();
-            const errorEl = document.getElementById('hwidVerifyError');
-            const btn = document.getElementById('hwidVerifyBtn');
+async function fetchKeyFile() {
+    try {
+        const res=await fetch(`https://api.github.com/repos/${getRepo()}/contents/${GITHUB_KEY_PATH_ENCODED}`,{headers:{'Authorization':`token ${getToken()}`,'Accept':'application/vnd.github.v3+json'}});
+        if(res.ok) { const d=await res.json(); keySHA=d.sha; document.getElementById('githubPreview').textContent=atob(d.content.replace(/\n/g,'')); }
+        else keySHA=null;
+    } catch(e) { console.error(e); }
+}
 
-            if (!input) {
-                showVerifyError('HWID numarasını girmeniz gerekiyor.');
-                return;
-            }
+async function fetchHwidFile() {
+    try {
+        const res=await fetch(`https://api.github.com/repos/${getRepo()}/contents/${GITHUB_HWID_PATH_ENCODED}`,{headers:{'Authorization':`token ${getToken()}`,'Accept':'application/vnd.github.v3+json'}});
+        if(res.ok) { const d=await res.json(); hwidSHA=d.sha; document.getElementById('hwidPreview').textContent=atob(d.content.replace(/\n/g,'')); }
+        else hwidSHA=null;
+    } catch(e) { console.error(e); }
+}
 
-            btn.disabled = true;
-            document.getElementById('hwidVerifyBtnSpinner').style.display = 'inline-block';
+async function fetchFromGitHub() { if(!githubConnected){showToast('error','Önce bağlanın.');return;} await fetchKeyFile(); showToast('success','GitHub\'dan çekildi.'); }
 
-            // Simüle gecikme (gerçekçilik için)
-            setTimeout(() => {
-                const now = Date.now();
-                const matched = hwids.find(h => {
-                    if (h.hwid.toLowerCase() !== input.toLowerCase()) return false;
-                    if (h.status === 'expired') return false;
-                    if (h.expiresAt !== -1 && now > h.expiresAt) return false;
-                    return true;
-                });
+// ==================== BUILD FILE CONTENT ====================
+function buildKeyContent() {
+    const now=formatDate(Date.now()), active=keys.filter(k=>k.status==='active');
+    let c=`═══════════════════════════════════════════════\n       BERLİN LITE — LİSANS ANAHTARLARI\n═══════════════════════════════════════════════\n\nSon Güncelleme: ${now}\nToplam Aktif Key: ${active.length}\n\n───────────────────────────────────────────────\n\n`;
+    if(!active.length) c+='Aktif key bulunmuyor.\n';
+    else active.forEach(k=>{
+        let exp=k.expiresAt===-1?'Süresiz (Lifetime)':k.expiresAt===0?'Tek Kullanım':formatDate(k.expiresAt);
+        const note=k.note&&k.note!=='—'?` | Not: ${k.note}`:'';
+        const hwid=k.boundHwid?` | HWID: ${k.boundHwid}`:'';
+        c+=`${k.durationLabel} : ${k.key}\n  └─ Bitiş: ${exp}${note}${hwid}\n\n`;
+    });
+    c+=`───────────────────────────────────────────────\nBerlin Lite Key Management System\ngithub.com/bugrahena/BERL-N-KEYS\n`;
+    return c;
+}
 
-                if (matched) {
-                    // Başarılı giriş
-                    errorEl.classList.remove('show');
-                    document.getElementById('hwidVerifyScreen').classList.add('hidden');
-                    localStorage.setItem('berlin_hwid_session', JSON.stringify({
-                        hwid: matched.hwid,
-                        username: matched.username,
-                        sessionStart: now,
-                        sessionExpiry: matched.expiresAt
-                    }));
-                    showToast('success', `✅ Hoşgeldin, ${matched.username}! Giriş başarılı.`);
-                    sendDiscordWebhook('hwid_login', {
-                        username: matched.username,
-                        hwid: matched.hwid,
-                        duration: matched.durationLabel,
-                        remaining: getHwidRemaining(matched).text
-                    });
-                } else {
-                    // Başarısız giriş
-                    showVerifyError('❌ Geçersiz veya süresi dolmuş HWID. Lütfen yönetici ile iletişime geçin.');
-                    sendDiscordWebhook('hwid_failed', { hwid: input, time: formatDate(now) });
-                }
+function buildHwidContent() {
+    const now=formatDate(Date.now()), active=hwidList.filter(h=>h.status==='active');
+    let c=`╔═══════════════════════════════════════════════════╗\n║        BERLİN LITE — HWID KAYITLARI              ║\n╚═══════════════════════════════════════════════════╝\n\nSon Güncelleme : ${now}\nToplam Aktif   : ${active.length} kayıt\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
+    if(!active.length) c+='  Aktif HWID kaydı bulunmuyor.\n\n';
+    else active.forEach((h,i)=>{
+        const rem=getHwidRemaining(h);
+        const exp=h.expiresAt===-1?'Süresiz (Lifetime)':formatDate(h.expiresAt);
+        const note=h.note&&h.note!=='—'?h.note:'Belirtilmemiş';
+        c+=`${h.username}\n`;
+        c+=`${h.hwid}\n`;
+        c+=`${rem.text}\n`;
+        c+=`${note}\n\n\n`;
+    });
+    c+=`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\nBerlin Lite HWID Management System\ngithub.com/bugrahena/BERL-N-KEYS\n`;
+    return c;
+}
 
-                btn.disabled = false;
-                document.getElementById('hwidVerifyBtnSpinner').style.display = 'none';
-            }, 800);
-        }
+// ==================== PUSH TO GITHUB ====================
+async function pushToGitHub() {
+    if(!githubConnected){showToast('error','Önce bağlanın.');return;}
+    showPush('Key dosyası push ediliyor...',getRepo());
+    try {
+        try { const r=await fetch(`https://api.github.com/repos/${getRepo()}/contents/${GITHUB_KEY_PATH_ENCODED}`,{headers:{'Authorization':`token ${getToken()}`,'Accept':'application/vnd.github.v3+json'}}); if(r.ok){const d=await r.json();keySHA=d.sha;}else keySHA=null; } catch(e){keySHA=null;}
+        const content=buildKeyContent(), b64=btoa(unescape(encodeURIComponent(content)));
+        const body={message:`🔑 Key güncelleme — ${formatDate(Date.now())}`,content:b64,branch:'main'};
+        if(keySHA) body.sha=keySHA;
+        const r=await fetch(`https://api.github.com/repos/${getRepo()}/contents/${GITHUB_KEY_PATH_ENCODED}`,{method:'PUT',headers:{'Authorization':`token ${getToken()}`,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
+        if(!r.ok){const e=await r.json();throw new Error(e.message||`HTTP ${r.status}`);}
+        const d=await r.json(); keySHA=d.content.sha;
+        hidePush(); showToast('success','✅ Key dosyası push edildi!');
+        document.getElementById('githubPreview').textContent=content;
+    } catch(e) { hidePush(); showToast('error',`Push hatası: ${e.message}`); }
+}
 
-        function showVerifyError(msg) {
-            const el = document.getElementById('hwidVerifyError');
-            el.textContent = msg;
-            el.classList.add('show');
-        }
+async function pushHwidToGithub() {
+    if(!githubConnected){showToast('error','Önce bağlanın.');return;}
+    showPush('HWID dosyası push ediliyor...',getRepo()+' → HWİD');
+    try {
+        try { const r=await fetch(`https://api.github.com/repos/${getRepo()}/contents/${GITHUB_HWID_PATH_ENCODED}`,{headers:{'Authorization':`token ${getToken()}`,'Accept':'application/vnd.github.v3+json'}}); if(r.ok){const d=await r.json();hwidSHA=d.sha;}else hwidSHA=null; } catch(e){hwidSHA=null;}
+        const content=buildHwidContent(), b64=btoa(unescape(encodeURIComponent(content)));
+        const body={message:`🖥️ HWID güncelleme — ${formatDate(Date.now())}`,content:b64,branch:'main'};
+        if(hwidSHA) body.sha=hwidSHA;
+        const r=await fetch(`https://api.github.com/repos/${getRepo()}/contents/${GITHUB_HWID_PATH_ENCODED}`,{method:'PUT',headers:{'Authorization':`token ${getToken()}`,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
+        if(!r.ok){const e=await r.json();throw new Error(e.message||`HTTP ${r.status}`);}
+        const d=await r.json(); hwidSHA=d.content.sha;
+        hidePush(); showToast('success','✅ HWID dosyası push edildi!');
+        document.getElementById('hwidPreview').textContent=content;
+    } catch(e) { hidePush(); showToast('error',`HWID push hatası: ${e.message}`); }
+}
 
-        function checkSession() {
-            const session = localStorage.getItem('berlin_hwid_session');
-            if (!session) return false;
+// ==================== KEY GENERATION ====================
+function openBindModal() {
+    if(!githubConnected){showToast('error','Önce GitHub bağlantısını kurun!');return;}
+    document.getElementById('bindDurationDisplay').textContent=durationMap[selectedDuration].label;
+    document.getElementById('bindName').value='';
+    document.getElementById('bindHwid').value='';
+    document.getElementById('bindNote').value='';
+    document.getElementById('hwidBindModal').classList.add('show');
+}
+function closeHwidBindModal() { document.getElementById('hwidBindModal').classList.remove('show'); }
 
-            const parsed = JSON.parse(session);
-            const now = Date.now();
+async function skipBindAndGenerate() { closeHwidBindModal(); await doGenerate(null,null,null); }
 
-            // Lifetime ise her zaman geçerli
-            if (parsed.sessionExpiry === -1) return true;
+async function confirmBindAndGenerate() {
+    const name=document.getElementById('bindName').value.trim();
+    const hwid=document.getElementById('bindHwid').value.trim();
+    const note=document.getElementById('bindNote').value.trim();
+    if(!name){showToast('error','İsim gereklidir.');return;}
+    if(!hwid){showToast('error','HWID numarası gereklidir.');return;}
+    if(hwidList.find(h=>h.hwid===hwid&&h.status==='active')){showToast('error','Bu HWID zaten kayıtlı!');return;}
+    closeHwidBindModal();
+    await doGenerate(hwid, name, note);
+}
 
-            // Süre kontrol
-            if (parsed.sessionExpiry > 0 && now > parsed.sessionExpiry) {
-                localStorage.removeItem('berlin_hwid_session');
-                return false;
-            }
+async function doGenerate(hwid, username, hwidNote) {
+    const btn=document.getElementById('generateBtn'); btn.classList.add('loading'); btn.disabled=true;
+    const keyStr=genKeyStr(), note=document.getElementById('keyNote').value.trim(), now=Date.now(), dur=durationMap[selectedDuration];
+    const keyObj={
+        id:'key_'+now+'_'+Math.random().toString(36).substr(2,6),
+        key:keyStr, duration:selectedDuration, durationLabel:dur.label,
+        createdAt:now, expiresAt:dur.ms===-1?-1:(dur.ms===0?0:now+dur.ms),
+        note:note||'—', status:'active', boundHwid:hwid||null, boundUsername:username||null
+    };
+    keys.unshift(keyObj); saveKeys(); renderKeys(); updateStats();
 
-            return true;
-        }
-
-        // ==================== GITHUB API ====================
-        function getToken() { return document.getElementById('githubToken').value.trim(); }
-        function getRepo() { return document.getElementById('githubRepo').value.trim(); }
-
-        async function testConnection() {
-            const token = getToken();
-            const repo = getRepo();
-
-            if (!token || !repo) {
-                showToast('error', 'Token ve Repo alanlarını doldurun.');
-                return;
-            }
-
-            const btn = document.getElementById('connectBtn');
-            btn.textContent = 'Bağlanıyor...';
-            btn.disabled = true;
-
-            try {
-                const res = await fetch(`https://api.github.com/repos/${repo}`, {
-                    headers: {
-                        'Authorization': `token ${token}`,
-                        'Accept': 'application/vnd.github.v3+json'
-                    }
-                });
-
-                if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-                const data = await res.json();
-                githubConnected = true;
-
-                localStorage.setItem('berlin_gh_token', token);
-                localStorage.setItem('berlin_gh_repo', repo);
-
-                document.getElementById('connectionStatus').style.display = 'block';
-                document.getElementById('connectionStatus').className = 'connection-status ok';
-                document.getElementById('connectionStatus').innerHTML = `✅ <strong>${data.full_name}</strong> reposuna başarıyla bağlandı!`;
-
-                document.getElementById('connectionLabel').textContent = 'GitHub Bağlı';
-                document.getElementById('setupPanel').classList.add('connected');
-
-                btn.textContent = '✓ Bağlı';
-
-                showToast('success', `GitHub bağlantısı başarılı: ${data.full_name}`);
-
-                await fetchFileFromGitHub();
-                await fetchHwidFromGitHub();
-
-                sendDiscordWebhook('github_connected', { repo: data.full_name, time: formatDate(Date.now()) });
-
-            } catch (err) {
-                document.getElementById('connectionStatus').style.display = 'block';
-                document.getElementById('connectionStatus').className = 'connection-status err';
-                document.getElementById('connectionStatus').innerHTML = `❌ Bağlantı hatası: ${err.message}`;
-
-                btn.textContent = 'Bağlan';
-                btn.disabled = false;
-                githubConnected = false;
-                showToast('error', `GitHub bağlantı hatası: ${err.message}`);
-            }
-        }
-
-        async function fetchFileFromGitHub() {
-            const token = getToken();
-            const repo = getRepo();
-            if (!token || !repo) return;
-
-            try {
-                const res = await fetch(`https://api.github.com/repos/${repo}/contents/${GITHUB_FILE_PATH_ENCODED}`, {
-                    headers: {
-                        'Authorization': `token ${token}`,
-                        'Accept': 'application/vnd.github.v3+json'
-                    }
-                });
-
-                if (res.ok) {
-                    const data = await res.json();
-                    fileSHA = data.sha;
-                    const content = atob(data.content.replace(/\n/g, ''));
-                    document.getElementById('githubPreview').textContent = content;
-                    parseKeysFromContent(content);
-                } else if (res.status === 404) {
-                    fileSHA = null;
-                }
-            } catch (err) {
-                console.error('Fetch file error:', err);
-            }
-        }
-
-        // ==================== HWID GITHUB ====================
-        async function fetchHwidFromGitHub() {
-            const token = getToken();
-            const repo = getRepo();
-            if (!token || !repo) return;
-
-            try {
-                const res = await fetch(`https://api.github.com/repos/${repo}/contents/${GITHUB_HWID_FILE_PATH_ENCODED}`, {
-                    headers: {
-                        'Authorization': `token ${token}`,
-                        'Accept': 'application/vnd.github.v3+json'
-                    }
-                });
-
-                if (res.ok) {
-                    const data = await res.json();
-                    hwidFileSHA = data.sha;
-                    const content = atob(data.content.replace(/\n/g, ''));
-                    document.getElementById('hwidFilePreview').textContent = content;
-                    showToast('info', 'HWID dosyası GitHub\'dan çekildi.');
-                } else if (res.status === 404) {
-                    hwidFileSHA = null;
-                }
-            } catch (err) {
-                console.error('Fetch HWID file error:', err);
-            }
-        }
-
-        function buildHwidFileContent() {
-            const now = new Date();
-            const activeHwids = hwids.filter(h => h.status === 'active');
-            const dateStr = formatDate(now.getTime());
-
-            let content = `╔═══════════════════════════════════════════════════╗\n`;
-            content += `║        BERLİN LITE — HWID KAYITLARI              ║\n`;
-            content += `╚═══════════════════════════════════════════════════╝\n\n`;
-            content += `Son Güncelleme : ${dateStr}\n`;
-            content += `Toplam Aktif   : ${activeHwids.length} kayıt\n\n`;
-            content += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
-
-            if (activeHwids.length === 0) {
-                content += `  Aktif HWID kaydı bulunmuyor.\n\n`;
-            } else {
-                activeHwids.forEach((h, index) => {
-                    const remaining = getHwidRemaining(h);
-                    let expiryText = h.expiresAt === -1 ? 'Süresiz (Lifetime)' : formatDate(h.expiresAt);
-                    const note = h.note && h.note !== '—' ? h.note : 'Belirtilmemiş';
-
-                    content += `  ${String(index + 1).padStart(2, '0')}. ${h.username.toUpperCase()}\n`;
-                    content += `  ├─ HWID     : ${h.hwid}\n`;
-                    content += `  ├─ Süre     : ${h.durationLabel}\n`;
-                    content += `  ├─ Kalan    : ${remaining.text}\n`;
-                    content += `  ├─ Bitiş    : ${expiryText}\n`;
-                    content += `  └─ Not      : ${note}\n\n`;
-                });
-            }
-
-            content += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-            content += `Berlin Lite HWID Management System\n`;
-            content += `github.com/bugrahena/BERL-N-KEYS\n`;
-
-            return content;
-        }
-
-        async function pushHwidToGithub() {
-            const token = getToken();
-            const repo = getRepo();
-
-            if (!token || !repo) {
-                showToast('error', 'Önce GitHub bağlantısını kurun.');
-                return;
-            }
-
-            showPushOverlay('HWID dosyası push ediliyor...', `${repo} → HWİD`);
-
-            try {
-                let currentSHA = hwidFileSHA;
-
-                try {
-                    const getRes = await fetch(`https://api.github.com/repos/${repo}/contents/${GITHUB_HWID_FILE_PATH_ENCODED}`, {
-                        headers: {
-                            'Authorization': `token ${token}`,
-                            'Accept': 'application/vnd.github.v3+json'
-                        }
-                    });
-                    if (getRes.ok) {
-                        const getData = await getRes.json();
-                        currentSHA = getData.sha;
-                    } else {
-                        currentSHA = null;
-                    }
-                } catch (e) { currentSHA = null; }
-
-                const content = buildHwidFileContent();
-                const contentBase64 = btoa(unescape(encodeURIComponent(content)));
-
-                const body = {
-                    message: `🖥️ HWID güncelleme — ${formatDate(Date.now())}`,
-                    content: contentBase64,
-                    branch: 'main'
-                };
-
-                if (currentSHA) body.sha = currentSHA;
-
-                const putRes = await fetch(`https://api.github.com/repos/${repo}/contents/${GITHUB_HWID_FILE_PATH_ENCODED}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${token}`,
-                        'Accept': 'application/vnd.github.v3+json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(body)
-                });
-
-                if (!putRes.ok) {
-                    const errData = await putRes.json();
-                    throw new Error(errData.message || `HTTP ${putRes.status}`);
-                }
-
-                const putData = await putRes.json();
-                hwidFileSHA = putData.content.sha;
-
-                hidePushOverlay();
-                showToast('success', '✅ HWID dosyası GitHub\'a push edildi!');
-                document.getElementById('hwidFilePreview').textContent = content;
-
-            } catch (err) {
-                hidePushOverlay();
-                showToast('error', `HWID push hatası: ${err.message}`);
-            }
-        }
-
-        // ==================== DISCORD WEBHOOK ====================
-        async function sendDiscordWebhook(eventType, data) {
-            try {
-                let embed = {};
-                const now = new Date();
-                const timeStr = formatDate(now.getTime());
-
-                if (eventType === 'key_created') {
-                    embed = {
-                        title: '🔑 Yeni Key Oluşturuldu',
-                        color: 0x6c5ce7,
-                        fields: [
-                            { name: '🗝️ Key', value: `\`\`\`${data.key}\`\`\``, inline: false },
-                            { name: '⏱️ Süre', value: data.duration, inline: true },
-                            { name: '📝 Not', value: data.note || '—', inline: true },
-                            { name: '🖥️ HWID', value: data.hwid || '—', inline: false },
-                            { name: '📅 Tarih', value: timeStr, inline: true }
-                        ],
-                        footer: { text: 'Berlin Lite Key Management' },
-                        timestamp: now.toISOString()
-                    };
-                } else if (eventType === 'key_deleted') {
-                    embed = {
-                        title: '🗑️ Key Silindi',
-                        color: 0xe17055,
-                        fields: [
-                            { name: '🗝️ Silinen Key', value: `\`\`\`${data.key}\`\`\``, inline: false },
-                            { name: '📅 Tarih', value: timeStr, inline: true }
-                        ],
-                        footer: { text: 'Berlin Lite Key Management' },
-                        timestamp: now.toISOString()
-                    };
-                } else if (eventType === 'key_expired') {
-                    embed = {
-                        title: '⌛ Key Süresi Doldu — Otomatik Silindi',
-                        color: 0xfdcb6e,
-                        fields: [
-                            { name: '🗝️ Key', value: `\`\`\`${data.key}\`\`\``, inline: false },
-                            { name: '⏱️ Süre', value: data.duration, inline: true },
-                            { name: '📅 Tarih', value: timeStr, inline: true }
-                        ],
-                        footer: { text: 'Berlin Lite Key Management' },
-                        timestamp: now.toISOString()
-                    };
-                } else if (eventType === 'hwid_added') {
-                    embed = {
-                        title: '🖥️ Yeni HWID Kaydı Eklendi',
-                        color: 0x00b894,
-                        fields: [
-                            { name: '👤 Kullanıcı', value: `**${data.username}**`, inline: true },
-                            { name: '⏱️ Süre', value: data.duration, inline: true },
-                            { name: '🔢 HWID', value: `\`${data.hwid}\``, inline: false },
-                            { name: '📝 Not', value: data.note || '—', inline: true },
-                            { name: '📅 Bitiş', value: data.expiry, inline: true }
-                        ],
-                        footer: { text: 'Berlin Lite HWID Management' },
-                        timestamp: now.toISOString()
-                    };
-                } else if (eventType === 'hwid_deleted') {
-                    embed = {
-                        title: '🗑️ HWID Kaydı Silindi',
-                        color: 0xe17055,
-                        fields: [
-                            { name: '👤 Kullanıcı', value: `**${data.username}**`, inline: true },
-                            { name: '🔢 HWID', value: `\`${data.hwid}\``, inline: false },
-                            { name: '📅 Tarih', value: timeStr, inline: true }
-                        ],
-                        footer: { text: 'Berlin Lite HWID Management' },
-                        timestamp: now.toISOString()
-                    };
-                } else if (eventType === 'hwid_expired') {
-                    embed = {
-                        title: '⌛ HWID Süresi Doldu — Otomatik Kaldırıldı',
-                        color: 0xfdcb6e,
-                        fields: [
-                            { name: '👤 Kullanıcı', value: `**${data.username}**`, inline: true },
-                            { name: '⏱️ Süre', value: data.duration, inline: true },
-                            { name: '🔢 HWID', value: `\`${data.hwid}\``, inline: false }
-                        ],
-                        footer: { text: 'Berlin Lite HWID Management' },
-                        timestamp: now.toISOString()
-                    };
-                } else if (eventType === 'hwid_login') {
-                    embed = {
-                        title: '✅ HWID Doğrulama Başarılı',
-                        color: 0x00b894,
-                        fields: [
-                            { name: '👤 Kullanıcı', value: `**${data.username}**`, inline: true },
-                            { name: '⏱️ Kalan Süre', value: data.remaining, inline: true },
-                            { name: '🔢 HWID', value: `\`${data.hwid}\``, inline: false }
-                        ],
-                        footer: { text: 'Berlin Lite HWID Login' },
-                        timestamp: now.toISOString()
-                    };
-                } else if (eventType === 'hwid_failed') {
-                    embed = {
-                        title: '❌ Başarısız HWID Girişimi',
-                        color: 0xe17055,
-                        fields: [
-                            { name: '🔢 Girilen HWID', value: `\`${data.hwid}\``, inline: false },
-                            { name: '📅 Tarih', value: data.time, inline: true }
-                        ],
-                        footer: { text: 'Berlin Lite Security Alert' },
-                        timestamp: now.toISOString()
-                    };
-                } else if (eventType === 'github_connected') {
-                    embed = {
-                        title: '🔗 GitHub Bağlantısı Kuruldu',
-                        color: 0xa29bfe,
-                        fields: [
-                            { name: '📦 Repo', value: data.repo, inline: true },
-                            { name: '📅 Tarih', value: data.time, inline: true }
-                        ],
-                        footer: { text: 'Berlin Lite Key Management' },
-                        timestamp: now.toISOString()
-                    };
-                }
-
-                await fetch(DISCORD_WEBHOOK, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        username: 'Berlin Lite Panel',
-                        avatar_url: 'https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png',
-                        embeds: [embed]
-                    })
-                });
-
-            } catch (err) {
-                console.warn('Discord webhook hatası:', err);
-            }
-        }
-
-        // ==================== HWID YÖNETİMİ ====================
-        const hwidDurationMap = {
-            '5h':     { label: '5 Saat',   ms: 5 * 3600000 },
-            '1d':     { label: '1 Gün',    ms: 86400000 },
-            '7d':     { label: '7 Gün',    ms: 604800000 },
-            '30d':    { label: '30 Gün',   ms: 2592000000 },
-            'lifetime': { label: 'Lifetime', ms: -1 }
+    // HWID kaydet
+    if(hwid && username) {
+        const hwidExp = dur.ms===-1 ? -1 : (dur.ms===0 ? now+3600000 : now+dur.ms);
+        const hObj={
+            id:'hwid_'+now+'_'+Math.random().toString(36).substr(2,6),
+            username:username, hwid:hwid, duration:selectedDuration, durationLabel:dur.label,
+            createdAt:now, expiresAt:hwidExp, note:hwidNote||`Key: ${keyStr.substring(0,15)}...`,
+            status:'active', linkedKeyId:keyObj.id
         };
+        hwidList.unshift(hObj); saveHwids(); renderHwids(); updateHwidStats();
+        webhook('hwid_added',{username,hwid,duration:dur.label,note:hwidNote||'—'});
+        if(githubConnected) await pushHwidToGithub();
+    }
 
-        function saveHwids() {
-            localStorage.setItem('berlin_hwids', JSON.stringify(hwids));
-        }
+    // UI
+    document.getElementById('generatedKeyValue').textContent=keyStr;
+    document.getElementById('generatedKeyDuration').textContent=dur.label;
+    document.getElementById('generatedKeyDate').textContent=formatDate(now);
+    document.getElementById('generatedKeyHwid').textContent=hwid||'Bağlı değil';
+    document.getElementById('pushRepo').textContent=getRepo();
+    document.getElementById('keyNote').value='';
 
-        function addHwid() {
-            const name = document.getElementById('hwidFormName').value.trim();
-            const hwidVal = document.getElementById('hwidFormHwid').value.trim();
-            const duration = document.getElementById('hwidFormDuration').value;
-            const note = document.getElementById('hwidFormNote').value.trim();
+    webhook('key_created',{key:keyStr,duration:dur.label,note:note||'—',hwid:hwid,username:username});
+    await pushToGitHub();
+    document.getElementById('keyOutput').classList.add('show');
+    btn.classList.remove('loading'); btn.disabled=false;
+}
 
-            if (!name) { showToast('error', 'Kullanıcı adı gereklidir.'); return; }
-            if (!hwidVal) { showToast('error', 'HWID numarası gereklidir.'); return; }
+// ==================== KEY MANAGEMENT ====================
+function selectDuration(el,d) { document.querySelectorAll('.duration-option').forEach(o=>o.classList.remove('selected')); el.classList.add('selected'); selectedDuration=d; }
 
-            // Aynı HWID var mı kontrol
-            if (hwids.find(h => h.hwid.toLowerCase() === hwidVal.toLowerCase())) {
-                showToast('error', 'Bu HWID zaten kayıtlı!');
-                return;
-            }
-
-            const now = Date.now();
-            const durInfo = hwidDurationMap[duration];
-            const expiresAt = durInfo.ms === -1 ? -1 : now + durInfo.ms;
-
-            const hwidObj = {
-                id: 'hwid_' + now + '_' + Math.random().toString(36).substr(2, 6),
-                username: name,
-                hwid: hwidVal,
-                duration: duration,
-                durationLabel: durInfo.label,
-                createdAt: now,
-                expiresAt: expiresAt,
-                note: note || '—',
-                status: 'active'
-            };
-
-            hwids.unshift(hwidObj);
-            saveHwids();
-            renderHwidTable();
-            updateHwidStats();
-
-            // Formu temizle
-            document.getElementById('hwidFormName').value = '';
-            document.getElementById('hwidFormHwid').value = '';
-            document.getElementById('hwidFormNote').value = '';
-
-            showToast('success', `✅ ${name} için HWID kaydı eklendi.`);
-
-            const expiryText = expiresAt === -1 ? 'Süresiz' : formatDate(expiresAt);
-            sendDiscordWebhook('hwid_added', {
-                username: name,
-                hwid: hwidVal,
-                duration: durInfo.label,
-                note: note || '—',
-                expiry: expiryText
-            });
-
-            if (githubConnected) {
-                pushHwidToGithub();
+function checkExpiry() {
+    const now=Date.now(); let changed=false;
+    keys.forEach(k=>{
+        if(k.status==='active'&&k.expiresAt>0&&now>=k.expiresAt) {
+            k.status='expired'; changed=true;
+            webhook('key_expired',{key:k.key,duration:k.durationLabel});
+            // İlişkili HWID'i de expire et
+            if(k.boundHwid) {
+                const h=hwidList.find(x=>x.linkedKeyId===k.id&&x.status==='active');
+                if(h) { h.status='expired'; webhook('hwid_expired',{username:h.username,hwid:h.hwid}); }
             }
         }
-
-        function deleteHwid(id) {
-            hwidDeleteTargetId = id;
-            const h = hwids.find(x => x.id === id);
-            if (h) {
-                document.getElementById('hwidDeleteName').textContent = h.username;
-                document.getElementById('hwidDeleteDuration').textContent = h.durationLabel;
-                document.getElementById('hwidDeleteValue').textContent = h.hwid;
-                document.getElementById('hwidDeleteModal').classList.add('show');
-            }
+    });
+    // HWID expiry
+    hwidList.forEach(h=>{
+        if(h.status==='active'&&h.expiresAt>0&&h.expiresAt!==-1&&now>=h.expiresAt) {
+            h.status='expired'; changed=true;
+            webhook('hwid_expired',{username:h.username,hwid:h.hwid});
         }
-
-        async function confirmHwidDelete() {
-            if (!hwidDeleteTargetId) return;
-
-            const h = hwids.find(x => x.id === hwidDeleteTargetId);
-            hwids = hwids.filter(x => x.id !== hwidDeleteTargetId);
-            saveHwids();
-            renderHwidTable();
-            updateHwidStats();
-            closeHwidModal();
-            hwidDeleteTargetId = null;
-
-            showToast('success', 'HWID kaydı silindi.');
-
-            if (h) {
-                sendDiscordWebhook('hwid_deleted', { username: h.username, hwid: h.hwid });
-            }
-
-            if (githubConnected) {
-                await pushHwidToGithub();
-            }
-        }
-
-        function closeHwidModal() {
-            document.getElementById('hwidDeleteModal').classList.remove('show');
-        }
-
-        async function clearExpiredHwids() {
-            const expiredCount = hwids.filter(h => h.status === 'expired').length;
-            if (expiredCount === 0) {
-                showToast('info', 'Silinecek expired HWID kaydı yok.');
-                return;
-            }
-            hwids = hwids.filter(h => h.status === 'active');
-            saveHwids();
-            renderHwidTable();
-            updateHwidStats();
-            showToast('success', `${expiredCount} expired HWID kaydı silindi.`);
-
-            if (githubConnected) {
-                await pushHwidToGithub();
-            }
-        }
-
-        function checkHwidExpiry() {
-            const now = Date.now();
-            let changed = false;
-
-            hwids.forEach(h => {
-                if (h.status === 'active' && h.expiresAt !== -1 && now >= h.expiresAt) {
-                    h.status = 'expired';
-                    changed = true;
-                    sendDiscordWebhook('hwid_expired', {
-                        username: h.username,
-                        hwid: h.hwid,
-                        duration: h.durationLabel
-                    });
-                    showToast('info', `⌛ ${h.username} HWID süresi doldu, otomatik kaldırıldı.`);
-                }
-            });
-
-            if (changed) {
-                saveHwids();
-                renderHwidTable();
-                updateHwidStats();
-                if (githubConnected) pushHwidToGithub();
-            }
-        }
-
-        function getHwidRemaining(h) {
-            if (h.status === 'expired') return { text: 'Süresi doldu', urgent: true, pct: 0, cls: 'expired' };
-            if (h.expiresAt === -1) return { text: '∞ Lifetime', urgent: false, pct: 100, cls: 'lifetime' };
-
-            const now = Date.now();
-            const diff = h.expiresAt - now;
-            if (diff <= 0) return { text: 'Süresi doldu', urgent: true, pct: 0, cls: 'expired' };
-
-            const totalMs = h.expiresAt - h.createdAt;
-            const pct = Math.max(0, Math.min(100, (diff / totalMs) * 100));
-
-            const d = Math.floor(diff / 86400000);
-            const hr = Math.floor((diff % 86400000) / 3600000);
-            const mn = Math.floor((diff % 3600000) / 60000);
-            const sc = Math.floor((diff % 60000) / 1000);
-
-            let text, cls;
-            if (d > 0) {
-                text = `${d}g ${hr}s ${mn}dk`;
-                cls = pct > 50 ? 'ok' : (pct > 20 ? 'warning' : 'danger');
-            } else if (hr > 0) {
-                text = `${hr}s ${mn}dk ${sc}sn`;
-                cls = 'warning';
-            } else {
-                text = `${mn}dk ${sc}sn`;
-                cls = 'danger';
-            }
-
-            return { text, urgent: diff < 3600000, pct: Math.round(pct), cls };
-        }
-
-        function renderHwidTable() {
-            const tbody = document.getElementById('hwidTableBody');
-            const emptyState = document.getElementById('hwidEmptyState');
-            const tableWrapper = document.getElementById('hwidTableWrapper');
-
-            if (hwids.length === 0) {
-                tableWrapper.style.display = 'none';
-                emptyState.style.display = 'block';
-                document.getElementById('hwidTableInfo').textContent = '0 kayıt';
-                document.getElementById('hwidFilePreview').textContent = buildHwidFileContent();
-                return;
-            }
-
-            tableWrapper.style.display = 'block';
-            emptyState.style.display = 'none';
-            document.getElementById('hwidTableInfo').textContent = `${hwids.length} kayıt`;
-
-            tbody.innerHTML = '';
-
-            hwids.forEach((h, index) => {
-                const remaining = getHwidRemaining(h);
-                const isExpired = h.status === 'expired';
-                const isLifetime = h.expiresAt === -1;
-
-                // Renk barı
-                let barColor = '#00b894';
-                if (remaining.cls === 'warning') barColor = '#fdcb6e';
-                if (remaining.cls === 'danger') barColor = '#e17055';
-                if (remaining.cls === 'expired') barColor = '#55556a';
-                if (remaining.cls === 'lifetime') barColor = '#fd79a8';
-
-                const expiryDisplay = isLifetime ? '∞ Süresiz' : formatDate(h.expiresAt);
-
-                const tr = document.createElement('tr');
-                if (isExpired) tr.style.opacity = '0.4';
-
-                tr.innerHTML = `
-                    <td style="font-size:11px; color:var(--text-muted); font-family:'JetBrains Mono',monospace;">${String(index + 1).padStart(2, '0')}</td>
-                    <td>
-                        <div class="hwid-name-cell">
-                            <div class="hwid-username">${escapeHtml(h.username)}</div>
-                            <div class="hwid-username-badge">👤 ${escapeHtml(h.username.toUpperCase())}</div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="hwid-value-cell" title="${escapeHtml(h.hwid)}">${escapeHtml(h.hwid)}</div>
-                    </td>
-                    <td><span class="type-badge ${getDurClass(h.duration)}">${h.durationLabel}</span></td>
-                    <td>
-                        <div class="hwid-countdown" id="countdown_${h.id}">
-                            <div class="hwid-countdown-main ${remaining.cls}">
-                                ${remaining.cls === 'lifetime' ? '♾️' : (remaining.cls === 'expired' ? '⊘' : '⏱')} 
-                                <span class="countdown-text">${remaining.text}</span>
-                            </div>
-                            ${!isLifetime && !isExpired ? `
-                            <div class="hwid-countdown-bar">
-                                <div class="hwid-countdown-fill" style="width:${remaining.pct}%; background:${barColor};"></div>
-                            </div>
-                            <div class="hwid-countdown-sub">${remaining.pct}% kaldı</div>
-                            ` : ''}
-                        </div>
-                    </td>
-                    <td style="font-size:11px; color:var(--text-muted); font-family:'JetBrains Mono',monospace; white-space:nowrap;">${expiryDisplay}</td>
-                    <td class="hwid-note-cell" title="${escapeHtml(h.note)}">${escapeHtml(h.note)}</td>
-                    <td>
-                        ${isExpired
-                            ? `<span class="hwid-status-badge hwid-status-expired"><div class="hwid-status-dot"></div> Expired</span>`
-                            : isLifetime
-                                ? `<span class="hwid-status-badge hwid-status-lifetime"><div class="hwid-status-dot"></div> Lifetime</span>`
-                                : `<span class="hwid-status-badge hwid-status-active"><div class="hwid-status-dot"></div> Aktif</span>`
-                        }
-                    </td>
-                    <td>
-                        <div class="hwid-actions">
-                            <button class="hwid-action-btn copy" onclick="copyHwid('${escapeHtml(h.hwid)}')" title="HWID Kopyala">📋</button>
-                            <button class="hwid-action-btn" onclick="deleteHwid('${h.id}')" title="Sil">🗑️</button>
-                        </div>
-                    </td>
-                `;
-
-                tbody.appendChild(tr);
-            });
-
-            // Önizlemeyi güncelle
-            document.getElementById('hwidFilePreview').textContent = buildHwidFileContent();
-
-            // HWID badge güncelle
-            document.getElementById('hwidTotalBadge').textContent = `${hwids.filter(h=>h.status==='active').length} Aktif`;
-        }
-
-        function getDurClass(dur) {
-            const map = { 'single':'type-single','5h':'type-5h','1d':'type-1d','7d':'type-7d','30d':'type-30d','lifetime':'type-lifetime' };
-            return map[dur] || 'type-7d';
-        }
-
-        function updateHwidStats() {
-            document.getElementById('hwidStatTotal').textContent = hwids.length;
-            document.getElementById('hwidStatActive').textContent = hwids.filter(h=>h.status==='active').length;
-            document.getElementById('hwidStatExpired').textContent = hwids.filter(h=>h.status==='expired').length;
-        }
-
-        function startHwidCountdown() {
-            if (hwidCountdownInterval) clearInterval(hwidCountdownInterval);
-            hwidCountdownInterval = setInterval(() => {
-                checkHwidExpiry();
-                // Sadece aktif HWID'ler için geri sayımı güncelle (tablo yeniden render yerine)
-                hwids.forEach(h => {
-                    if (h.status !== 'active' || h.expiresAt === -1) return;
-                    const el = document.getElementById(`countdown_${h.id}`);
-                    if (!el) return;
-                    const remaining = getHwidRemaining(h);
-
-                    let barColor = '#00b894';
-                    if (remaining.cls === 'warning') barColor = '#fdcb6e';
-                    if (remaining.cls === 'danger') barColor = '#e17055';
-
-                    const mainEl = el.querySelector('.hwid-countdown-main');
-                    const textEl = el.querySelector('.countdown-text');
-                    const fillEl = el.querySelector('.hwid-countdown-fill');
-                    const subEl = el.querySelector('.hwid-countdown-sub');
-
-                    if (textEl) textEl.textContent = remaining.text;
-                    if (mainEl) mainEl.className = `hwid-countdown-main ${remaining.cls}`;
-                    if (fillEl) { fillEl.style.width = remaining.pct + '%'; fillEl.style.background = barColor; }
-                    if (subEl) subEl.textContent = remaining.pct + '% kaldı';
-                });
-            }, 1000);
-        }
-
-        function copyHwid(hwid) {
-            navigator.clipboard.writeText(hwid).then(() => {
-                showToast('success', 'HWID panoya kopyalandı.');
-            });
-        }
-
-        function escapeHtml(str) {
-            if (!str) return '';
-            return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
-        }
-
-        // ==================== HWID KEY MODAL ====================
-        function openHwidKeyModal() {
-            if (!githubConnected) {
-                showToast('error', 'Önce GitHub bağlantısını kurun!');
-                return;
-            }
-
-            const durInfo = durationMap[selectedDuration];
-            document.getElementById('hwidKeyDurationDisplay').textContent = durInfo.label;
-            document.getElementById('hwidKeyName').value = '';
-            document.getElementById('hwidKeyNote').value = '';
-            document.getElementById('hwidKeyHwid').value = '';
-            document.getElementById('hwidKeyModal').classList.add('show');
-        }
-
-        function closeHwidKeyModal() {
-            document.getElementById('hwidKeyModal').classList.remove('show');
-        }
-
-        async function confirmHwidAndGenerate() {
-            const hwidVal = document.getElementById('hwidKeyHwid').value.trim();
-            const name = document.getElementById('hwidKeyName').value.trim();
-            const note = document.getElementById('hwidKeyNote').value.trim();
-
-            if (!hwidVal) {
-                showToast('error', 'HWID numarası gereklidir. HWID\'siz devam etmek için "HWID\'siz Devam Et" butonunu kullanın.');
-                return;
-            }
-
-            if (!name) {
-                showToast('error', 'Kullanıcı adı gereklidir.');
-                return;
-            }
-
-            // HWID çakışma kontrolü
-            if (hwids.find(h => h.hwid.toLowerCase() === hwidVal.toLowerCase())) {
-                showToast('error', 'Bu HWID zaten kayıtlı!');
-                return;
-            }
-
-            closeHwidKeyModal();
-
-            // Key oluştur
-            const keyNote = note || name;
-            document.getElementById('keyNote').value = keyNote;
-            await generateKeyInternal(hwidVal, name, note);
-        }
-
-        async function skipHwidAndGenerate() {
-            closeHwidKeyModal();
-            await generateKeyInternal(null, null, null);
-        }
-
-        // ==================== KEY GENERATION ====================
-        const durationMap = {
-            'single': { label: 'Tek Kullanım', ms: 0, class: 'type-single' },
-            '5h':     { label: '5 Saat',       ms: 5 * 3600000, class: 'type-5h' },
-            '1d':     { label: '1 Gün',        ms: 86400000, class: 'type-1d' },
-            '7d':     { label: '7 Gün',        ms: 604800000, class: 'type-7d' },
-            '30d':    { label: '30 Gün',       ms: 2592000000, class: 'type-30d' },
-            'lifetime': { label: 'Lifetime',   ms: -1, class: 'type-lifetime' }
-        };
-
-        function parseKeysFromContent(content) {
-            const lines = content.split('\n');
-            const existingKeyStrings = keys.map(k => k.key);
-
-            lines.forEach(line => {
-                const match = line.match(/^(.+?)\s*:\s*((?:BERLIN|BRL|LITE)-[A-Z0-9-]+)/);
-                if (match) {
-                    const durationLabel = match[1].trim();
-                    const keyStr = match[2].trim();
-
-                    if (!existingKeyStrings.includes(keyStr)) {
-                        let durType = 'lifetime';
-                        Object.entries(durationMap).forEach(([key, val]) => {
-                            if (val.label === durationLabel) durType = key;
-                        });
-
-                        keys.push({
-                            id: 'key_imported_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
-                            key: keyStr,
-                            duration: durType,
-                            durationLabel: durationLabel,
-                            createdAt: Date.now(),
-                            expiresAt: -1,
-                            note: 'GitHub import',
-                            status: 'active'
-                        });
-                    }
-                }
-            });
-
-            saveKeys();
-            renderKeys();
-            updateStats();
-        }
-
-        function buildFileContent() {
-            const now = new Date();
-            const dateStr = formatDate(now.getTime());
-            const activeKeys = keys.filter(k => k.status === 'active');
-
-            let content = `═══════════════════════════════════════════════\n`;
-            content += `       BERLİN LITE — LİSANS ANAHTARLARI\n`;
-            content += `═══════════════════════════════════════════════\n\n`;
-            content += `Son Güncelleme: ${dateStr}\n`;
-            content += `Toplam Aktif Key: ${activeKeys.length}\n\n`;
-            content += `───────────────────────────────────────────────\n\n`;
-
-            if (activeKeys.length === 0) {
-                content += `Aktif key bulunmuyor.\n`;
-            } else {
-                activeKeys.forEach(key => {
-                    let expiryText;
-                    if (key.expiresAt === -1) {
-                        expiryText = 'Süresiz (Lifetime)';
-                    } else if (key.expiresAt === 0) {
-                        expiryText = 'Tek Kullanım';
-                    } else {
-                        expiryText = formatDate(key.expiresAt);
-                    }
-
-                    const note = key.note && key.note !== '—' ? ` | Not: ${key.note}` : '';
-
-                    content += `${key.durationLabel} : ${key.key}\n`;
-                    content += `  └─ Bitiş: ${expiryText}${note}\n\n`;
-                });
-            }
-
-            content += `───────────────────────────────────────────────\n`;
-            content += `Berlin Lite Key Management System\n`;
-            content += `github.com/bugrahena/BERL-N-KEYS\n`;
-
-            return content;
-        }
-
-        async function pushToGitHub() {
-            const token = getToken();
-            const repo = getRepo();
-
-            if (!token || !repo) {
-                showToast('error', 'Önce GitHub bağlantısını kurun.');
-                return;
-            }
-
-            showPushOverlay('GitHub\'a push ediliyor...', `${repo}`);
-
-            try {
-                let currentSHA = fileSHA;
-
-                try {
-                    const getRes = await fetch(`https://api.github.com/repos/${repo}/contents/${GITHUB_FILE_PATH_ENCODED}`, {
-                        headers: {
-                            'Authorization': `token ${token}`,
-                            'Accept': 'application/vnd.github.v3+json'
-                        }
-                    });
-
-                    if (getRes.ok) {
-                        const getData = await getRes.json();
-                        currentSHA = getData.sha;
-                    } else {
-                        currentSHA = null;
-                    }
-                } catch (e) {
-                    currentSHA = null;
-                }
-
-                const content = buildFileContent();
-                const contentBase64 = btoa(unescape(encodeURIComponent(content)));
-
-                const body = {
-                    message: `🔑 Key güncelleme — ${formatDate(Date.now())}`,
-                    content: contentBase64,
-                    branch: 'main'
-                };
-
-                if (currentSHA) {
-                    body.sha = currentSHA;
-                }
-
-                const putRes = await fetch(`https://api.github.com/repos/${repo}/contents/${GITHUB_FILE_PATH_ENCODED}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Authorization': `token ${token}`,
-                        'Accept': 'application/vnd.github.v3+json',
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(body)
-                });
-
-                if (!putRes.ok) {
-                    const errData = await putRes.json();
-                    throw new Error(errData.message || `HTTP ${putRes.status}`);
-                }
-
-                const putData = await putRes.json();
-                fileSHA = putData.content.sha;
-
-                hidePushOverlay();
-                showToast('success', '✅ GitHub\'a başarıyla push edildi!');
-
-                document.getElementById('githubPreview').textContent = content;
-                document.getElementById('syncBadge').textContent = 'Synced';
-
-            } catch (err) {
-                hidePushOverlay();
-                showToast('error', `GitHub push hatası: ${err.message}`);
-                console.error('Push error:', err);
-            }
-        }
-
-        async function fetchFromGitHub() {
-            const token = getToken();
-            const repo = getRepo();
-
-            if (!token || !repo) {
-                showToast('error', 'Önce GitHub bağlantısını kurun.');
-                return;
-            }
-
-            try {
-                const res = await fetch(`https://api.github.com/repos/${repo}/contents/${GITHUB_FILE_PATH_ENCODED}`, {
-                    headers: {
-                        'Authorization': `token ${token}`,
-                        'Accept': 'application/vnd.github.v3+json'
-                    }
-                });
-
-                if (res.ok) {
-                    const data = await res.json();
-                    fileSHA = data.sha;
-                    const content = atob(data.content.replace(/\n/g, ''));
-                    document.getElementById('githubPreview').textContent = content;
-                    showToast('success', 'GitHub\'dan başarıyla çekildi.');
-                } else if (res.status === 404) {
-                    document.getElementById('githubPreview').textContent = 'Dosya henüz oluşturulmamış.';
-                    showToast('info', 'Dosya henüz GitHub\'da yok.');
-                } else {
-                    throw new Error(`HTTP ${res.status}`);
-                }
-            } catch (err) {
-                showToast('error', `GitHub çekme hatası: ${err.message}`);
-            }
-        }
-
-        function generateRandomSegment(length) {
-            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-            let result = '';
-            const array = new Uint32Array(length);
-            crypto.getRandomValues(array);
-            for (let i = 0; i < length; i++) {
-                result += chars[array[i] % chars.length];
-            }
-            return result;
-        }
-
-        function generateKeyString() {
-            const prefix = document.getElementById('keyPrefix').value;
-            if (prefix === 'BRL') {
-                return `${prefix}-${generateRandomSegment(4)}-${generateRandomSegment(4)}-${generateRandomSegment(4)}-${generateRandomSegment(4)}`;
-            }
-            return `${prefix}-${generateRandomSegment(4)}-${generateRandomSegment(4)}-${generateRandomSegment(4)}`;
-        }
-
-        async function generateKeyInternal(hwidVal, username, hwidNote) {
-            const btn = document.getElementById('generateBtn');
-            btn.classList.add('loading');
-            btn.disabled = true;
-
-            const keyString = generateKeyString();
-            const note = document.getElementById('keyNote').value.trim();
-            const now = Date.now();
-            const durInfo = durationMap[selectedDuration];
-
-            const keyObj = {
-                id: 'key_' + now + '_' + Math.random().toString(36).substr(2, 6),
-                key: keyString,
-                duration: selectedDuration,
-                durationLabel: durInfo.label,
-                createdAt: now,
-                expiresAt: durInfo.ms === -1 ? -1 : (durInfo.ms === 0 ? 0 : now + durInfo.ms),
-                note: note || '—',
-                status: 'active',
-                boundHwid: hwidVal || null,
-                boundUsername: username || null
-            };
-
-            keys.unshift(keyObj);
-            saveKeys();
-            renderKeys();
-            updateStats();
-
-            // HWID kaydet (eğer verilmişse)
-            if (hwidVal && username) {
-                const hwidDurInfo = hwidDurationMap[selectedDuration] || hwidDurationMap['7d'];
-                const hwidExpiresAt = durInfo.ms === -1 ? -1 : (durInfo.ms === 0 ? now + 3600000 : now + durInfo.ms);
-
-                const hwidObj = {
-                    id: 'hwid_' + now + '_' + Math.random().toString(36).substr(2, 6),
-                    username: username,
-                    hwid: hwidVal,
-                    duration: selectedDuration,
-                    durationLabel: durInfo.label,
-                    createdAt: now,
-                    expiresAt: hwidExpiresAt,
-                    note: hwidNote || `Key: ${keyString.substring(0, 12)}...`,
-                    status: 'active',
-                    linkedKeyId: keyObj.id
-                };
-
-                hwids.unshift(hwidObj);
-                saveHwids();
-                renderHwidTable();
-                updateHwidStats();
-
-                const expiryText = hwidExpiresAt === -1 ? 'Süresiz' : formatDate(hwidExpiresAt);
-                sendDiscordWebhook('hwid_added', {
-                    username: username,
-                    hwid: hwidVal,
-                    duration: durInfo.label,
-                    note: hwidNote || '—',
-                    expiry: expiryText
-                });
-
-                if (githubConnected) {
-                    await pushHwidToGithub();
-                }
-            }
-
-            // Key output göster
-            document.getElementById('generatedKeyValue').textContent = keyString;
-            document.getElementById('generatedKeyDuration').textContent = durInfo.label;
-            document.getElementById('generatedKeyDate').textContent = formatDate(now);
-            document.getElementById('pushRepo').textContent = getRepo();
-            document.getElementById('keyNote').value = '';
-
-            // Discord webhook
-            sendDiscordWebhook('key_created', {
-                key: keyString,
-                duration: durInfo.label,
-                note: note || '—',
-                hwid: hwidVal || null
-            });
-
-            // GitHub push
-            await pushToGitHub();
-
-            document.getElementById('keyOutput').classList.add('show');
-
-            btn.classList.remove('loading');
-            btn.disabled = false;
-        }
-
-        async function generateKey() {
-            // Bu fonksiyon artık openHwidKeyModal ile başlıyor, ama eski referanslar için burada bırakıldı
-            openHwidKeyModal();
-        }
-
-        // ==================== UI FUNCTIONS ====================
-        function selectDuration(el, duration) {
-            document.querySelectorAll('.duration-option').forEach(opt => opt.classList.remove('selected'));
-            el.classList.add('selected');
-            selectedDuration = duration;
-        }
-
-        function saveKeys() {
-            localStorage.setItem('berlin_keys', JSON.stringify(keys));
-        }
-
-        function checkExpiry() {
-            const now = Date.now();
-            let changed = false;
-
-            keys.forEach(key => {
-                if (key.status === 'active') {
-                    if (key.expiresAt > 0 && now >= key.expiresAt) {
-                        key.status = 'expired';
-                        changed = true;
-                        sendDiscordWebhook('key_expired', { key: key.key, duration: key.durationLabel });
-                    }
-                }
-            });
-
-            if (changed) {
-                saveKeys();
-                renderKeys();
-                updateStats();
-                if (githubConnected) {
-                    pushToGitHub();
-                }
-            }
-        }
-
-        function deleteKey(id) {
-            deleteTargetId = id;
-            const key = keys.find(k => k.id === id);
-            if (key) {
-                document.getElementById('deleteKeyValue').textContent = key.key;
-                document.getElementById('deleteModal').classList.add('show');
-            }
-        }
-
-        async function confirmDelete() {
-            if (!deleteTargetId) return;
-
-            const key = keys.find(k => k.id === deleteTargetId);
-            keys = keys.filter(k => k.id !== deleteTargetId);
-            saveKeys();
-            renderKeys();
-            updateStats();
-            closeModal();
-            deleteTargetId = null;
-
-            if (key) {
-                sendDiscordWebhook('key_deleted', { key: key.key });
-            }
-
-            showToast('success', 'Key silindi, GitHub güncelleniyor...');
-
-            if (githubConnected) {
-                await pushToGitHub();
-            }
-        }
-
-        function closeModal() {
-            document.getElementById('deleteModal').classList.remove('show');
-        }
-
-        async function clearExpired() {
-            const expiredCount = keys.filter(k => k.status === 'expired' || k.status === 'used').length;
-            if (expiredCount === 0) {
-                showToast('info', 'Silinecek expired key yok.');
-                return;
-            }
-            keys = keys.filter(k => k.status === 'active');
-            saveKeys();
-            renderKeys();
-            updateStats();
-
-            showToast('success', `${expiredCount} expired key silindi.`);
-
-            if (githubConnected) {
-                await pushToGitHub();
-            }
-        }
-
-        function copyKeyText(keyStr) {
-            navigator.clipboard.writeText(keyStr).then(() => {
-                showToast('success', 'Key panoya kopyalandı.');
-            });
-        }
-
-        function copyGeneratedKey() {
-            const val = document.getElementById('generatedKeyValue').textContent;
-            navigator.clipboard.writeText(val).then(() => {
-                showToast('success', 'Key panoya kopyalandı.');
-            });
-        }
-
-        // ==================== RENDERING ====================
-        function renderKeys() {
-            const tbody = document.getElementById('keysTableBody');
-            const emptyState = document.getElementById('emptyState');
-            const tableContainer = document.getElementById('keysTableContainer');
-            const searchValue = (document.getElementById('searchInput').value || '').toLowerCase();
-
-            let filtered = [...keys];
-
-            if (currentFilter === 'active') filtered = filtered.filter(k => k.status === 'active');
-            else if (currentFilter === 'expired') filtered = filtered.filter(k => k.status === 'expired' || k.status === 'used');
-            else if (currentFilter === 'lifetime') filtered = filtered.filter(k => k.duration === 'lifetime');
-
-            if (searchValue) {
-                filtered = filtered.filter(k =>
-                    k.key.toLowerCase().includes(searchValue) ||
-                    (k.note || '').toLowerCase().includes(searchValue)
-                );
-            }
-
-            if (filtered.length === 0) {
-                tableContainer.style.display = 'none';
-                emptyState.style.display = 'block';
-            } else {
-                tableContainer.style.display = 'block';
-                emptyState.style.display = 'none';
-            }
-
-            tbody.innerHTML = '';
-
-            filtered.forEach(key => {
-                const isExpired = key.status === 'expired' || key.status === 'used';
-                const durInfo = durationMap[key.duration] || durationMap['lifetime'];
-                const remaining = getRemaining(key);
-
-                const tr = document.createElement('tr');
-                if (isExpired) tr.className = 'key-row-expired';
-
-                tr.innerHTML = `
-                    <td><span class="key-cell">${key.key}</span></td>
-                    <td><span class="type-badge ${durInfo.class}">${key.durationLabel}</span></td>
-                    <td><span class="status-badge ${isExpired ? 'status-expired' : 'status-active'}">${isExpired ? '⊘ Expired' : '● Active'}</span></td>
-                    <td><span class="time-remaining ${remaining.urgent ? 'urgent' : ''}">${remaining.text}</span></td>
-                    <td style="font-size:12px; color: var(--text-muted);">${key.note || '—'}</td>
-                    <td>
-                        <div class="actions-cell">
-                            <button class="action-btn copy-btn" onclick="copyKeyText('${key.key}')" title="Kopyala">📋</button>
-                            <button class="action-btn" onclick="deleteKey('${key.id}')" title="Sil">🗑️</button>
-                        </div>
-                    </td>
-                `;
-
-                tbody.appendChild(tr);
-            });
-
-            document.getElementById('tableInfo').textContent = `${filtered.length} / ${keys.length} key`;
-        }
-
-        function getRemaining(key) {
-            if (key.status === 'expired') return { text: 'Süresi doldu', urgent: true };
-            if (key.status === 'used') return { text: 'Kullanıldı', urgent: true };
-            if (key.expiresAt === -1) return { text: '∞ Süresiz', urgent: false };
-            if (key.expiresAt === 0) return { text: '1 kullanım', urgent: false };
-
-            const diff = key.expiresAt - Date.now();
-            if (diff <= 0) return { text: 'Süresi doldu', urgent: true };
-
-            const d = Math.floor(diff / 86400000);
-            const h = Math.floor((diff % 86400000) / 3600000);
-            const m = Math.floor((diff % 3600000) / 60000);
-            const isUrgent = diff < 3600000;
-
-            if (d > 0) return { text: `${d}g ${h}s kaldı`, urgent: isUrgent };
-            if (h > 0) return { text: `${h}s ${m}dk kaldı`, urgent: isUrgent };
-            return { text: `${m}dk kaldı`, urgent: true };
-        }
-
-        function updateStats() {
-            document.getElementById('statTotal').textContent = keys.length;
-            document.getElementById('statActive').textContent = keys.filter(k => k.status === 'active').length;
-            document.getElementById('statExpired').textContent = keys.filter(k => k.status === 'expired' || k.status === 'used').length;
-            document.getElementById('statLifetime').textContent = keys.filter(k => k.duration === 'lifetime' && k.status === 'active').length;
-        }
-
-        function setFilter(filter, btn) {
-            currentFilter = filter;
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            renderKeys();
-        }
-
-        function filterKeys() { renderKeys(); }
-
-        function switchTab(tab) {
-            document.querySelectorAll('.section-content').forEach(s => s.classList.remove('active'));
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            document.getElementById('section-' + tab).classList.add('active');
-            document.getElementById('tab-' + tab).classList.add('active');
-
-            if (tab === 'keys') {
-                const content = buildFileContent();
-                document.getElementById('githubPreview').textContent = content;
-                document.getElementById('previewRepoName').textContent = `${getRepo() || 'bugrahena/BERL-N-KEYS'} → BERLİN KEYS`;
-            }
-
-            if (tab === 'hwid') {
-                renderHwidTable();
-                updateHwidStats();
-            }
-        }
-
-        // ==================== TOAST ====================
-        function showToast(type, message) {
-            const container = document.getElementById('toastContainer');
-            const icons = { success: '✅', error: '❌', info: 'ℹ️' };
-            const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            toast.innerHTML = `<span>${icons[type]}</span><span>${message}</span>`;
-            container.appendChild(toast);
-            setTimeout(() => {
-                toast.style.animation = 'toastOut 0.3s ease forwards';
-                setTimeout(() => toast.remove(), 300);
-            }, 4000);
-        }
-
-        // ==================== PUSH OVERLAY ====================
-        function showPushOverlay(text, sub) {
-            document.getElementById('pushText').textContent = text;
-            document.getElementById('pushSubtext').textContent = sub;
-            document.getElementById('pushOverlay').classList.add('show');
-        }
-
-        function hidePushOverlay() {
-            document.getElementById('pushOverlay').classList.remove('show');
-        }
-
-        // ==================== UTILITY ====================
-        function formatDate(ts) {
-            const d = new Date(ts);
-            const pad = n => String(n).padStart(2, '0');
-            return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
-        }
-
-        // ==================== INIT ====================
-        function init() {
-            // Örnek HWID'leri yükle
-            initSampleHwids();
-
-            // Oturum kontrolü
-            if (!checkSession()) {
-                document.getElementById('hwidVerifyScreen').style.display = 'flex';
-            } else {
-                document.getElementById('hwidVerifyScreen').classList.add('hidden');
-            }
-
-            // Saved token/repo
-            const savedToken = localStorage.getItem('berlin_gh_token');
-            const savedRepo = localStorage.getItem('berlin_gh_repo');
-
-            if (savedToken) document.getElementById('githubToken').value = savedToken;
-            if (savedRepo) document.getElementById('githubRepo').value = savedRepo;
-
-            if (savedToken && savedRepo) {
-                testConnection();
-            }
-
-            checkExpiry();
-            checkHwidExpiry();
-            renderKeys();
-            renderHwidTable();
-            updateStats();
-            updateHwidStats();
-            startHwidCountdown();
-
-            // Keys expiry her 30 sn
-            setInterval(() => {
-                checkExpiry();
-                renderKeys();
-            }, 30000);
-        }
-
-        init();
-    </script>
+    });
+    if(changed) { saveKeys(); saveHwids(); renderKeys(); renderHwids(); updateStats(); updateHwidStats(); if(githubConnected){pushToGitHub();pushHwidToGithub();} }
+}
+
+function deleteKey(id) { deleteTargetId=id; const k=keys.find(x=>x.id===id); if(k){document.getElementById('deleteKeyValue').textContent=k.key; document.getElementById('deleteModal').classList.add('show');} }
+function closeModal() { document.getElementById('deleteModal').classList.remove('show'); }
+async function confirmDelete() {
+    if(!deleteTargetId)return;
+    const k=keys.find(x=>x.id===deleteTargetId);
+    // İlişkili HWID sil
+    if(k&&k.boundHwid) { hwidList=hwidList.filter(h=>h.linkedKeyId!==k.id); saveHwids(); renderHwids(); updateHwidStats(); if(githubConnected) await pushHwidToGithub(); }
+    keys=keys.filter(x=>x.id!==deleteTargetId); saveKeys(); renderKeys(); updateStats(); closeModal();
+    if(k) webhook('key_deleted',{key:k.key});
+    deleteTargetId=null;
+    if(githubConnected) await pushToGitHub();
+    showToast('success','Key silindi.');
+}
+
+async function clearExpired() {
+    const exp=keys.filter(k=>k.status==='expired').length;
+    if(!exp){showToast('info','Silinecek expired key yok.');return;}
+    // İlişkili HWID'leri de sil
+    const expIds=keys.filter(k=>k.status==='expired').map(k=>k.id);
+    hwidList=hwidList.filter(h=>!expIds.includes(h.linkedKeyId)); saveHwids();
+    keys=keys.filter(k=>k.status==='active'); saveKeys(); renderKeys(); renderHwids(); updateStats(); updateHwidStats();
+    showToast('success',`${exp} expired key silindi.`);
+    if(githubConnected){await pushToGitHub(); await pushHwidToGithub();}
+}
+
+function copyKeyText(k) { navigator.clipboard.writeText(k).then(()=>showToast('success','Kopyalandı.')); }
+function copyGeneratedKey() { navigator.clipboard.writeText(document.getElementById('generatedKeyValue').textContent).then(()=>showToast('success','Kopyalandı.')); }
+function setFilter(f,btn) { currentFilter=f; document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); renderKeys(); }
+function filterKeys() { renderKeys(); }
+
+function getRemaining(k) {
+    if(k.status==='expired') return {text:'Süresi doldu',urgent:true};
+    if(k.expiresAt===-1) return {text:'∞ Süresiz',urgent:false};
+    if(k.expiresAt===0) return {text:'1 kullanım',urgent:false};
+    const diff=k.expiresAt-Date.now(); if(diff<=0) return {text:'Süresi doldu',urgent:true};
+    const d=Math.floor(diff/86400000),h=Math.floor((diff%86400000)/3600000),m=Math.floor((diff%3600000)/60000);
+    if(d>0) return {text:`${d}g ${h}s kaldı`,urgent:diff<3600000};
+    if(h>0) return {text:`${h}s ${m}dk kaldı`,urgent:diff<3600000};
+    return {text:`${m}dk kaldı`,urgent:true};
+}
+
+function renderKeys() {
+    const tbody=document.getElementById('keysTableBody'), empty=document.getElementById('emptyState'), tc=document.getElementById('keysTableContainer');
+    const sv=(document.getElementById('searchInput').value||'').toLowerCase();
+    let f=[...keys];
+    if(currentFilter==='active') f=f.filter(k=>k.status==='active');
+    else if(currentFilter==='expired') f=f.filter(k=>k.status==='expired');
+    else if(currentFilter==='lifetime') f=f.filter(k=>k.duration==='lifetime');
+    if(sv) f=f.filter(k=>k.key.toLowerCase().includes(sv)||(k.note||'').toLowerCase().includes(sv)||(k.boundUsername||'').toLowerCase().includes(sv));
+    if(!f.length){tc.style.display='none';empty.style.display='block';}else{tc.style.display='block';empty.style.display='none';}
+    tbody.innerHTML='';
+    f.forEach(k=>{
+        const exp=k.status==='expired', dur=durationMap[k.duration]||durationMap['lifetime'], rem=getRemaining(k);
+        const hwidDisplay=k.boundHwid?`<span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--warning);background:rgba(253,203,110,0.06);padding:2px 6px;border-radius:3px;border:1px solid rgba(253,203,110,0.1);" title="${esc(k.boundHwid)}">${esc(k.boundUsername||'—')}</span>`:'<span style="color:var(--text-muted);font-size:11px;">—</span>';
+        const tr=document.createElement('tr'); if(exp) tr.className='key-row-expired';
+        tr.innerHTML=`<td><span class="key-cell">${k.key}</span></td><td><span class="type-badge ${dur.cls}">${k.durationLabel}</span></td><td><span class="status-badge ${exp?'status-expired':'status-active'}">${exp?'⊘ Expired':'● Active'}</span></td><td><span class="time-remaining ${rem.urgent?'urgent':''}">${rem.text}</span></td><td>${hwidDisplay}</td><td style="font-size:12px;color:var(--text-muted);">${esc(k.note)}</td><td><div class="actions-cell"><button class="action-btn copy-btn" onclick="copyKeyText('${k.key}')" title="Kopyala">📋</button><button class="action-btn" onclick="deleteKey('${k.id}')" title="Sil">🗑️</button></div></td>`;
+        tbody.appendChild(tr);
+    });
+    document.getElementById('tableInfo').textContent=`${f.length} / ${keys.length} key`;
+}
+
+function updateStats() {
+    document.getElementById('statTotal').textContent=keys.length;
+    document.getElementById('statActive').textContent=keys.filter(k=>k.status==='active').length;
+    document.getElementById('statExpired').textContent=keys.filter(k=>k.status==='expired').length;
+    document.getElementById('statLifetime').textContent=keys.filter(k=>k.duration==='lifetime'&&k.status==='active').length;
+    document.getElementById('statHwid').textContent=hwidList.filter(h=>h.status==='active').length;
+}
+
+// ==================== HWID MANAGEMENT ====================
+function getHwidRemaining(h) {
+    if(h.status==='expired') return {text:'Süresi doldu',cls:'dead',pct:0};
+    if(h.expiresAt===-1) return {text:'∞ Lifetime',cls:'life',pct:100};
+    const diff=h.expiresAt-Date.now(); if(diff<=0) return {text:'Süresi doldu',cls:'dead',pct:0};
+    const total=h.expiresAt-h.createdAt, pct=Math.max(0,Math.min(100,(diff/total)*100));
+    const d=Math.floor(diff/86400000),hr=Math.floor((diff%86400000)/3600000),mn=Math.floor((diff%3600000)/60000),sc=Math.floor((diff%60000)/1000);
+    let text,cls;
+    if(d>0){text=`${d}g ${hr}s ${mn}dk`;cls=pct>50?'ok':(pct>20?'warn':'crit');}
+    else if(hr>0){text=`${hr}s ${mn}dk ${sc}sn`;cls='warn';}
+    else{text=`${mn}dk ${sc}sn`;cls='crit';}
+    return {text,cls,pct:Math.round(pct)};
+}
+
+function renderHwids() {
+    const tbody=document.getElementById('hwidTableBody'), empty=document.getElementById('hwidEmpty'), wrap=document.getElementById('hwidTableWrap');
+    if(!hwidList.length){wrap.style.display='none';empty.style.display='block';document.getElementById('hwidTableInfo').textContent='0 kayıt';document.getElementById('hwidPreview').textContent=buildHwidContent();return;}
+    wrap.style.display='block'; empty.style.display='none';
+    document.getElementById('hwidTableInfo').textContent=`${hwidList.length} kayıt`;
+    tbody.innerHTML='';
+    hwidList.forEach((h,i)=>{
+        const rem=getHwidRemaining(h), exp=h.status==='expired', life=h.expiresAt===-1;
+        let barColor=rem.cls==='ok'?'#00b894':rem.cls==='warn'?'#fdcb6e':rem.cls==='crit'?'#e17055':rem.cls==='life'?'#fd79a8':'#55556a';
+        let statusCls=exp?'expired':(life?'lifetime':'active'), statusText=exp?'Expired':(life?'Lifetime':'Aktif');
+        const tr=document.createElement('tr'); if(exp) tr.className='hwid-expired-row';
+        tr.innerHTML=`
+            <td style="font-size:11px;color:var(--text-muted);font-family:'JetBrains Mono',monospace;">${String(i+1).padStart(2,'0')}</td>
+            <td><span class="hwid-user-badge">👤 ${esc(h.username)}</span></td>
+            <td><span class="hwid-value-mono" title="${esc(h.hwid)}">${esc(h.hwid)}</span></td>
+            <td>
+                <div class="hwid-countdown-cell ${rem.cls}" id="cd_${h.id}">${rem.cls==='life'?'♾️':rem.cls==='dead'?'⊘':'⏱'} ${rem.text}</div>
+                ${!life&&!exp?`<div class="hwid-bar-wrap"><div class="hwid-bar-fill" style="width:${rem.pct}%;background:${barColor};" id="bar_${h.id}"></div></div>`:''}
+            </td>
+            <td style="font-size:11px;color:var(--text-muted);max-width:140px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${esc(h.note)}">${esc(h.note)}</td>
+            <td><span class="hwid-status-pill ${statusCls}"><span class="dot"></span> ${statusText}</span></td>
+            <td><div class="hwid-action-btns"><button class="hwid-act-btn cp" onclick="navigator.clipboard.writeText('${esc(h.hwid)}').then(()=>showToast('success','HWID kopyalandı.'))" title="Kopyala">📋</button><button class="hwid-act-btn" onclick="deleteHwid('${h.id}')" title="Sil">🗑️</button></div></td>
+        `;
+        tbody.appendChild(tr);
+    });
+    document.getElementById('hwidPreview').textContent=buildHwidContent();
+    document.getElementById('hwidBadge').textContent=`${hwidList.filter(h=>h.status==='active').length} Aktif`;
+}
+
+function updateHwidStats() {
+    document.getElementById('hwidStatTotal').textContent=hwidList.length;
+    document.getElementById('hwidStatActive').textContent=hwidList.filter(h=>h.status==='active').length;
+    document.getElementById('hwidStatExpired').textContent=hwidList.filter(h=>h.status==='expired').length;
+}
+
+function manualAddHwid() {
+    const name=document.getElementById('hwidFormName').value.trim();
+    const hwid=document.getElementById('hwidFormHwid').value.trim();
+    const dur=document.getElementById('hwidFormDuration').value;
+    const note=document.getElementById('hwidFormNote').value.trim();
+    if(!name){showToast('error','İsim gerekli.');return;}
+    if(!hwid){showToast('error','HWID gerekli.');return;}
+    if(hwidList.find(h=>h.hwid===hwid&&h.status==='active')){showToast('error','Bu HWID zaten kayıtlı!');return;}
+    const now=Date.now(), di=durationMap[dur], exp=di.ms===-1?-1:now+di.ms;
+    hwidList.unshift({id:'hwid_'+now+'_'+Math.random().toString(36).substr(2,6),username:name,hwid,duration:dur,durationLabel:di.label,createdAt:now,expiresAt:exp,note:note||'—',status:'active',linkedKeyId:null});
+    saveHwids(); renderHwids(); updateHwidStats(); updateStats();
+    document.getElementById('hwidFormName').value='';document.getElementById('hwidFormHwid').value='';document.getElementById('hwidFormNote').value='';
+    showToast('success',`✅ ${name} HWID kaydı eklendi.`);
+    webhook('hwid_added',{username:name,hwid,duration:di.label,note:note||'—'});
+    if(githubConnected) pushHwidToGithub();
+}
+
+function deleteHwid(id) {
+    hwidDeleteTargetId=id; const h=hwidList.find(x=>x.id===id);
+    if(h){document.getElementById('hwidDelName').textContent=h.username;document.getElementById('hwidDelDur').textContent=h.durationLabel;document.getElementById('hwidDelVal').textContent=h.hwid;document.getElementById('hwidDeleteModal').classList.add('show');}
+}
+function closeHwidDeleteModal() { document.getElementById('hwidDeleteModal').classList.remove('show'); }
+async function confirmHwidDelete() {
+    if(!hwidDeleteTargetId)return;
+    const h=hwidList.find(x=>x.id===hwidDeleteTargetId);
+    hwidList=hwidList.filter(x=>x.id!==hwidDeleteTargetId); saveHwids(); renderHwids(); updateHwidStats(); updateStats(); closeHwidDeleteModal();
+    if(h) webhook('hwid_deleted',{username:h.username,hwid:h.hwid});
+    hwidDeleteTargetId=null; showToast('success','HWID silindi.');
+    if(githubConnected) await pushHwidToGithub();
+}
+
+async function clearExpiredHwids() {
+    const exp=hwidList.filter(h=>h.status==='expired').length;
+    if(!exp){showToast('info','Silinecek expired HWID yok.');return;}
+    hwidList=hwidList.filter(h=>h.status==='active'); saveHwids(); renderHwids(); updateHwidStats();
+    showToast('success',`${exp} expired HWID silindi.`);
+    if(githubConnected) await pushHwidToGithub();
+}
+
+// ==================== LIVE COUNTDOWN ====================
+function startCountdown() {
+    setInterval(()=>{
+        checkExpiry();
+        hwidList.forEach(h=>{
+            if(h.status!=='active'||h.expiresAt===-1) return;
+            const rem=getHwidRemaining(h);
+            const cdEl=document.getElementById('cd_'+h.id);
+            const barEl=document.getElementById('bar_'+h.id);
+            if(cdEl) { cdEl.className=`hwid-countdown-cell ${rem.cls}`; cdEl.textContent=(rem.cls==='crit'?'⚠ ':'⏱ ')+rem.text; }
+            if(barEl) { let c=rem.cls==='ok'?'#00b894':rem.cls==='warn'?'#fdcb6e':'#e17055'; barEl.style.width=rem.pct+'%'; barEl.style.background=c; }
+        });
+    }, 1000);
+}
+
+// ==================== TAB SWITCH ====================
+function switchTab(tab) {
+    document.querySelectorAll('.section-content').forEach(s=>s.classList.remove('active'));
+    document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));
+    document.getElementById('section-'+tab).classList.add('active');
+    document.getElementById('tab-'+tab).classList.add('active');
+    if(tab==='keys'){document.getElementById('githubPreview').textContent=buildKeyContent();document.getElementById('previewRepoName').textContent=`${getRepo()||'bugrahena/BERL-N-KEYS'} → BERLİN KEYS`;}
+    if(tab==='hwid'){renderHwids();updateHwidStats();}
+}
+
+// ==================== INIT ====================
+function init() {
+    const st=localStorage.getItem('berlin_gh_token'), sr=localStorage.getItem('berlin_gh_repo');
+    if(st) document.getElementById('githubToken').value=st;
+    if(sr) document.getElementById('githubRepo').value=sr;
+    if(st&&sr) testConnection();
+    checkExpiry(); renderKeys(); renderHwids(); updateStats(); updateHwidStats(); startCountdown();
+    setInterval(()=>{checkExpiry();renderKeys();},30000);
+}
+init();
+</script>
 </body>
 </html>
