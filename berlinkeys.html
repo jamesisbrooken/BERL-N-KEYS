@@ -1130,6 +1130,23 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Son Silinenler -->
+            <div class="panel">
+                <div class="panel-header">
+                    <div class="panel-header-left">
+                        <div class="panel-icon">🗑️</div>
+                        <div><div class="panel-title">Son Silinen Keyler</div><div class="panel-subtitle">Discord botu ve panel tarafından silinen keyler (GitHub → SON_SILINENLER)</div></div>
+                    </div>
+                    <span class="panel-badge badge-orange">Canlı</span>
+                </div>
+                <div class="panel-body">
+                    <div style="background:var(--bg-input); border-radius:var(--radius-sm); padding:20px; font-family:'JetBrains Mono',monospace; font-size:13px; line-height:2.2; max-height:420px; overflow-y:auto; border:1px solid var(--border-primary); white-space:pre-wrap;" id="silinenlerPreview">Bağlantı bekleniyor...</div>
+                    <div style="margin-top:16px;">
+                        <button class="btn-sm btn-outline-danger" onclick="fetchSilinenler()">🔄 Silinenleri Çek</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <footer class="app-footer">
@@ -1145,6 +1162,7 @@
 // ==================== CONFIG ====================
 const GITHUB_KEY_PATH_ENCODED = 'BERL%C4%B0N%20KEYS';
 const GITHUB_HWID_PATH_ENCODED = 'HW%C4%B0D';
+const GITHUB_SILINENLER_PATH_ENCODED = 'SON_SILINENLER';
 const DISCORD_WEBHOOK = 'https://discord.com/api/webhooks/1532294643192954990/gxokE1aPvILgni6IcxK5agzQkt8DmV0NjeoAEGt7LPq7kdNxBXR4w4e-a_U9KOO8MgLj';
 
 // ==================== STATE ====================
@@ -1157,6 +1175,7 @@ let hwidDeleteTargetId = null;
 let githubConnected = false;
 let keySHA = null;
 let hwidSHA = null;
+let silinenlerSHA = null;
 
 const durationMap = {
     'single':   { label: 'Tek Kullanım', ms: 0,          cls: 'type-single' },
@@ -1272,6 +1291,21 @@ async function fetchHwidFile() {
         if(res.ok) { const d=await res.json(); hwidSHA=d.sha; document.getElementById('hwidPreview').textContent=atob(d.content.replace(/\n/g,'')); }
         else hwidSHA=null;
     } catch(e) { console.error(e); }
+}
+
+async function fetchSilinenler() {
+    try {
+        const repo = getRepo() || 'bugrahena/BERL-N-KEYS';
+        const el = document.getElementById('silinenlerPreview');
+        el.textContent = 'Çekiliyor...';
+        if (getToken()) {
+            const res=await fetch(`https://api.github.com/repos/${repo}/contents/${GITHUB_SILINENLER_PATH_ENCODED}`,{headers:{'Authorization':`token ${getToken()}`,'Accept':'application/vnd.github.v3+json'}});
+            if(res.ok) { const d=await res.json(); el.textContent=atob(d.content.replace(/\n/g,'')); showToast('success','Silinenler çekildi.'); return; }
+        }
+        const res2=await fetch(`https://raw.githubusercontent.com/${repo}/main/${GITHUB_SILINENLER_PATH_ENCODED}`);
+        if(res2.ok) { el.textContent=await res2.text(); showToast('success','Silinenler çekildi.'); }
+        else { el.textContent='⚠️ SON_SILINENLER dosyası bulunamadı.\n\nDiscord botu bir key sildiğinde veya key süresi dolduğunda bu dosya otomatik güncellenir.'; showToast('error','Dosya bulunamadı'); }
+    } catch(e) { console.error(e); document.getElementById('silinenlerPreview').textContent='Hata: '+e.message; }
 }
 
 async function fetchFromGitHub() { if(!githubConnected){showToast('error','Önce bağlanın.');return;} await fetchKeyFile(); showToast('success','GitHub\'dan çekildi.'); }
@@ -1438,7 +1472,7 @@ async function confirmDelete() {
     // İlişkili HWID sil
     if(k&&k.boundHwid) { hwidList=hwidList.filter(h=>h.linkedKeyId!==k.id); saveHwids(); renderHwids(); updateHwidStats(); if(githubConnected) await pushHwidToGithub(); }
     keys=keys.filter(x=>x.id!==deleteTargetId); saveKeys(); renderKeys(); updateStats(); closeModal();
-    if(k) webhook('key_deleted',{key:k.key});
+    if(k) { webhook('key_deleted',{key:k.key}); await pushSilinenler('Key: '+k.key+(k.note?' ('+k.note+')':'')); }
     deleteTargetId=null;
     if(githubConnected) await pushToGitHub();
     showToast('success','Key silindi.');
@@ -1450,9 +1484,34 @@ async function clearExpired() {
     // İlişkili HWID'leri de sil
     const expIds=keys.filter(k=>k.status==='expired').map(k=>k.id);
     hwidList=hwidList.filter(h=>!expIds.includes(h.linkedKeyId)); saveHwids();
+    const silinen=keys.filter(k=>k.status==='expired');
     keys=keys.filter(k=>k.status==='active'); saveKeys(); renderKeys(); renderHwids(); updateStats(); updateHwidStats();
     showToast('success',`${exp} expired key silindi.`);
     if(githubConnected){await pushToGitHub(); await pushHwidToGithub();}
+    if(silinen.length) await pushSilinenler(`${silinen.length} expired key otomatik silindi`);
+}
+
+// ─── SON_SILINENLER dosyasını güncelle (bot ve site ortak) ──────
+async function pushSilinenler(sebep) {
+    if(!githubConnected) return;
+    try {
+        let mevcut='';
+        try { const r=await fetch(`https://api.github.com/repos/${getRepo()}/contents/${GITHUB_SILINENLER_PATH_ENCODED}`,{headers:{'Authorization':`token ${getToken()}`,'Accept':'application/vnd.github.v3+json'}}); if(r.ok){const d=await r.json(); mevcut=atob(d.content.replace(/\n/g,'')); silinenlerSHA=d.sha;} else silinenlerSHA=null; } catch(e){silinenlerSHA=null;}
+        const simdi=formatDate(Date.now());
+        let c=mevcut;
+        if(!c) c=`═══════════════════════════════════════════════\n       BERLİN LITE — SON SİLİNEN KEYLER\n═══════════════════════════════════════════════\n\nSon Güncelleme: ${simdi}\n\n───────────────────────────────────────────────\n\n`;
+        c=`═══════════════════════════════════════════════\n       BERLİN LITE — SON SİLİNEN KEYLER\n═══════════════════════════════════════════════\n\nSon Güncelleme: ${simdi}\n\n───────────────────────────────────────────────\n\n` + `- ${sebep} | ${simdi}\n`;
+        // Mevcut kayıtları koru (en fazla 25)
+        const satirlar=c.split('\n').filter(l=>l.startsWith('- '));
+        satirlar.push(`- ${sebep} | ${simdi}`);
+        const son=satirlar.slice(-25);
+        c=`═══════════════════════════════════════════════\n       BERLİN LITE — SON SİLİNEN KEYLER\n═══════════════════════════════════════════════\n\nSon Güncelleme: ${simdi}\n\n───────────────────────────────────────────────\n\n`+son.join('\n')+`\n\n───────────────────────────────────────────────\nBerlin Lite Key Management System\ngithub.com/bugrahena/BERL-N-KEYS\n`;
+        const b64=btoa(unescape(encodeURIComponent(c)));
+        const body={message:`🗑️ Silinen key eklendi — ${simdi}`,content:b64,branch:'main'};
+        if(silinenlerSHA) body.sha=silinenlerSHA;
+        const r=await fetch(`https://api.github.com/repos/${getRepo()}/contents/${GITHUB_SILINENLER_PATH_ENCODED}`,{method:'PUT',headers:{'Authorization':`token ${getToken()}`,'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify(body)});
+        if(r.ok){const d=await r.json(); silinenlerSHA=d.content.sha;}
+    } catch(e){ console.warn('Silinenler push hatası:',e); }
 }
 
 function copyKeyText(k) { navigator.clipboard.writeText(k).then(()=>showToast('success','Kopyalandı.')); }
@@ -1608,7 +1667,7 @@ function switchTab(tab) {
     document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));
     document.getElementById('section-'+tab).classList.add('active');
     document.getElementById('tab-'+tab).classList.add('active');
-    if(tab==='keys'){document.getElementById('githubPreview').textContent=buildKeyContent();document.getElementById('previewRepoName').textContent=`${getRepo()||'bugrahena/BERL-N-KEYS'} → BERLİN KEYS`;}
+    if(tab==='keys'){document.getElementById('githubPreview').textContent=buildKeyContent();document.getElementById('previewRepoName').textContent=`${getRepo()||'bugrahena/BERL-N-KEYS'} → BERLİN KEYS`;fetchSilinenler();}
     if(tab==='hwid'){renderHwids();updateHwidStats();}
 }
 
